@@ -1,1 +1,0 @@
-/usr/bin/c++  -g   CMakeFiles/PSE.dir/main.cpp.o  -o PSE 
