@@ -15,17 +15,10 @@ file(GLOB_RECURSE HDRS ${PSE_SOURCE_DIR}/src/*.h)
 file(GLOB_RECURSE SRCS ${PSE_SOURCE_DIR}/src/*.cpp)
 
 # Set source files for RELEASE target
-<<<<<<< Updated upstream
 set(RELEASE_SOURCE_FILES ${SRCS} ${HDRS})
 
 # Set source files for DEBUG target
 set(DEBUG_SOURCE_FILES ${SRCS} ${HDRS})
-=======
-set(RELEASE_SOURCE_FILES NetworkParser.cpp)
-
-# Set source files for DEBUG target
-set(DEBUG_SOURCE_FILES NetworkParser.cpp)
->>>>>>> Stashed changes
 
 # Create RELEASE target
 add_executable(simulation ${RELEASE_SOURCE_FILES})
