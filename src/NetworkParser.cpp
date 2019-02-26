@@ -1,5 +1,5 @@
 //============================================================================
-// @name        : NetworkParser.h
+// @name        : NetworkParser.cpp
 // @author      : Ward Gauderis
 // @date        : 2/26/19
 // @version     : 
@@ -7,17 +7,8 @@
 // @description : 
 //============================================================================
 
-#ifndef SIMULATION_NETWORKPARSER_H
-#define SIMULATION_NETWORKPARSER_H
+#include "NetworkParser.h"
 
+NetworkParser::NetworkParser(const std::string &filename) {
 
-#include <string>
-
-class NetworkParser {
-
-public:
-	NetworkParser(const std::string &filename);
-};
-
-
-#endif //SIMULATION_NETWORKPARSER_H
+}
