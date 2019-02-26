@@ -11,17 +11,20 @@ include_directories(gtest/include)
 # Set Library dir
 link_directories(gtest/lib)
 
+file(GLOB_RECURSE HDRS ${PSE_SOURCE_DIR}/src/*.h)
+file(GLOB_RECURSE SRCS ${PSE_SOURCE_DIR}/src/*.cpp)
+
 # Set source files for RELEASE target
-set(RELEASE_SOURCE_FILES src/TicTacToe.cpp src/TicTacToeMain.cpp)
+set(RELEASE_SOURCE_FILES ${SRCS} ${HDRS})
 
 # Set source files for DEBUG target
-set(DEBUG_SOURCE_FILES src/TicTacToe.cpp src/TicTacToeTests.cpp)
+set(DEBUG_SOURCE_FILES ${SRCS} ${HDRS})
 
 # Create RELEASE target
-add_executable(ttt ${RELEASE_SOURCE_FILES})
+add_executable(simulation ${RELEASE_SOURCE_FILES})
 
 # Create DEBUG target
-add_executable(ttt_debug ${DEBUG_SOURCE_FILES})
+add_executable(simulation_debug ${DEBUG_SOURCE_FILES})
 
 # Link library
-target_link_libraries(ttt_debug gtest)
+target_link_libraries(simulation_debug gtest)
