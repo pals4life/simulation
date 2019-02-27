@@ -11,8 +11,8 @@ include_directories(gtest/include)
 # Set Library dir
 link_directories(gtest/lib)
 
-file(GLOB_RECURSE HDRS ${PSE_SOURCE_DIR}/src/*.h)
-file(GLOB_RECURSE SRCS ${PSE_SOURCE_DIR}/src/*.cpp)
+file(GLOB_RECURSE HDRS ${simulation_SOURCE_DIR}/src/*.h)
+file(GLOB_RECURSE SRCS ${simulation_SOURCE_DIR}/src/*.cpp)
 
 # Set source files for RELEASE target
 set(RELEASE_SOURCE_FILES ${SRCS} ${HDRS})
