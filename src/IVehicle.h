@@ -19,7 +19,7 @@ class IVehicle
 public:
     IVehicle(const std::string& license, double pos, double velocity);
 
-    virtual void move(const IVehicle* next) = 0;
+    virtual void move(const IVehicle* next, double speedLimit) = 0;
 
     virtual double getVehicleLength() const = 0;
     virtual EVehicleType getType() const = 0;
@@ -39,6 +39,8 @@ public:
     double& getPosition();
     double& getVelocity();
     double& getAcceleration();
+
+    friend bool operator<(const IVehicle& a, const IVehicle& b);
 
 protected:
     std::string fLicensePlate;

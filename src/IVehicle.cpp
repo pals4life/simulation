@@ -44,4 +44,9 @@ double& IVehicle::getAcceleration()
     return fAcceleration;
 }
 
+bool operator<(const IVehicle& a, const IVehicle& b)
+{
+    return a.fPosition < b.fPosition;
+}
+
 
