@@ -13,23 +13,20 @@
 #include "Road.h"
 
 class Network {
-private:
-    int fTimePassed;                              // time passed in seconds
-
-    std::vector<Road*> fRoads;
 
 public:
+    Network(std::vector<Road*> fRoads);
 
-    Network(){};
-
-    int getFTimePassed() const;
-
-    void setFTimePassed(int fTimePassed);
-
-    const std::vector<Road *> &getFRoads() const;
-
+    int getTicksPassed() const;
+    /*
+     * This function updates all roads and will exit when there are no IVehicles on the roads
+     */
     void startSimulation();
 
+private:
+    int fTicksPassed; // amount of ticks passed
+
+    std::vector<Road*> fRoads;
 };
 
 
