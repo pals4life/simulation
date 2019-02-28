@@ -22,6 +22,8 @@ private:
 public:
     Road(Road* next) {fNextRoad = next;};
 
+    Road(){};
+
     Road *getFNextRoad() const;
 
     void setFNextRoad(Road *fNextRoad);
