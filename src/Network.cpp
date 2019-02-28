@@ -9,9 +9,10 @@
 #include <stdint.h>
 #include "Network.h"
 
-Network::Network(std::vector<Road*> fRoads)
+Network::Network(const std::vector<Road*>& roads)
 {
     fTicksPassed = 0;
+    fRoads = roads;
 }
 
 
@@ -20,9 +21,11 @@ int Network::getTicksPassed() const
     return fTicksPassed;
 }
 
-void Network::startSimulation() {
+void Network::startSimulation()
+{
 
-    while(true) {
+    while(true)
+    {
         fTicksPassed++;
         bool simulationDone = true;
         for(uint32_t i = 0; i < fRoads.size(); i++)

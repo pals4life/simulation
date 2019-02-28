@@ -30,6 +30,7 @@ public:
     virtual double getMaxAcceleration() const = 0;
     virtual double getMinAcceleration() const = 0;
 
+    std::string getLicensePlate();
 
     double getPosition() const;
     double getVelocity() const;
@@ -40,7 +41,7 @@ public:
     double& getAcceleration();
 
 protected:
-    std::string kfLicensePlate;
+    std::string fLicensePlate;
 
     double fPosition;
     double fVelocity;

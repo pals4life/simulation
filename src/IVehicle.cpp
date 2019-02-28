@@ -2,11 +2,16 @@
 
 IVehicle::IVehicle(const std::string& license, double position, double velocity)
 {
-    kfLicensePlate = license;
+    fLicensePlate = license;
 
     fPosition = position;
     fVelocity = velocity;
     fAcceleration = 0;
+}
+
+std::string IVehicle::getLicensePlate()
+{
+    return fLicensePlate;
 }
 
 double IVehicle::getPosition() const
@@ -38,3 +43,5 @@ double& IVehicle::getAcceleration()
 {
     return fAcceleration;
 }
+
+
