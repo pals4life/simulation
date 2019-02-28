@@ -10,7 +10,7 @@ const double Car::fgkVehicleLength = 3;
 
 Car::Car(const std::string& license, double pos, double velocity) : IVehicle(license, pos, velocity) {}
 
-void Car::move(const IVehicle* const next)
+void Car::move(const IVehicle* const next, double speedLimit)
 {
     fPosition += fVelocity;
     fVelocity += fAcceleration;
@@ -18,7 +18,11 @@ void Car::move(const IVehicle* const next)
     double ideal  = 0.75 * fVelocity + next->getVehicleLength() + 2;
     double actual = next->getPosition() - next->getVehicleLength() - fPosition;
 
+    double minAcceleration = std::max(fVelocity, fgkMinAcceleration);               // make sure it doesn't slow down below 0
+    double maxAcceleration = std::min(speedLimit - fVelocity, fgkMaxAcceleration);  // make sure it doesn't accelerate higher than speed limit
+
     fAcceleration = 0.5 * (actual - ideal);
+    fAcceleration = std::min(std::max(fAcceleration, minAcceleration), maxAcceleration); // clamp the value
 }
 
 double Car::getVehicleLength() const

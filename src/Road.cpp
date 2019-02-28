@@ -22,10 +22,10 @@ void Road::update()
 {
     for(int i = 0; i < fVehicles.size() - 1; i++)
     {
-        fVehicles[i]->move(fVehicles[i+1]);
+        fVehicles[i]->move(fVehicles[i+1], fSpeedLimit);
     }
-    if(fNextRoad == NULL) fVehicles.front()->move(NULL);
-    else fVehicles.front()->move(fNextRoad->getBackVehicle());
+    if(fNextRoad == NULL) fVehicles.front()->move(NULL, fSpeedLimit);
+    else fVehicles.front()->move(fNextRoad->getBackVehicle(), fSpeedLimit);
 }
 
 void Road::enqueue(IVehicle* const vehicle)
@@ -68,6 +68,24 @@ double Road::getSpeedLimit() const
 const std::string &Road::getName() const
 {
     return fName;
+}
+
+bool operator==(const Road& a, const std::string& b)
+{
+    return a.fName == b;
+}
+
+bool operator==(const std::string& a, const Road& b)
+{
+    return b.fName == a;
+}
+
+std::ostream &operator<<(std::ostream& stream, const Road& road)
+{
+    stream << "Baan : " + road.fName + '\n';
+    stream << "  -> snelheidslimiet: "  << road.fSpeedLimit << '\n';
+    stream << "  -> lengte         : "  << road.fSpeedLimit << '\n';
+    return stream;
 }
 
 
