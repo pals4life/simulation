@@ -51,6 +51,8 @@ public:
     friend bool operator==(const Road& a, const std::string& b);
     friend bool operator==(const std::string& a, const Road& b);
 
+    friend std::ostream& operator<<(std::ostream& stream, const Road& road);
+
 private:
     double fRoadLength;
     double fSpeedLimit;

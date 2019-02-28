@@ -80,5 +80,13 @@ bool operator==(const std::string& a, const Road& b)
     return b.fName == a;
 }
 
+std::ostream &operator<<(std::ostream& stream, const Road& road)
+{
+    stream << "Baan : " + road.fName + '\n';
+    stream << "  -> snelheidslimiet: "  << road.fSpeedLimit << '\n';
+    stream << "  -> lengte         : "  << road.fSpeedLimit << '\n';
+    return stream;
+}
+
 
 
