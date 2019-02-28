@@ -30,7 +30,10 @@ TiXmlElement *VAbstractParser::getRoot() const {
 
 const std::string VAbstractParser::readElement(TiXmlElement *const element, const std::string &kTag) {
 	TiXmlElement *elem = element->FirstChildElement(kTag.c_str());
-	TiXmlNode *node = elem->FirstChild();
-	TiXmlText *text = node->ToText();
-	return text->Value();
+	if (elem != NULL) {
+		TiXmlNode *node = elem->FirstChild();
+		TiXmlText *text = node->ToText();
+		return text->Value();
+	}
+	return "";
 }

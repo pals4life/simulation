@@ -24,6 +24,8 @@ public:
 
 	Network *parseNetwork(TiXmlElement *element);
 
+	friend std::istream &operator>>(std::istream &input, NetworkParser& networkParser);
+
 	Network *getNetwork() const;
 
 	static bool compareVehiclePointers(const IVehicle* a, const IVehicle* b);
