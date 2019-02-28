@@ -17,7 +17,7 @@
 #include "VAbstractParser.h"
 
 class NetworkParser : public VAbstractParser {
-	Network *network;
+	Network *fnetwork;
 public:
 	NetworkParser();
 

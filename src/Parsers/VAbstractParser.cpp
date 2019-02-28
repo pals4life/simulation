@@ -10,21 +10,21 @@
 #include "VAbstractParser.h"
 
 bool VAbstractParser::loadFile(const std::string &filename) {
-	if (!doc.LoadFile(filename)) {
-		std::cerr << doc.ErrorDesc() << std::endl;
+	if (!fdoc.LoadFile(filename)) {
+		std::cerr << fdoc.ErrorDesc() << std::endl;
 		return false;
 	}
-	root = doc.FirstChildElement();
-	if (root == NULL) {
-		std::cerr << "Failed to load file: No root element." << std::endl;
-		doc.Clear();
+	froot = fdoc.FirstChildElement();
+	if (froot == NULL) {
+		std::cerr << "Failed to load file: No froot element." << std::endl; //TODO exception handling
+		fdoc.Clear();
 		return false;
 	}
 	return true;
 }
 
 TiXmlElement *VAbstractParser::getRoot() const {
-	return root;
+	return froot;
 }
 
 const std::string VAbstractParser::readElement(TiXmlElement *const element, const std::string &tag) {

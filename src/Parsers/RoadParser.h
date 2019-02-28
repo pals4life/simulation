@@ -13,9 +13,10 @@
 
 #include <tinyxml.h>
 #include "../Road.h"
+#include "VAbstractParser.h"
 
-class RoadParser {
-	Road *road;
+class RoadParser: public VAbstractParser {
+	Road *froad;
 public:
 	RoadParser();
 

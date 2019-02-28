@@ -12,9 +12,10 @@
 
 #include <tinyxml.h>
 #include "../IVehicle.h"
+#include "VAbstractParser.h"
 
-class VehicleParser {
-	IVehicle *vehicle;
+class VehicleParser: public VAbstractParser {
+	IVehicle *fvehicle;
 
 public:
 	VehicleParser();
