@@ -71,11 +71,11 @@ const std::string& Road::getName() const
     return fName;
 }
 
-void printVehicles(std::ostream& stream, const Road& road)
+void Road::printVehicles(std::ostream& stream) const
 {
-    for(uint32_t i = 0; i < road.fVehicles.size(); i++)
+    for(uint32_t i = 0; i < fVehicles.size(); i++)
     {
-        road.fVehicles[i]->printVehicle(stream, road.fName);
+        fVehicles[i]->printVehicle(stream, fName);
     }
 }
 

@@ -48,12 +48,12 @@ public:
     double getSpeedLimit() const;
     const std::string& getName() const;
 
+    void printVehicles(std::ostream& stream) const;
+
     friend bool operator==(Road* const a, const std::string& b);
     friend bool operator==(const std::string& a, Road* const b);
 
     friend std::ostream& operator<<(std::ostream& stream, const Road& road);
-    friend void printVehicles(std::ostream& stream, const Road& road);
-
 
 private:
     double fRoadLength;
