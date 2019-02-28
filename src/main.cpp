@@ -20,5 +20,7 @@ int main(int argc, char** argv)
     Network* network = parser.getNetwork();
     network->startSimulation();
     std::cout << "simulation ended in: " << network->getTicksPassed() << " ticks\n";
+
+    delete network;
     return 0;
 }

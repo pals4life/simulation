@@ -17,6 +17,7 @@ class Network {
 
 public:
     Network(const std::vector<Road*>& roads);
+    ~Network();
 
     int getTicksPassed() const;
     /*

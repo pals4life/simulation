@@ -18,6 +18,7 @@ class IVehicle
 {
 public:
     IVehicle(const std::string& license, double pos, double velocity);
+    virtual ~IVehicle(){}
 
     virtual void move(const IVehicle* next, double speedLimit) = 0;
 

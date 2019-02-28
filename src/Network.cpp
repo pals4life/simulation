@@ -10,7 +10,7 @@
 #include <sstream>
 #include "Network.h"
 
-static const int fgkMaxTicks = 100000000;
+static const int fgkMaxTicks = 100000;
 
 Network::Network(const std::vector<Road*>& roads)
 {
@@ -18,6 +18,10 @@ Network::Network(const std::vector<Road*>& roads)
     fRoads = roads;
 }
 
+Network::~Network()
+{
+    for(uint32_t i = 0; i < fRoads.size(); i++) delete fRoads[i];
+}
 
 int Network::getTicksPassed() const
 {
@@ -26,10 +30,9 @@ int Network::getTicksPassed() const
 
 void Network::startSimulation(int amountOfTicks)
 {
-
+    printNetwork();
     while(fTicksPassed < amountOfTicks)
     {
-        printNetwork();
         fTicksPassed++;
         bool simulationDone = true;
         for(uint32_t i = 0; i < fRoads.size(); i++)

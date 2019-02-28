@@ -21,12 +21,30 @@ Road::Road(const std::string& name, Road* next, double length, double speedLimit
 
 void Road::update()
 {
-    for(long unsigned int i = 0; i < fVehicles.size() - 1; i++)
+    for(uint32_t i = 0; i < fVehicles.size() - 1; i++)
     {
         fVehicles[i]->move(fVehicles[i+1], fSpeedLimit);
     }
     if(fNextRoad == NULL) fVehicles.front()->move(NULL, fSpeedLimit);
     else fVehicles.front()->move(fNextRoad->getBackVehicle(), fSpeedLimit);
+
+    for(uint32_t i = fVehicles.size(); i >= 0; i--)
+    {
+        if(fVehicles[i]->getPosition() > fRoadLength)
+        {
+            if(fNextRoad == NULL)
+            {
+                delete fVehicles[i]; // free memory
+                fVehicles.pop_front();
+            }
+            else
+            {
+                fNextRoad->enqueue(fVehicles[i]);
+                fVehicles.pop_front();
+            }
+        }
+        else break;
+    }
 }
 
 void Road::enqueue(IVehicle* const vehicle)
