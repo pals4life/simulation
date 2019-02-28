@@ -10,18 +10,21 @@
 #ifndef SIMULATION_VABSTRACTPARSER_H
 #define SIMULATION_VABSTRACTPARSER_H
 
-#include <tinyxml.h>
+#include "Tinyxml/tinyxml.h"
+#include <string>
 
 class VAbstractParser {
-	TiXmlElement *froot;
-	TiXmlDocument fdoc;
-protected:
-	const std::string readElement(TiXmlElement *element, const std::string &tag);
-
 public:
-	bool loadFile(const std::string &filename);
+	bool loadFile(const std::string &kFilename);
 
 	TiXmlElement *getRoot() const;
+
+protected:
+	const std::string readElement(TiXmlElement *element, const std::string &kTag);
+
+private:
+	TiXmlElement *fRoot;
+	TiXmlDocument fDoc;
 };
 
 

@@ -85,8 +85,15 @@
 //};
 //
 //
-//int main()
-//{
-//    std::cout << "Hello World" << std::endl;
-//    return 0;
-//}
+#include <iostream>
+#include "Parsers/NetworkParser.h"
+int main()
+{
+    std::cout << "Hello World" << std::endl;
+    NetworkParser a;
+	if (a.loadFile("inputfiles/spec1.0.xml")) {
+		Network* b = a.parseNetwork(a.getRoot());
+		b->getTicksPassed();
+	}
+    return 0;
+}

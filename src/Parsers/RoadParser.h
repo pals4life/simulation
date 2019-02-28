@@ -11,12 +11,11 @@
 #define SIMULATION_ROADPARSER_H
 
 
-#include <tinyxml.h>
+#include "Tinyxml/tinyxml.h"
 #include "../Road.h"
 #include "VAbstractParser.h"
 
-class RoadParser: public VAbstractParser {
-	Road *froad;
+class RoadParser : public VAbstractParser {
 public:
 	RoadParser();
 
@@ -24,7 +23,10 @@ public:
 
 	Road *parseRoad(TiXmlElement *element);
 
-	Road *getRoad();
+	Road *getRoad() const;
+
+private:
+	Road *fRoad;
 };
 
 

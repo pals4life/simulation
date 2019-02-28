@@ -7,29 +7,30 @@
 // @description : Superclass for all parsers used in this project. Inspired by the XML-parser example code of Quinten Soetens.
 //============================================================================
 
+#include <iostream>
 #include "VAbstractParser.h"
 
-bool VAbstractParser::loadFile(const std::string &filename) {
-	if (!fdoc.LoadFile(filename)) {
-		std::cerr << fdoc.ErrorDesc() << std::endl;
+bool VAbstractParser::loadFile(const std::string &kFilename) {
+	if (!fDoc.LoadFile(kFilename.c_str())) {
+		std::cerr << fDoc.ErrorDesc() << std::endl;
 		return false;
 	}
-	froot = fdoc.FirstChildElement();
-	if (froot == NULL) {
-		std::cerr << "Failed to load file: No froot element." << std::endl; //TODO exception handling
-		fdoc.Clear();
+	fRoot = fDoc.FirstChildElement();
+	if (fRoot == NULL) {
+		std::cerr << "Failed to load file: No root element." << std::endl; //TODO exception handling
+		fDoc.Clear();
 		return false;
 	}
 	return true;
 }
 
 TiXmlElement *VAbstractParser::getRoot() const {
-	return froot;
+	return fRoot;
 }
 
-const std::string VAbstractParser::readElement(TiXmlElement *const element, const std::string &tag) {
-	TiXmlElement *elem = element->FirstChildElement(tag);
-	TiXmlNode *node = elem->FirstChildElement();
+const std::string VAbstractParser::readElement(TiXmlElement *const element, const std::string &kTag) {
+	TiXmlElement *elem = element->FirstChildElement(kTag.c_str());
+	TiXmlNode *node = elem->FirstChild();
 	TiXmlText *text = node->ToText();
 	return text->Value();
 }

@@ -10,7 +10,7 @@
 #include "RoadParser.h"
 
 RoadParser::RoadParser() {
-	froad = new Road;
+	fRoad = NULL;
 }
 
 RoadParser::~RoadParser() {
@@ -18,13 +18,14 @@ RoadParser::~RoadParser() {
 }
 
 Road *RoadParser::parseRoad(TiXmlElement *const element) {
-	const std::string kname = readElement(element, "naam");
-	const int kmaxSpeed = std::atoi(readElement(element, "snelheidslimiet").c_str());
-	const int klength = std::atoi(readElement(element, "lengte").c_str());
-	const std::string Kconnection = readElement(element, "verbinding");
-	return froad;
+	const std::string kName = readElement(element, "naam");
+	const int kMaxSpeed = std::atoi(readElement(element, "snelheidslimiet").c_str());
+	const double kLength = std::atof(readElement(element, "lengte").c_str());
+	const std::string KConnection = readElement(element, "verbinding");
+	fRoad = new Road(kName, NULL, kLength, kMaxSpeed);
+	return fRoad;
 }
 
-Road *RoadParser::getRoad() {
-	return froad;
+Road *RoadParser::getRoad() const {
+	return fRoad;
 }

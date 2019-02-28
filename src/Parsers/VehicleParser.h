@@ -10,21 +10,22 @@
 #ifndef SIMULATION_VEHICLEPARSER_H
 #define SIMULATION_VEHICLEPARSER_H
 
-#include <tinyxml.h>
+#include "Tinyxml/tinyxml.h"
 #include "../IVehicle.h"
 #include "VAbstractParser.h"
 
-class VehicleParser: public VAbstractParser {
-	IVehicle *fvehicle;
-
+class VehicleParser : public VAbstractParser {
 public:
 	VehicleParser();
 
 	virtual ~VehicleParser();
 
-	IVehicle *parseVehicle(TiXmlElement *element);
+	IVehicle *parseVehicle(TiXmlElement *element, std::string &road);
 
-	IVehicle *getVehicle();
+	IVehicle *getVehicle() const;
+
+private:
+	IVehicle *fVehicle;
 
 };
 

@@ -21,7 +21,7 @@ Road::Road(const std::string& name, Road* next, double length, double speedLimit
 
 void Road::update()
 {
-    for(int i = 0; i < fVehicles.size() - 1; i++)
+    for(long unsigned int i = 0; i < fVehicles.size() - 1; i++)
     {
         fVehicles[i]->move(fVehicles[i+1], fSpeedLimit);
     }

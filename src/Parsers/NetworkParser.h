@@ -17,7 +17,6 @@
 #include "VAbstractParser.h"
 
 class NetworkParser : public VAbstractParser {
-	Network *fnetwork;
 public:
 	NetworkParser();
 
@@ -25,7 +24,12 @@ public:
 
 	Network *parseNetwork(TiXmlElement *element);
 
-	Network *getNetwork();
+	Network *getNetwork() const;
+
+	static bool compareVehiclePointers(const IVehicle* a, const IVehicle* b);
+
+private:
+	Network *fNetwork;
 };
 
 
