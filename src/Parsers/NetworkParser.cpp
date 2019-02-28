@@ -8,21 +8,31 @@
 //============================================================================
 
 #include "NetworkParser.h"
+#include "RoadParser.h"
+#include "VehicleParser.h"
 #include <tinyxml.h>
 
 Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
+	RoadParser rp;
+	VehicleParser vp;
 	for (TiXmlElement *elem = element->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement()) {
-
+		if (elem->ToText() == "BAAN") {
+			Road* r = rp.parseRoad(elem);
+		} else if (elem->ToText() == "VOERTUIG") {
+			IVehicle* v = vp.parseVehicle(elem);
+		} else {
+			std::cerr << "Failed to load file: Unknown element." << std::endl; //TODO exception handling
+		}
 	}
-	return network;
+	return fnetwork;
 }
 
 Network *NetworkParser::getNetwork() {
-	return network;
+	return fnetwork;
 }
 
 NetworkParser::NetworkParser() {
-	network = new Network;
+	fnetwork = new Network;
 }
 
 NetworkParser::~NetworkParser() {

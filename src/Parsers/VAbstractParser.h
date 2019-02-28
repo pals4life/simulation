@@ -13,9 +13,9 @@
 #include <tinyxml.h>
 
 class VAbstractParser {
-	TiXmlElement *root;
-	TiXmlDocument doc;
-
+	TiXmlElement *froot;
+	TiXmlDocument fdoc;
+protected:
 	const std::string readElement(TiXmlElement *element, const std::string &tag);
 
 public:
