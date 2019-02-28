@@ -48,7 +48,8 @@ public:
     double getSpeedLimit() const;
     const std::string &getName() const;
 
-    friend bool operator==(const Road& a, const Road& b);
+    friend bool operator==(const Road& a, const std::string& b);
+    friend bool operator==(const std::string& a, const Road& b);
 
 private:
     double fRoadLength;

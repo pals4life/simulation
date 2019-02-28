@@ -70,9 +70,14 @@ const std::string &Road::getName() const
     return fName;
 }
 
-bool operator==(const Road& a, const Road& b)
+bool operator==(const Road& a, const std::string& b)
 {
-    return a.fName == b.fName;
+    return a.fName == b;
+}
+
+bool operator==(const std::string& a, const Road& b)
+{
+    return b.fName == a;
 }
 
 
