@@ -6,6 +6,7 @@
 // @copyright   : Project Software Engineering - BA1 Informatica - Mano Marichal - University of Antwerp
 // @description :
 //============================================================================
+#include <stdint.h>
 #include "Road.h"
 
 
@@ -65,28 +66,38 @@ double Road::getSpeedLimit() const
     return fSpeedLimit;
 }
 
-const std::string &Road::getName() const
+const std::string& Road::getName() const
 {
     return fName;
 }
 
-bool operator==(const Road& a, const std::string& b)
+void printVehicles(std::ostream& stream, const Road& road)
 {
-    return a.fName == b;
+    for(uint32_t i = 0; i < road.fVehicles.size(); i++)
+    {
+        road.fVehicles[i]->printVehicle(stream, road.fName);
+    }
 }
 
-bool operator==(const std::string& a, const Road& b)
+bool operator==(Road* const a, const std::string& b)
 {
-    return b.fName == a;
+    return a->fName == b;
 }
 
-std::ostream &operator<<(std::ostream& stream, const Road& road)
+bool operator==(const std::string& a, Road* const b)
+{
+    return b->fName == a;
+}
+
+std::ostream& operator<<(std::ostream& stream, const Road& road)
 {
     stream << "Baan : " + road.fName + '\n';
     stream << "  -> snelheidslimiet: "  << road.fSpeedLimit << '\n';
-    stream << "  -> lengte         : "  << road.fSpeedLimit << '\n';
+    stream << "  -> lengte         : "  << road.fRoadLength << '\n';
     return stream;
 }
+
+
 
 
 

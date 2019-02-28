@@ -40,7 +40,10 @@ public:
     double& getVelocity();
     double& getAcceleration();
 
+    void printVehicle(std::ostream& stream, const std::string& roadName) const;
+
     friend bool operator<(const IVehicle& a, const IVehicle& b);
+
 
 protected:
     std::string fLicensePlate;
