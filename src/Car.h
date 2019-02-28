@@ -16,6 +16,8 @@
 class Car : public IVehicle
 {
 public:
+    Car(const std::string& license, double pos, double velocity);
+
     virtual void move(const IVehicle* next);
 
     virtual double getVehicleLength() const;

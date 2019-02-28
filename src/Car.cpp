@@ -8,6 +8,8 @@ const double Car::fgkMaxSpeed = 150.0;
 
 const double Car::fgkVehicleLength = 3;
 
+Car::Car(const std::string& license, double pos, double velocity) : IVehicle(license, pos, velocity) {}
+
 void Car::move(const IVehicle* const next)
 {
     fPosition += fVelocity;
