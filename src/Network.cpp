@@ -47,9 +47,13 @@ void Network::startSimulation(int amountOfTicks)
 void Network::printNetwork() {
     std::ofstream outputFile;
     outputFile.open("./outputfiles/output.txt");
-    outputFile << "\nState of the network after " << fTicksPassed << " ticks have passed:\n";
+    outputFile << "\nState of the network after " << fTicksPassed << " ticks have passed:\n\n";
     for(uint32_t i = 0; i < fRoads.size(); i++)
     {
         outputFile << fRoads[i];
+    }
+    for(uint32_t i = 0; i < fRoads.size(); i++)
+    {
+        outputFile << fRoads[i]->printVehicles;
     }
 }
