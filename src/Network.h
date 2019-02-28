@@ -9,8 +9,23 @@
 #ifndef SIMULATION_NETWORK_H
 #define SIMULATION_NETWORK_H
 
+#include <vector>
+#include "Road.h"
 
 class Network {
+private:
+    int fTimePassed;                              // time passed in seconds
+
+    std::vector<Road*> fRoads;
+
+public:
+    int getFTimePassed() const;
+
+    void setFTimePassed(int fTimePassed);
+
+    const std::vector<Road *> &getFRoads() const;
+
+    void startSimulation();
 
 };
 

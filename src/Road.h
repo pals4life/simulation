@@ -9,8 +9,29 @@
 #ifndef SIMULATION_ROAD_H
 #define SIMULATION_ROAD_H
 
+#include <deque>
+#include <iterator>
+#include "IVehicle.h"
 
 class Road {
+private:
+    Road* fNextRoad;
+
+    std::deque<IVehicle*> fVehicles;
+
+public:
+    Road *getFNextRoad() const;
+
+    void setFNextRoad(Road *fNextRoad);
+
+    const std::deque<IVehicle *> &getFVehicles() const;
+
+    void setFVehicles(const std::deque<IVehicle *> &fVehicles);
+
+    void update();
+
+    bool isEmpty();
+
 
 };
 
