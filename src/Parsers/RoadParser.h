@@ -21,7 +21,7 @@ public:
 
 	virtual ~RoadParser();
 
-	Road *parseRoad(TiXmlElement *element);
+	Road *parseRoad(TiXmlElement *element, const std::vector<Road *> &kRoads);
 
 	Road *getRoad() const;
 

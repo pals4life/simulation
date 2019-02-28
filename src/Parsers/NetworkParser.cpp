@@ -22,7 +22,7 @@ Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
 	for (TiXmlElement *elem = element->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement()) {
 		const std::string kType = elem->Value();
 		if (kType == "BAAN") {
-			roads.push_back(rp.parseRoad(elem));
+			roads.push_back(rp.parseRoad(elem, roads));
 		} else if (kType == "VOERTUIG") {
 			std::string roadName;
 			IVehicle *v = vp.parseVehicle(elem, roadName);
@@ -57,4 +57,12 @@ NetworkParser::~NetworkParser() {
 
 bool NetworkParser::compareVehiclePointers(const IVehicle *a, const IVehicle *b) {
 	return *a < *b;
+}
+
+std::istream &operator>>(std::istream &input, NetworkParser &networkParser) {
+	std::string in;
+	input >> in;
+	networkParser.loadFile(in);
+	networkParser.parseNetwork(networkParser.getRoot());
+	return input;
 }
