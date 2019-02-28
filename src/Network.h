@@ -23,7 +23,7 @@ public:
      * This function updates all roads and will exit when there are no IVehicles on the roads or the amout of ticks has run out
      * @ param ticks: the amount of ticks the simulation has to carry out
      */
-    void startSimulation(int amountOfTicks=INT32_MAX);
+    void startSimulation(int amountOfTicks = fgkMaxTicks);
 
 
 
@@ -36,6 +36,8 @@ private:
      * This function prints the current state of the network
      */
     void printNetwork();
+
+    static const int fgkMaxTicks;
 
 };
 

@@ -7,7 +7,10 @@
 // @description : 
 //============================================================================
 #include <stdint.h>
+#include <sstream>
 #include "Network.h"
+
+static const int fgkMaxTicks = 100000000;
 
 Network::Network(const std::vector<Road*>& roads)
 {
@@ -46,8 +49,11 @@ void Network::startSimulation(int amountOfTicks)
 
 void Network::printNetwork()
 {
+    std::ostringstream filename;
+    filename << "./outputfiles/output-" << fTicksPassed << ".txt";
+
     std::ofstream outputFile;
-    outputFile.open("./outputfiles/output.txt");
+    outputFile.open(filename.str().c_str());
     outputFile << "\nState of the network after " << fTicksPassed << " ticks have passed:\n\n";
     for(uint32_t i = 0; i < fRoads.size(); i++)
     {
