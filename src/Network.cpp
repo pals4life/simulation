@@ -7,6 +7,9 @@
 // @description : 
 //============================================================================
 #include "Network.h"
+Network::Network() {
+    fTimePassed=0;
+}
 
 const std::vector<Road *> &Network::getFRoads() const {
     return fRoads;

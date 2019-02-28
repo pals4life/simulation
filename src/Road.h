@@ -20,6 +20,8 @@ private:
     std::deque<IVehicle*> fVehicles;
 
 public:
+    Road(Road* next) {fNextRoad = next;};
+
     Road *getFNextRoad() const;
 
     void setFNextRoad(Road *fNextRoad);

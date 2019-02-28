@@ -19,6 +19,7 @@ private:
     std::vector<Road*> fRoads;
 
 public:
+    Network();
     int getFTimePassed() const;
 
     void setFTimePassed(int fTimePassed);
