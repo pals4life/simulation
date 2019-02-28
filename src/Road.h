@@ -18,6 +18,7 @@ class Road
 
 public:
     Road(const std::string& name, Road* next, double length, double speedLimit);
+    ~Road();
 
     /*
      * This function updates the road; it calls the move function on all IVehicles currently on the road

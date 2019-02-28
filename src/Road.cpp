@@ -19,6 +19,11 @@ Road::Road(const std::string& name, Road* next, double length, double speedLimit
     fSpeedLimit = speedLimit;
 }
 
+Road::~Road()
+{
+    for(uint32_t i = 0; i < fVehicles.size(); i++) delete fVehicles[i];
+}
+
 void Road::update()
 {
     for(uint32_t i = 0; i < fVehicles.size() - 1; i++)
