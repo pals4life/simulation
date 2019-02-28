@@ -8,7 +8,7 @@
 //============================================================================
 
 
-#include "parsers/NetworkParser.h"
+#include "Parsers/NetworkParser.h"
 #include <fstream>
 #include <iostream>
 
