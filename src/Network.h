@@ -10,6 +10,7 @@
 #define SIMULATION_NETWORK_H
 
 #include <vector>
+#include <fstream>
 #include "Road.h"
 
 class Network {
@@ -19,14 +20,23 @@ public:
 
     int getTicksPassed() const;
     /*
-     * This function updates all roads and will exit when there are no IVehicles on the roads
+     * This function updates all roads and will exit when there are no IVehicles on the roads or the amout of ticks has run out
+     * @ param ticks: the amount of ticks the simulation has to carry out
      */
-    void startSimulation();
+    void startSimulation(int amountOfTicks=INT32_MAX);
+
+
 
 private:
     int fTicksPassed; // amount of ticks passed
 
     std::vector<Road*> fRoads;
+
+    /*
+     * This function prints the current state of the network
+     */
+    void printNetwork();
+
 };
 
 

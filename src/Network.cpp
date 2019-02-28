@@ -21,11 +21,12 @@ int Network::getTicksPassed() const
     return fTicksPassed;
 }
 
-void Network::startSimulation()
+void Network::startSimulation(int amountOfTicks)
 {
 
-    while(true)
+    while(fTicksPassed < amountOfTicks)
     {
+        printNetwork();
         fTicksPassed++;
         bool simulationDone = true;
         for(uint32_t i = 0; i < fRoads.size(); i++)
@@ -40,5 +41,19 @@ void Network::startSimulation()
         {
             break;
         }
+    }
+}
+
+void Network::printNetwork() {
+    std::ofstream outputFile;
+    outputFile.open("./outputfiles/output.txt");
+    outputFile << "\nState of the network after " << fTicksPassed << " ticks have passed:\n\n";
+    for(uint32_t i = 0; i < fRoads.size(); i++)
+    {
+        outputFile << fRoads[i];
+    }
+    for(uint32_t i = 0; i < fRoads.size(); i++)
+    {
+        outputFile << fRoads[i]->printVehicles;
     }
 }
