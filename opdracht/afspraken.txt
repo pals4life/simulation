@@ -1,0 +1,7 @@
+in een classe, altijd eerst public -> protected -> private
+
+alle conventieletters uit getters en setters verwijderen
+
+nadenken over welke getters en setters nuttig zijn, niet toevoegen zoniet.
+
+uint32_t gebruiken in een for-loop uit <stdint>
