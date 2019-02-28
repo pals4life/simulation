@@ -1,11 +1,11 @@
 #include "IVehicle.h"
 
-IVehicle::IVehicle(const std::string& license, double position)
+IVehicle::IVehicle(const std::string& license, double position, double velocity)
 {
     kfLicensePlate = license;
 
     fPosition = position;
-    fVelocity = 0;
+    fVelocity = velocity;
     fAcceleration = 0;
 }
 

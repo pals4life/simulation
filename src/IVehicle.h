@@ -17,7 +17,7 @@ enum EVehicleType {kCar};
 class IVehicle
 {
 public:
-    IVehicle(const std::string& license, double pos);
+    IVehicle(const std::string& license, double pos, double velocity);
 
     virtual void move(const IVehicle* next) = 0;
 

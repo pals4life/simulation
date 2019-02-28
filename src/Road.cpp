@@ -2,45 +2,72 @@
 // @name        : Road.cpp
 // @author      : Mano Marichal
 // @date        : 27.02.19
-// @version     : 
+// @version     :
 // @copyright   : Project Software Engineering - BA1 Informatica - Mano Marichal - University of Antwerp
-// @description : 
+// @description :
 //============================================================================
 #include "Road.h"
 
-Road *Road::getFNextRoad() const {
+
+Road::Road(const std::string& name, Road* next, double length, double speedLimit)
+{
+    fName = name;
+    fNextRoad = next;
+
+    fRoadLength = length;
+    fSpeedLimit = speedLimit;
+}
+
+void Road::update()
+{
+    for(int i = 0; i < fVehicles.size() - 1; i++)
+    {
+        fVehicles[i]->move(fVehicles[i+1]);
+    }
+    if(fNextRoad == NULL) fVehicles.front()->move(NULL);
+    else fVehicles.front()->move(fNextRoad->getBackVehicle());
+}
+
+void Road::enqueue(IVehicle* const vehicle)
+{
+    fVehicles.push_back(vehicle);
+}
+
+void Road::dequeue()
+{
+    fVehicles.pop_front();
+}
+
+bool Road::isEmpty()
+{
+    return fVehicles.empty();
+}
+
+IVehicle* const Road::getBackVehicle() const
+{
+    return fVehicles.back();
+}
+
+
+
+Road* const Road::getNextRoad() const
+{
     return fNextRoad;
 }
 
-void Road::setFNextRoad(Road *fNextRoad) {
-    Road::fNextRoad = fNextRoad;
+double Road::getRoadLength() const
+{
+    return fRoadLength;
 }
 
-const std::deque<IVehicle *> &Road::getFVehicles() const {
-    return fVehicles;
+double Road::getSpeedLimit() const
+{
+    return fSpeedLimit;
 }
 
-void Road::setFVehicles(const std::deque<IVehicle *> &fVehicles) {
-    Road::fVehicles = fVehicles;
-}
-
-
-void Road::update() {
-    /*
-     * This function updates the road; it calls the move function on all IVehicles currently on the road
-     */
-    for(int i=0; i < fVehicles.size();i++) {
-        if (i != fVehicles.size() -1) fVehicles[i]->move(fVehicles[i+1]);
-        else fVehicles[i]->move(fNextRoad->getFVehicles().back());
-    }
-}
-
-bool Road::isEmpty() {
-    /*
-     * This function checks if the road is empty
-     * @return value bool
-     */
-    return fVehicles.empty();
+const std::string &Road::getName() const
+{
+    return fName;
 }
 
 
