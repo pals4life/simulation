@@ -20,9 +20,11 @@ public:
 
 	virtual ~VehicleParser();
 
-	IVehicle *parseVehicle(TiXmlElement *element, std::string &road);
+	IVehicle *parseVehicle(TiXmlElement *element);
 
 	IVehicle *getVehicle() const;
+
+	std::string parseRoad(TiXmlElement *element);
 
 private:
 	IVehicle *fVehicle;

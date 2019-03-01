@@ -120,6 +120,10 @@ std::ostream& operator<<(std::ostream& stream, const Road& road)
     return stream;
 }
 
+void Road::setNextRoad(Road *fNextRoad) {
+    Road::fNextRoad = fNextRoad;
+}
+
 
 
 

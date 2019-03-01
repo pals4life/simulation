@@ -19,11 +19,10 @@ VehicleParser::~VehicleParser() {
 
 }
 
-IVehicle *VehicleParser::parseVehicle(TiXmlElement *const element, std::string &road) {
+IVehicle *VehicleParser::parseVehicle(TiXmlElement *const element) {
 	const std::string kType = readElement(element, "type");
 	if (kType == "AUTO") {
 		const std::string kLicensePlate = readElement(element, "nummerplaat");
-		road = readElement(element, "baan");
 		const double kPosition = std::atof(readElement(element, "positie").c_str());
 		const double kSpeed = std::atof(readElement(element, "snelheid").c_str());
 		fVehicle = new Car(kLicensePlate, kPosition, kSpeed);
@@ -35,4 +34,8 @@ IVehicle *VehicleParser::parseVehicle(TiXmlElement *const element, std::string &
 
 IVehicle *VehicleParser::getVehicle() const {
 	return fVehicle;
+}
+
+std::string VehicleParser::parseRoad(TiXmlElement *const element) {
+	return readElement(element, "baan");
 }

@@ -34,6 +34,11 @@ const std::string VAbstractParser::readElement(TiXmlElement *const element, cons
 		TiXmlNode *node = elem->FirstChild();
 		TiXmlText *text = node->ToText();
 		return text->Value();
-	}
+	} //TODO error handling
 	return "";
+}
+
+void VAbstractParser::clear() {
+	fDoc.Clear();
+	fRoot = NULL;
 }

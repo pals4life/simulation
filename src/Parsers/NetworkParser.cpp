@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <map>
 #include <iostream>
+#include <stdint.h>
 
 Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
 	RoadParser rp;
@@ -22,15 +23,24 @@ Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
 	for (TiXmlElement *elem = element->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement()) {
 		const std::string kType = elem->Value();
 		if (kType == "BAAN") {
-			roads.push_back(rp.parseRoad(elem, roads));
-		} else if (kType == "VOERTUIG") {
-			std::string roadName;
-			IVehicle *v = vp.parseVehicle(elem, roadName);
-			tempRoads[roadName].push_back(v);
-		} else {
-			std::cerr << "Failed to load file: Unknown element." << std::endl; //TODO exception handling
+			roads.push_back(rp.parseRoad(elem));
 		}
 	}
+
+	uint32_t roadNr = 0;
+	for (TiXmlElement *elem = element->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement()) {
+		const std::string kType = elem->Value();
+		if (kType == "BAAN") {
+			const std::string kConnection = rp.parseConnection(elem);
+			if (!kConnection.empty()) {
+				roads[roadNr++]->setNextRoad(*std::find(roads.begin(), roads.end(), kConnection));
+			}
+		} else if (kType == "VOERTUIG") {
+			tempRoads[vp.parseRoad(elem)].push_back(vp.parseVehicle(elem));
+		}
+		// std::cerr << "Failed to load file: Unknown element." << std::endl; TODO exception handling
+	}
+
 	for (std::map<std::string, std::vector<IVehicle *> >::iterator it1 = tempRoads.begin();
 		 it1 != tempRoads.end(); it1++) {
 		std::sort(it1->second.begin(), it1->second.end(), compareVehiclePointers);
@@ -57,12 +67,4 @@ NetworkParser::~NetworkParser() {
 
 bool NetworkParser::compareVehiclePointers(const IVehicle *a, const IVehicle *b) {
 	return *a < *b;
-}
-
-std::istream &operator>>(std::istream &input, NetworkParser &networkParser) {
-	std::string in;
-	input >> in;
-	networkParser.loadFile(in);
-	networkParser.parseNetwork(networkParser.getRoot());
-	return input;
 }

@@ -13,56 +13,61 @@
 #include <iterator>
 #include "IVehicle.h"
 
-class Road
-{
+class Road {
 
 public:
-    Road(const std::string& name, Road* next, double length, double speedLimit);
-    ~Road();
+	Road(const std::string &name, Road *next, double length, double speedLimit);
 
-    /*
-     * This function updates the road; it calls the move function on all IVehicles currently on the road
-     */
-    void update();
+	~Road();
 
-    /*
-     * enqueues a vehicle to the back of the queue
-     */
-    void enqueue(IVehicle* const vehicle);
+	/*
+	 * This function updates the road; it calls the move function on all IVehicles currently on the road
+	 */
+	void update();
 
-    /*
-     * dequeues the front vehicle
-     */
-    void dequeue();
+	/*
+	 * enqueues a vehicle to the back of the queue
+	 */
+	void enqueue(IVehicle *const vehicle);
 
-    /*
-     * This function checks if the road is empty
-     * @return value bool
-     */
-    bool isEmpty();
+	/*
+	 * dequeues the front vehicle
+	 */
+	void dequeue();
 
-    IVehicle* const getBackVehicle() const;
+	/*
+	 * This function checks if the road is empty
+	 * @return value bool
+	 */
+	bool isEmpty();
 
-    Road* const getNextRoad() const;
+	IVehicle *const getBackVehicle() const;
 
-    double getRoadLength() const;
-    double getSpeedLimit() const;
-    const std::string& getName() const;
+	Road *const getNextRoad() const;
 
-    void printVehicles(std::ostream& stream) const;
+	void setNextRoad(Road *fNextRoad);
 
-    friend bool operator==(Road* const a, const std::string& b);
-    friend bool operator==(const std::string& a, Road* const b);
+	double getRoadLength() const;
 
-    friend std::ostream& operator<<(std::ostream& stream, const Road& road);
+	double getSpeedLimit() const;
+
+	const std::string &getName() const;
+
+	void printVehicles(std::ostream &stream) const;
+
+	friend bool operator==(Road *const a, const std::string &b);
+
+	friend bool operator==(const std::string &a, Road *const b);
+
+	friend std::ostream &operator<<(std::ostream &stream, const Road &road);
 
 private:
-    double fRoadLength;
-    double fSpeedLimit;
-    std::string fName;
+	double fRoadLength;
+	double fSpeedLimit;
+	std::string fName;
 
-    Road* fNextRoad;
-    std::deque<IVehicle*> fVehicles;
+	Road *fNextRoad;
+	std::deque<IVehicle *> fVehicles;
 
 };
 

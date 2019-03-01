@@ -21,9 +21,11 @@ public:
 
 	virtual ~RoadParser();
 
-	Road *parseRoad(TiXmlElement *element, const std::vector<Road *> &kRoads);
+	Road *parseRoad(TiXmlElement *element);
 
 	Road *getRoad() const;
+
+	std::string parseConnection(TiXmlElement *element);
 
 private:
 	Road *fRoad;

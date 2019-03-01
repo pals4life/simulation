@@ -19,6 +19,8 @@ public:
 
 	TiXmlElement *getRoot() const;
 
+	void clear();
+
 protected:
 	const std::string readElement(TiXmlElement *element, const std::string &kTag);
 
