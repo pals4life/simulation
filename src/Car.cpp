@@ -17,19 +17,20 @@ void Car::move(const IVehicle* const next, double speedLimit)
 
     if(next == NULL)
     {
-        fAcceleration = std::min(fgkMaxAcceleration, speedLimit - fVelocity);
+        fAcceleration = fgkMaxAcceleration;                                                 // if nobody is ahead, go max acceleration
     }
     else
     {
-        double ideal  = 0.75 * fVelocity + next->getVehicleLength() + 2;
-        double actual = next->getPosition() - next->getVehicleLength() - fPosition;
-
-        double minAcceleration = std::max(fVelocity, fgkMinAcceleration);               // make sure it doesn't slow down below 0
-        double maxAcceleration = std::min(speedLimit - fVelocity, fgkMaxAcceleration);  // make sure it doesn't accelerate higher than speed limit
-
-        fAcceleration = 0.5 * (actual - ideal);
-        fAcceleration = std::min(std::max(fAcceleration, minAcceleration), maxAcceleration); // clamp the value
+        double ideal  = 0.75 * fVelocity + next->getVehicleLength() + 2;                    // ideal following distance = 3/4 speed + 2 meters extra
+        double actual = next->getPosition() - next->getVehicleLength() - fPosition;         // distance between 2 vehicles
+        fAcceleration = 0.5 * (actual - ideal);                                             // take the average
     }
+
+    if(fVelocity > speedLimit) fAcceleration = fVelocity - speedLimit;                      // if above speed limit, slow down (occurs when changing roads)
+    double minAcceleration = std::max(fVelocity, fgkMinAcceleration);                       // determine min acceleration, to prevent negative speed
+    double maxAcceleration = std::min(speedLimit - fVelocity, fgkMaxAcceleration);          // determine max acceleration, to prevent from going too fast
+
+    fAcceleration = std::min(std::max(fAcceleration, minAcceleration), maxAcceleration);    // clamp the acceleration
 }
 
 double Car::getVehicleLength() const

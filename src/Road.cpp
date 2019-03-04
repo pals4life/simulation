@@ -26,32 +26,25 @@ Road::~Road()
 
 void Road::update()
 {
+    if(fVehicles.empty()) return;                       // if there are no vehicles we do not need to update.
+
     for(uint32_t i = 1; i < fVehicles.size(); i++)
     {
         fVehicles[i]->move(fVehicles[i-1], fSpeedLimit);
     }
-    if(fVehicles.empty()) ;
-    else if(fNextRoad == NULL) fVehicles.front()->move(NULL, fSpeedLimit);
+
+    if(fNextRoad == NULL) fVehicles.front()->move(NULL, fSpeedLimit);
     else fVehicles.front()->move(fNextRoad->getBackVehicle(), fSpeedLimit);
 
-    for(uint32_t i = 0; i < fVehicles.size(); i++)
+    while(!fVehicles.empty())                           // as long there are vehicles we can delete
     {
-        if(fVehicles[i]->getPosition() > fRoadLength)
+        if(fVehicles[0]->getPosition() > fRoadLength)   // check if they have left the road
         {
-            if(fNextRoad == NULL)
-            {
-                delete fVehicles[i]; // free memory
-                fVehicles.pop_front();
-                i--;
-            }
-            else
-            {
-                fNextRoad->enqueue(fVehicles[i]);
-                fVehicles.pop_front();
-                i--;
-            }
+            if(fNextRoad == NULL) delete fVehicles[0];  // free memory if they leave the simulation
+            else fNextRoad->enqueue(fVehicles[0]);      // enqueue in next road if there is one
+            fVehicles.pop_front();                      // remove from the queue
         }
-        else break;
+        else break;                                     // break, because if the first car is still on the road everyone behind him is also still on the road
     }
 }
 
