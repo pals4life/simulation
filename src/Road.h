@@ -66,8 +66,8 @@ private:
 	double fSpeedLimit;
 	std::string fName;
 
-	Road *fNextRoad;
-	std::deque<IVehicle *> fVehicles;
+	Road* fNextRoad;
+	std::deque<IVehicle*> fVehicles;
 
 };
 

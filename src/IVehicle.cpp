@@ -47,7 +47,7 @@ double& IVehicle::getAcceleration()
 
 bool operator<(const IVehicle& a, const IVehicle& b)
 {
-    return a.fPosition < b.fPosition;
+    return a.fPosition > b.fPosition;
 }
 
 void IVehicle::printVehicle(std::ostream& stream, const std::string& roadName) const

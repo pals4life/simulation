@@ -26,14 +26,15 @@ Road::~Road()
 
 void Road::update()
 {
-    for(uint32_t i = 0; i < fVehicles.size() - 1; i++)
+    for(uint32_t i = 1; i < fVehicles.size(); i++)
     {
-        fVehicles[i]->move(fVehicles[i+1], fSpeedLimit);
+        fVehicles[i]->move(fVehicles[i-1], fSpeedLimit);
     }
-    if(fNextRoad == NULL) fVehicles.front()->move(NULL, fSpeedLimit);
+    if(fVehicles.empty()) ;
+    else if(fNextRoad == NULL) fVehicles.front()->move(NULL, fSpeedLimit);
     else fVehicles.front()->move(fNextRoad->getBackVehicle(), fSpeedLimit);
 
-    for(uint32_t i = fVehicles.size(); i >= 0; i--)
+    for(uint32_t i = 0; i < fVehicles.size(); i++)
     {
         if(fVehicles[i]->getPosition() > fRoadLength)
         {
@@ -41,11 +42,13 @@ void Road::update()
             {
                 delete fVehicles[i]; // free memory
                 fVehicles.pop_front();
+                i--;
             }
             else
             {
                 fNextRoad->enqueue(fVehicles[i]);
                 fVehicles.pop_front();
+                i--;
             }
         }
         else break;
@@ -69,6 +72,7 @@ bool Road::isEmpty()
 
 IVehicle* const Road::getBackVehicle() const
 {
+    if(fVehicles.empty()) return NULL;
     return fVehicles.back();
 }
 
