@@ -14,7 +14,8 @@
 #include "Road.h"
 #include <algorithm>
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv)
+{
 	NetworkParser parser;
 	parser.loadFile("inputfiles/spec1.0.xml");
 	parser.parseNetwork(parser.getRoot());

@@ -10,7 +10,7 @@
 #include <sstream>
 #include "Network.h"
 
-static const int fgkMaxTicks = 100000;
+const int Network::fgkMaxTicks = 100000;
 
 Network::Network(const std::vector<Road*>& roads)
 {
