@@ -37,8 +37,7 @@ void Network::startSimulation(int amountOfTicks)
 
         for(uint32_t i = 0; i < fRoads.size(); i++)
         {
-            fRoads[i]->update();
-            if (!fRoads[i]->isEmpty()) simulationDone = false;
+            if(fRoads[i]->update()) simulationDone = false;
         }
         if (simulationDone)
         {

@@ -23,7 +23,7 @@ public:
 	/*
 	 * This function updates the road; it calls the move function on all IVehicles currently on the road
 	 */
-	void update();
+	bool update();
 
 	/*
 	 * enqueues a vehicle to the back of the queue

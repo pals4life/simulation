@@ -24,9 +24,9 @@ Road::~Road()
     for(uint32_t i = 0; i < fVehicles.size(); i++) delete fVehicles[i];
 }
 
-void Road::update()
+bool Road::update()
 {
-    if(fVehicles.empty()) return;                       // if there are no vehicles we do not need to update.
+    if(fVehicles.empty()) return false;                 // if there are no vehicles we do not need to update.
 
     for(uint32_t i = 1; i < fVehicles.size(); i++)
     {
@@ -46,6 +46,7 @@ void Road::update()
         }
         else break;                                     // break, because if the first car is still on the road everyone behind him is also still on the road
     }
+    return true;
 }
 
 void Road::enqueue(IVehicle* const vehicle)
