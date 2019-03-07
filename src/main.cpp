@@ -8,11 +8,11 @@
 //============================================================================
 
 
-#include "Parsers/NetworkParser.h"
+#include "parsers/NetworkParser.h"
 #include <iostream>
 
 #include <gtest/gtest.h>
-#include "Tests/DesignByContract.h"
+#include "tests/DesignByContract.h"
 
 int main(int argc, char** argv)
 {
