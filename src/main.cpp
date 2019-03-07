@@ -12,11 +12,11 @@
 #include <iostream>
 
 #include "gtest/gtest.h"
+
 #include "tests/DesignByContract.h"
 
-int main(int argc, char** argv)
-{
-    REQUIRE(argc == 2, "argument count must be 1");
+int main(int argc, char **argv) {
+	REQUIRE(argc == 2, "argument count must be 1");
 
 	NetworkParser parser;
 	parser.loadFile(argv[1]);
