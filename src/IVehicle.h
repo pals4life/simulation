@@ -18,8 +18,8 @@ class IVehicle
 {
 public:
     /**
-     * REQUIRE(velocity > 0, "Velocity must be greater than 0");
-     * REQUIRE(position > 0, "Position must be greater than 0");
+     * REQUIRE(velocity >= 0, "Velocity must be greater than 0");
+     * REQUIRE(position >= 0, "Position must be greater than 0");
      * REQUIRE(!license.empty(), "License plate must be valid");
      *
      * ENSURE(this->properlyInitialized(), "Vehicle constructor must end in properlyInitialized state");

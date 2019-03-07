@@ -4,8 +4,8 @@
 
 IVehicle::IVehicle(const std::string& license, double position, double velocity)
 {
-    REQUIRE(velocity > 0, "Velocity must be greater than 0");
-    REQUIRE(position > 0, "Position must be greater than 0");
+    REQUIRE(velocity >= 0, "Velocity must be greater than 0");
+    REQUIRE(position >= 0, "Position must be greater than 0");
     REQUIRE(!license.empty(), "License plate must be valid");
 
     _initCheck = this;
