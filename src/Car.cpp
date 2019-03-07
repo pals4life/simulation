@@ -9,7 +9,7 @@ const double Car::fgkMaxSpeed = 150.0;
 
 const double Car::fgkVehicleLength = 3;
 
-Car::Car(const std::string& license, double pos, double velocity) : IVehicle(license, pos, velocity) {}
+Car::Car(const std::string& license, double position, double velocity) : IVehicle(license, position, velocity){}
 
 void Car::move(const IVehicle* const next, double speedLimit)
 {
@@ -40,31 +40,37 @@ void Car::move(const IVehicle* const next, double speedLimit)
 
 double Car::getVehicleLength() const
 {
+    REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getVehicleLength");
     return fgkVehicleLength;
 }
 
 EVehicleType Car::getType() const
 {
+    REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getType");
     return kCar;
 }
 
 double Car::getMaxAcceleration() const
 {
+    REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getMaxAcceleration");
     return fgkMaxAcceleration;
 }
 
 double Car::getMinAcceleration() const
 {
+    REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getMinAcceleration");
     return fgkMinAcceleration;
 }
 
 double Car::getMinVelocity() const
 {
+    REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getMinVelocity");
     return fgkMinSpeed;
 }
 
 double Car::getMaxVelocity() const
 {
+    REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getMaxVelocity");
     return fgkMaxSpeed;
 }
 

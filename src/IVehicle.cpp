@@ -4,12 +4,18 @@
 
 IVehicle::IVehicle(const std::string& license, double position, double velocity)
 {
+    REQUIRE(velocity > 0, "Velocity must be greater than 0");
+    REQUIRE(position > 0, "Position must be greater than 0");
+    REQUIRE(!license.empty(), "License plate must be valid");
+
     _initCheck = this;
     fLicensePlate = license;
 
     fPosition = position;
     fVelocity = velocity;
     fAcceleration = 0;
+
+    ENSURE(this->properlyInitialized(), "Vehicle constructor must end in properlyInitialized state");
 }
 
 bool IVehicle::properlyInitialized() const
@@ -43,26 +49,31 @@ double IVehicle::getAcceleration() const
 
 double& IVehicle::getPosition()
 {
+    REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getPosition");
     return fPosition;
 }
 
 double& IVehicle::getVelocity()
 {
+    REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getVelocity");
     return fVelocity;
 }
 
 double& IVehicle::getAcceleration()
 {
+    REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getAcceleration");
     return fAcceleration;
 }
 
 bool operator<(const IVehicle& a, const IVehicle& b)
 {
+    REQUIRE(a.properlyInitialized() && b.properlyInitialized(), "one of the Vehicles was not initialized when calling operator<");
     return a.fPosition > b.fPosition;
 }
 
 void IVehicle::printVehicle(std::ostream& stream, const std::string& roadName) const
 {
+    REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling printVehicle");
     const std::string toString[1] = {"auto"};
     stream << "Voertuig: " + toString[getType()] +'('+ fLicensePlate + ")\n";
     stream << "  -> Baan    : " << roadName  << '\n';

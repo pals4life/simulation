@@ -16,7 +16,7 @@
 
 int main(int argc, char** argv)
 {
-    REQUIRE(argc == 1, "argument count must be 1");
+    REQUIRE(argc == 1, "Argument count must be 1");
 
 	NetworkParser parser;
 	parser.loadFile("inputfiles/spec1.0.xml");

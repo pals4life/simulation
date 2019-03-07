@@ -17,6 +17,13 @@ enum EVehicleType {kCar};
 class IVehicle
 {
 public:
+    /**
+     * REQUIRE(velocity > 0, "Velocity must be greater than 0");
+     * REQUIRE(position > 0, "Position must be greater than 0");
+     * REQUIRE(!license.empty(), "License plate must be valid");
+     *
+     * ENSURE(this->properlyInitialized(), "Vehicle constructor must end in properlyInitialized state");
+     */
     IVehicle(const std::string& license, double pos, double velocity);
     virtual ~IVehicle(){}
 
@@ -33,19 +40,50 @@ public:
 
     bool properlyInitialized() const;
 
+    /**
+     * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getLicensePlate");
+     */
     std::string getLicensePlate();
 
+    /**
+     * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getPosition");
+     */
     double getPosition() const;
+
+    /**
+     * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getVelocity");
+     */
     double getVelocity() const;
+
+    /**
+     * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getAcceleration");
+     */
     double getAcceleration() const;
 
+    /**
+     * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getPosition");
+     */
     double& getPosition();
+
+    /**
+     * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getVelocity");
+     */
     double& getVelocity();
+
+    /**
+     * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getAcceleration");
+     */
     double& getAcceleration();
 
-    void printVehicle(std::ostream& stream, const std::string& roadName) const;
-
+    /**
+     * REQUIRE(a.properlyInitialized() && b.properlyInitialized(), "one of the Vehicles was not initialized when calling operator<");
+     */
     friend bool operator<(const IVehicle& a, const IVehicle& b);
+
+    /**
+     * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling printVehicle");
+     */
+    void printVehicle(std::ostream& stream, const std::string& roadName) const;
 
 
 protected:
