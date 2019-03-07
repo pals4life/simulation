@@ -11,15 +11,15 @@
 #include "parsers/NetworkParser.h"
 #include <iostream>
 
-#include <gtest/gtest.h>
+//#include "tests/gtest/include/gtest/gtest.h"
 #include "tests/DesignByContract.h"
 
 int main(int argc, char** argv)
 {
-    REQUIRE(argc == 1, "argument count must be 1");
+    REQUIRE(argc == 2, "argument count must be 1");
 
 	NetworkParser parser;
-	parser.loadFile("inputfiles/spec1.0.xml");
+	parser.loadFile(argv[1]);
 	parser.parseNetwork(parser.getRoot());
 	Network *network = parser.getNetwork();
 	parser.clear();
