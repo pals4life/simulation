@@ -1,4 +1,5 @@
 #include "Car.h"
+#include "tests/DesignByContract.h"
 
 const double Car::fgkMaxAcceleration = 8.0;
 const double Car::fgkMinAcceleration = -2.0;
@@ -12,6 +13,8 @@ Car::Car(const std::string& license, double pos, double velocity) : IVehicle(lic
 
 void Car::move(const IVehicle* const next, double speedLimit)
 {
+    REQUIRE(speedLimit > 0, "Speedlimit must be greater than 0");
+
     fPosition += fVelocity;
     fVelocity += fAcceleration;
 
@@ -31,6 +34,8 @@ void Car::move(const IVehicle* const next, double speedLimit)
     double maxAcceleration = std::min(speedLimit - fVelocity, fgkMaxAcceleration);          // determine max acceleration, to prevent from going too fast
 
     fAcceleration = std::min(std::max(fAcceleration, minAcceleration), maxAcceleration);    // clamp the acceleration
+
+    ENSURE((fAcceleration >= fgkMinAcceleration) && (fAcceleration <= fgkMaxAcceleration), "Acceleration is too high / low");
 }
 
 double Car::getVehicleLength() const

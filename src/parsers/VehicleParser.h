@@ -10,7 +10,7 @@
 #ifndef SIMULATION_VEHICLEPARSER_H
 #define SIMULATION_VEHICLEPARSER_H
 
-#include "Tinyxml/tinyxml.h"
+#include "tinyxml/tinyxml.h"
 #include "../IVehicle.h"
 #include "VAbstractParser.h"
 

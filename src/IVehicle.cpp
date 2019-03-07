@@ -1,8 +1,10 @@
 #include "IVehicle.h"
 #include <iostream>
+#include "tests/DesignByContract.h"
 
 IVehicle::IVehicle(const std::string& license, double position, double velocity)
 {
+    _initCheck = this;
     fLicensePlate = license;
 
     fPosition = position;
@@ -10,23 +12,32 @@ IVehicle::IVehicle(const std::string& license, double position, double velocity)
     fAcceleration = 0;
 }
 
+bool IVehicle::properlyInitialized() const
+{
+    return _initCheck == this;
+}
+
 std::string IVehicle::getLicensePlate()
 {
+    REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getLicensePlate");
     return fLicensePlate;
 }
 
 double IVehicle::getPosition() const
 {
+    REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getPosition");
     return fPosition;
 }
 
 double IVehicle::getVelocity() const
 {
+    REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getVelocity");
     return fVelocity;
 }
 
 double IVehicle::getAcceleration() const
 {
+    REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getLicensePlate");
     return fAcceleration;
 }
 

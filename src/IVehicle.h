@@ -31,6 +31,8 @@ public:
     virtual double getMaxAcceleration() const = 0;
     virtual double getMinAcceleration() const = 0;
 
+    bool properlyInitialized() const;
+
     std::string getLicensePlate();
 
     double getPosition() const;
@@ -47,6 +49,8 @@ public:
 
 
 protected:
+    IVehicle* _initCheck;
+
     std::string fLicensePlate;
 
     double fPosition;

@@ -8,14 +8,16 @@
 //============================================================================
 
 
-#include "Parsers/NetworkParser.h"
-#include <fstream>
+#include "parsers/NetworkParser.h"
 #include <iostream>
-#include "Road.h"
-#include <algorithm>
+
+#include <gtest/gtest.h>
+#include "tests/DesignByContract.h"
 
 int main(int argc, char** argv)
 {
+    REQUIRE(argc == 1, "argument count must be 1");
+
 	NetworkParser parser;
 	parser.loadFile("inputfiles/spec1.0.xml");
 	parser.parseNetwork(parser.getRoot());
