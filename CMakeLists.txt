@@ -5,6 +5,12 @@ set(CMAKE_CXX_STANDARD 98)
 set(CMAKE_CXX_FLAGS "-Wall -Werror")
 set(CMAKE_EXE_LINKER_FLAGS -pthread)
 
+# Set include dir
+include_directories(${simulation_SOURCE_DIR}/gtest/include)
+
+# Set Library dir
+link_directories(${simulation_SOURCE_DIR}/gtest/lib)
+
 file(GLOB_RECURSE HDRS ${simulation_SOURCE_DIR}/src/*.h)
 file(GLOB_RECURSE SRCS ${simulation_SOURCE_DIR}/src/*.cpp)
 
@@ -19,3 +25,9 @@ add_executable(simulation ${RELEASE_SOURCE_FILES})
 
 # Create DEBUG target
 add_executable(simulation_debug ${DEBUG_SOURCE_FILES})
+
+# Link library
+target_link_libraries(simulation_debug gtest)
+
+# Link library
+target_link_libraries(simulation gtest)

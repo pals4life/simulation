@@ -11,7 +11,7 @@
 #include "parsers/NetworkParser.h"
 #include <iostream>
 
-#include "tests/gtest/include/gtest/gtest.h"
+#include "gtest/gtest.h"
 #include "tests/DesignByContract.h"
 
 int main(int argc, char** argv)
