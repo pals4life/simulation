@@ -9,36 +9,52 @@
 
 #include <iostream>
 #include "VAbstractParser.h"
+#include "../tests/DesignByContract.h"
 
 bool VAbstractParser::loadFile(const std::string &kFilename) {
-	if (!fDoc.LoadFile(kFilename.c_str())) {
-		std::cerr << fDoc.ErrorDesc() << std::endl;
-		return false;
-	}
+	REQUIRE(this->properlyInitialized(), "Parser was not initialized when calling loadfile");
+	REQUIRE(!kFilename.empty(), "Failed to load file: no filename");
+	ENSURE(fDoc.LoadFile(kFilename.c_str()), fDoc.ErrorDesc());
 	fRoot = fDoc.FirstChildElement();
-	if (fRoot == NULL) {
-		std::cerr << "Failed to load file: No root element." << std::endl; //TODO exception handling
-		fDoc.Clear();
-		return false;
-	}
+	ENSURE(fRoot != NULL, "Failed to load file: no root element");
 	return true;
 }
 
 TiXmlElement *VAbstractParser::getRoot() const {
+	REQUIRE(this->properlyInitialized(), "Parser was not initialized when calling getRoot");
+	ENSURE(fRoot != NULL, "Failed to get root: no root element");
 	return fRoot;
 }
 
 const std::string VAbstractParser::readElement(TiXmlElement *const element, const std::string &kTag) {
+	REQUIRE(this->properlyInitialized(), "Parser was not initialized when calling readElement");
+	REQUIRE(element != NULL, "Failed to read element: no element");
+	REQUIRE(!kTag.empty(), "Failed to read element: no tag");
 	TiXmlElement *elem = element->FirstChildElement(kTag.c_str());
 	if (elem != NULL) {
 		TiXmlNode *node = elem->FirstChild();
 		TiXmlText *text = node->ToText();
 		return text->Value();
-	} //TODO error handling
+	}
 	return "";
 }
 
 void VAbstractParser::clear() {
+	REQUIRE(this->properlyInitialized(), "Parser was not initialized when calling clear");
 	fDoc.Clear();
 	fRoot = NULL;
+}
+
+bool VAbstractParser::properlyInitialized() const {
+	return _initCheck == this;
+}
+
+VAbstractParser::VAbstractParser() {
+	_initCheck = this;
+	ENSURE(this->properlyInitialized(), "Parser was not initialized when constructed");
+}
+
+VAbstractParser::~VAbstractParser() {
+	REQUIRE(this->properlyInitialized(), "Parser was not initialized when calling destructor");
+	clear();
 }

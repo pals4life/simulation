@@ -21,12 +21,19 @@ public:
 
 	void clear();
 
+	bool properlyInitialized() const;
+
+	VAbstractParser();
+
+	virtual ~VAbstractParser();
+
 protected:
 	const std::string readElement(TiXmlElement *element, const std::string &kTag);
 
 private:
 	TiXmlElement *fRoot;
 	TiXmlDocument fDoc;
+	VAbstractParser *_initCheck;
 };
 
 

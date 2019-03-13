@@ -10,6 +10,7 @@
 #ifndef SIMULATION_VEHICLEPARSER_H
 #define SIMULATION_VEHICLEPARSER_H
 
+#include <set>
 #include "tinyxml/tinyxml.h"
 #include "../IVehicle.h"
 #include "VAbstractParser.h"
@@ -17,8 +18,6 @@
 class VehicleParser : public VAbstractParser {
 public:
 	VehicleParser();
-
-	virtual ~VehicleParser();
 
 	IVehicle *parseVehicle(TiXmlElement *element);
 
@@ -29,6 +28,7 @@ public:
 private:
 	IVehicle *fVehicle;
 
+	std::set<std::string> fNames;
 };
 
 

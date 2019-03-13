@@ -11,6 +11,7 @@
 #define SIMULATION_ROADPARSER_H
 
 
+#include <set>
 #include "tinyxml/tinyxml.h"
 #include "../Road.h"
 #include "VAbstractParser.h"
@@ -18,8 +19,6 @@
 class RoadParser : public VAbstractParser {
 public:
 	RoadParser();
-
-	virtual ~RoadParser();
 
 	Road *parseRoad(TiXmlElement *element);
 
@@ -29,6 +28,9 @@ public:
 
 private:
 	Road *fRoad;
+
+	std::set<std::string> fNames;
+
 };
 
 

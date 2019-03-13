@@ -20,8 +20,6 @@ class NetworkParser : public VAbstractParser {
 public:
 	NetworkParser();
 
-	virtual ~NetworkParser();
-
 	Network *parseNetwork(TiXmlElement *element);
 
 	Network *getNetwork() const;
