@@ -16,13 +16,21 @@
 class Network {
 
 public:
+    /**
+     * ENSURE(this->properlyInitialized(), "Network constructor must end in properlyInitialized state");
+     */
     Network(const std::vector<Road*>& roads);
     ~Network();
 
+    bool properlyInitialized() const;
+
+    /**
+     * REQUIRE(this->properlyInitialized(), "Network was not initialized when calling getTicksPassed");
+     */
     int getTicksPassed() const;
-    /*
-     * This function updates all roads and will exit when there are no IVehicles on the roads or the amout of ticks has run out
-     * @ param ticks: the amount of ticks the simulation has to carry out
+    /**
+     * REQUIRE(this->properlyInitialized(), "Network was not initialized when calling startSimulation");
+     * REQUIRE(amountOfTicks >= 0, "Amount of ticks must be a positive integer");
      */
     void startSimulation(int amountOfTicks = fgkMaxTicks);
 
@@ -33,12 +41,14 @@ private:
 
     std::vector<Road*> fRoads;
 
-    /*
-     * This function prints the current state of the network
+    /**
+     * REQUIRE(this->properlyInitialized(), "Network was not initialized when calling printNetwork");
      */
     void printNetwork();
 
     static const int fgkMaxTicks;
+
+    Network* _initCheck;
 
 };
 
