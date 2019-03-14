@@ -14,6 +14,7 @@ Car::Car(const std::string& license, double position, double velocity) : IVehicl
 void Car::move(const IVehicle* const next, double speedLimit)
 {
     REQUIRE(speedLimit > 0, "Speedlimit must be greater than 0");
+    REQUIRE(this->properlyInitialized(), "moved vehicle must be properly initialized");
 
     fPosition += fVelocity;
     fVelocity += fAcceleration;
@@ -40,39 +41,41 @@ void Car::move(const IVehicle* const next, double speedLimit)
 
 double Car::getVehicleLength() const
 {
-    REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getVehicleLength");
+    REQUIRE(this->properlyInitialized(), "Car was not initialized when calling getVehicleLength");
     return fgkVehicleLength;
 }
 
 EVehicleType Car::getType() const
 {
-    REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getType");
+    REQUIRE(this->properlyInitialized(), "Car was not initialized when calling getType");
     return kCar;
+}
+
+double Car::getMaxVelocity() const
+{
+    REQUIRE(this->properlyInitialized(), "Car was not initialized when calling getMaxVelocity");
+    return fgkMaxSpeed;
+}
+
+double Car::getMinVelocity() const
+{
+    REQUIRE(this->properlyInitialized(), "Car was not initialized when calling getMinVelocity");
+    return fgkMinSpeed;
 }
 
 double Car::getMaxAcceleration() const
 {
-    REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getMaxAcceleration");
+    REQUIRE(this->properlyInitialized(), "Car was not initialized when calling getMaxAcceleration");
     return fgkMaxAcceleration;
 }
 
 double Car::getMinAcceleration() const
 {
-    REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getMinAcceleration");
+    REQUIRE(this->properlyInitialized(), "Car was not initialized when calling getMinAcceleration");
     return fgkMinAcceleration;
 }
 
-double Car::getMinVelocity() const
-{
-    REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getMinVelocity");
-    return fgkMinSpeed;
-}
 
-double Car::getMaxVelocity() const
-{
-    REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getMaxVelocity");
-    return fgkMaxSpeed;
-}
 
 
 
