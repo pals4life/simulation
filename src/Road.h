@@ -36,6 +36,8 @@ public:
 
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");
+	 *
+	 * ENSURE(fVehicles.front()->getPosition() <= fRoadLength, "Update failed to place vehicle on next road or delete it.");
 	 */
 	void enqueue(IVehicle *const vehicle);
 
