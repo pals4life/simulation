@@ -18,7 +18,7 @@
 
 Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
 	REQUIRE(this->properlyInitialized(), "NetworkParser was not initialized when calling parseNetwork");
-	REQUIRE(element != NULL, "Failed to parse network: no element");
+	REQUIRE(!element, "Failed to parse network: no element");
 	RoadParser rp;
 	VehicleParser vp;
 	std::vector<Road *> roads;
@@ -27,12 +27,12 @@ Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
 		const std::string kType = elem->Value();
 		if (kType == "BAAN") {
 			Road *road = rp.parseRoad(elem);
-			if (road != NULL) {
+			if (!road) {
 				roads.push_back(road);
 			}
 		}
 	}
-	//TODO consistent: 5m andere weg; comments; lege strings
+	//TODO consistent: comments
 	uint32_t roadNr = 0;
 	for (TiXmlElement *elem = element->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement()) {
 		const std::string kType = elem->Value();
@@ -43,19 +43,21 @@ Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
 				if (found == roads.end()) {
 					std::cerr << "Inconsistent traffic situation: road " << kConnection << " does not exist"
 							  << std::endl;
+					roads[roadNr++]->setNextRoad(NULL);
+
+				} else {
+					roads[roadNr++]->setNextRoad(*found);
 				}
-				roads[roadNr++]->setNextRoad(*found);
 			}
 		} else if (kType == "VOERTUIG") {
 			IVehicle *vehicle = vp.parseVehicle(elem);
-			if (vehicle != NULL) {
+			if (!vehicle) {
 				tempRoads[vp.parseRoad(elem)].push_back(vehicle);
 			}
 		} else {
 			std::cerr << "Failed to recognize element " + kType + ": skipping element" << std::endl;
 		}
 	}
-
 	for (std::map<std::string, std::vector<IVehicle *> >::iterator it1 = tempRoads.begin();
 		 it1 != tempRoads.end(); it1++) {
 		std::sort(it1->second.begin(), it1->second.end(), compareVehiclePointers);
@@ -68,11 +70,23 @@ Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
 							  << it1->first << std::endl;
 				}
 				std::vector<IVehicle *>::iterator it3 = it2;
-				if (++it3 < it1->second.end()) {
-					if ((*it2)->getPosition() - (*it3)->getPosition() < 5) {
-						std::cerr << "Inconsistent traffic situation: car " << (*it2)->getLicensePlate()
-								  << " is less than 5m away from car " << (*it3)->getLicensePlate() << " on road "
-								  << it1->first << std::endl;
+				if (++it3 < it1->second.end() && (*it2)->getPosition() - (*it3)->getPosition() < 5) {
+					std::cerr << "Inconsistent traffic situation: car " << (*it2)->getLicensePlate()
+							  << " is less than 5m away from car " << (*it3)->getLicensePlate() << " on road "
+							  << it1->first << std::endl;
+				}
+				const double kFromEnd = foundRoad->getRoadLength() - (*it2)->getPosition();
+				if (kFromEnd < 5) {
+					if (Road *nextRoad = foundRoad->getNextRoad()) {
+						IVehicle *nextVehicle = NULL;
+						if (!tempRoads[nextRoad->getName()].empty()) {
+							nextVehicle = tempRoads[nextRoad->getName()].front();
+							if (nextVehicle->getPosition() + kFromEnd < 5) {
+								std::cerr << "Inconsistent traffic situation: car " << (*it2)->getLicensePlate()
+										  << " is less than 5m away from car " << nextVehicle->getLicensePlate()
+										  << " on roads " << it1->first << " and " << nextRoad->getName() << std::endl;
+							}
+						}
 					}
 				}
 				foundRoad->enqueue(*it2);
@@ -82,13 +96,13 @@ Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
 		}
 	}
 	fNetwork = new Network(roads);
-	ENSURE(fNetwork != NULL, "Failed to parse network: no network");
+	ENSURE(!fNetwork, "Failed to parse network: no network");
 	return fNetwork;
 }
 
 Network *NetworkParser::getNetwork() const {
 	REQUIRE(this->properlyInitialized(), "NetworkParser was not initialized when calling getNetwork");
-	ENSURE(fNetwork != NULL, "Failed to parse network: no network");
+	ENSURE(!fNetwork, "Failed to parse network: no network");
 	return fNetwork;
 }
 
@@ -98,6 +112,6 @@ NetworkParser::NetworkParser() {
 }
 
 bool NetworkParser::compareVehiclePointers(const IVehicle *a, const IVehicle *b) {
-	REQUIRE(a != NULL && b != NULL, "Failed to compare vehicle pointers: no vehicles");
+	REQUIRE(!a && !b, "Failed to compare vehicle pointers: no vehicles");
 	return *a < *b;
 }

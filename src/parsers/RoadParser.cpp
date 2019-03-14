@@ -21,8 +21,13 @@ RoadParser::RoadParser() {
 
 Road *RoadParser::parseRoad(TiXmlElement *const element) {
 	REQUIRE(this->properlyInitialized(), "RoadParser was not initialized when calling parseRoad");
-	REQUIRE(element != NULL, "Failed to parse road: no element");
+	REQUIRE(!element, "Failed to parse road: no element");
 	const std::string kName = readElement(element, "naam");
+	if (kName.empty()) {
+		std::cerr << "Failed to parse road with name " << kName
+				  << ": name cannot be empty" << std::endl;
+		return NULL;
+	}
 	if (!fNames.insert(kName).second) {
 		std::cerr << "Failed to parse road with name " << kName
 				  << ": name already in use" << std::endl;
@@ -47,13 +52,13 @@ Road *RoadParser::parseRoad(TiXmlElement *const element) {
 	}
 	const double kLength = std::atof(kLen.c_str());
 	fRoad = new Road(kName, NULL, kLength, kMaxSpeed);
-	ENSURE(fRoad != NULL, "Failed to parse road: no road");
+	ENSURE(!fRoad, "Failed to parse road: no road");
 	return fRoad;
 }
 
 Road *RoadParser::getRoad() const {
 	REQUIRE(this->properlyInitialized(), "RoadParser was not initialized when calling getRoad");
-	ENSURE(fRoad != NULL, "Failed to parse road: no road");
+	ENSURE(!fRoad, "Failed to parse road: no road");
 	return fRoad;
 }
 
