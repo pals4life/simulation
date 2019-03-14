@@ -17,12 +17,28 @@
 
 class VehicleParser : public VAbstractParser {
 public:
+
+	/**
+	 * 	ENSURE(this->properlyInitialized(), "VehicleParser was not initialized when constructed");
+	 */
 	VehicleParser();
 
+	/**
+	 * 	REQUIRE(this->properlyInitialized(), "VehicleParser was not initialized when calling parseVehicle");
+	 *	REQUIRE(element, "Failed to parse vehicle: no element");
+	 *	ENSURE(fVehicle, "Failed to parse vehicle: no vehicle");
+	 */
 	IVehicle *parseVehicle(TiXmlElement *element);
 
+	/**
+	 * 	REQUIRE(this->properlyInitialized(), "VehicleParser was not initialized when calling getVehicle");
+	 *	ENSURE(fVehicle, "Failed to parse vehicle: no vehicle");
+	 */
 	IVehicle *getVehicle() const;
 
+	/**
+	 * 	REQUIRE(this->properlyInitialized(), "VehicleParser was not initialized when calling parseRoad");
+	 */
 	std::string parseRoad(TiXmlElement *element);
 
 private:

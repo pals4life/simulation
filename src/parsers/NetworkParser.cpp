@@ -18,7 +18,7 @@
 
 Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
 	REQUIRE(this->properlyInitialized(), "NetworkParser was not initialized when calling parseNetwork");
-	REQUIRE(!element, "Failed to parse network: no element");
+	REQUIRE(element, "Failed to parse network: no element");
 	RoadParser rp;
 	VehicleParser vp;
 	std::vector<Road *> roads;
@@ -27,7 +27,7 @@ Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
 		const std::string kType = elem->Value();
 		if (kType == "BAAN") {
 			Road *road = rp.parseRoad(elem);
-			if (!road) {
+			if (road) {
 				roads.push_back(road);
 			}
 		}
@@ -51,7 +51,7 @@ Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
 			}
 		} else if (kType == "VOERTUIG") {
 			IVehicle *vehicle = vp.parseVehicle(elem);
-			if (!vehicle) {
+			if (vehicle) {
 				tempRoads[vp.parseRoad(elem)].push_back(vehicle);
 			}
 		} else {
@@ -96,13 +96,13 @@ Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
 		}
 	}
 	fNetwork = new Network(roads);
-	ENSURE(!fNetwork, "Failed to parse network: no network");
+	ENSURE(fNetwork, "Failed to parse network: no network");
 	return fNetwork;
 }
 
 Network *NetworkParser::getNetwork() const {
 	REQUIRE(this->properlyInitialized(), "NetworkParser was not initialized when calling getNetwork");
-	ENSURE(!fNetwork, "Failed to parse network: no network");
+	ENSURE(fNetwork, "Failed to parse network: no network");
 	return fNetwork;
 }
 
@@ -112,6 +112,6 @@ NetworkParser::NetworkParser() {
 }
 
 bool NetworkParser::compareVehiclePointers(const IVehicle *a, const IVehicle *b) {
-	REQUIRE(!a && !b, "Failed to compare vehicle pointers: no vehicles");
+	REQUIRE(a && b, "Failed to compare vehicle pointers: no vehicles");
 	return *a < *b;
 }
