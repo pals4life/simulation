@@ -14,6 +14,7 @@ Car::Car(const std::string& license, double position, double velocity) : IVehicl
 void Car::move(const IVehicle* const next, double speedLimit)
 {
     REQUIRE(speedLimit > 0, "Speedlimit must be greater than 0");
+    REQUIRE(this->properlyInitialized(), "moved vehicle must be properly initialized");
 
     fPosition += fVelocity;
     fVelocity += fAcceleration;

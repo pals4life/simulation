@@ -13,10 +13,9 @@
 Road::Road(const std::string& name, Road* next, double length, double speedLimit)
 {
 
-    REQUIRE(length > 0, "Failed to construct road: lenght must be greater than 0");
+    REQUIRE(length > 0, "Failed to construct road: length must be greater than 0");
     REQUIRE(speedLimit > 0, "Failed to construct road: speed limit must be greater than 0");
     REQUIRE(!name.empty(), "Failed to construct road: name can not be empty");
-
 
     fName = name;
     fNextRoad = next;
@@ -24,7 +23,8 @@ Road::Road(const std::string& name, Road* next, double length, double speedLimit
     fRoadLength = length;
     fSpeedLimit = speedLimit;
     _initCheck = this;
-    ENSURE(this->properlyInitialized(), "Vehicle constructor must end in properlyInitialized state");
+
+    ENSURE(this->properlyInitialized(), "Road constructor must end in properlyInitialized state");
 }
 
 bool Road::properlyInitialized() const
