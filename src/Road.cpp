@@ -61,6 +61,7 @@ bool Road::update()
         }
         else break;                                     // break, because if the first car is still on the road everyone behind him is also still on the road
     }
+    if(fVehicles.empty()) return false;
 
     ENSURE(fVehicles.front()->getPosition() <= fRoadLength, "Update failed to place vehicle on next road or delete it.");
     return true;
@@ -92,8 +93,6 @@ IVehicle* const Road::getBackVehicle() const
     if(fVehicles.empty()) return NULL;
     return fVehicles.back();
 }
-
-
 
 Road* const Road::getNextRoad() const
 {
