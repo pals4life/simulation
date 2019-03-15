@@ -18,12 +18,28 @@
 
 class RoadParser : public VAbstractParser {
 public:
+
+	/**
+	 * 	ENSURE(this->properlyInitialized(), "RoadParser was not initialized when constructed");
+	 */
 	RoadParser();
 
+	/**
+	 * 	REQUIRE(this->properlyInitialized(), "RoadParser was not initialized when calling parseRoad");
+	 *	REQUIRE(element, "Failed to parse road: no element");
+	 *	ENSURE(fRoad, "Failed to parse road: no road");
+	 */
 	Road *parseRoad(TiXmlElement *element);
 
+	/**
+	 * 	REQUIRE(this->properlyInitialized(), "RoadParser was not initialized when calling getRoad");
+	 *	ENSURE(fRoad, "Failed to parse road: no road");
+	 */
 	Road *getRoad() const;
 
+	/**
+	 * 	REQUIRE(this->properlyInitialized(), "RoadParser was not initialized when calling parseConnection");
+	 */
 	std::string parseConnection(TiXmlElement *element);
 
 private:

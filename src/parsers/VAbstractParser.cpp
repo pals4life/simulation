@@ -16,22 +16,22 @@ bool VAbstractParser::loadFile(const std::string &kFilename) {
 	REQUIRE(!kFilename.empty(), "Failed to load file: no filename");
 	ENSURE(fDoc.LoadFile(kFilename.c_str()), fDoc.ErrorDesc());
 	fRoot = fDoc.FirstChildElement();
-	ENSURE(!fRoot, "Failed to load file: no root element");
+	ENSURE(fRoot, "Failed to load file: no root element");
 	return true;
 }
 
 TiXmlElement *VAbstractParser::getRoot() const {
 	REQUIRE(this->properlyInitialized(), "Parser was not initialized when calling getRoot");
-	ENSURE(!fRoot, "Failed to get root: no root element");
+	ENSURE(fRoot, "Failed to get root: no root element");
 	return fRoot;
 }
 
 const std::string VAbstractParser::readElement(TiXmlElement *const element, const std::string &kTag) {
 	REQUIRE(this->properlyInitialized(), "Parser was not initialized when calling readElement");
-	REQUIRE(!element, "Failed to read element: no element");
+	REQUIRE(element, "Failed to read element: no element");
 	REQUIRE(!kTag.empty(), "Failed to read element: no tag");
 	TiXmlElement *elem = element->FirstChildElement(kTag.c_str());
-	if (!elem) {
+	if (elem) {
 		TiXmlNode *node = elem->FirstChild();
 		TiXmlText *text = node->ToText();
 		return text->Value();

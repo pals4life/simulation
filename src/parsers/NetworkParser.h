@@ -18,12 +18,28 @@
 
 class NetworkParser : public VAbstractParser {
 public:
+
+	/**
+	 * 	ENSURE(this->properlyInitialized(), "NetworkParser was not initialized when constructed");
+	 */
 	NetworkParser();
 
+	/**
+	 * 	REQUIRE(this->properlyInitialized(), "NetworkParser was not initialized when calling parseNetwork");
+	 *	REQUIRE(element, "Failed to parse network: no element");
+	 *	ENSURE(fNetwork, "Failed to parse network: no network");
+	 */
 	Network *parseNetwork(TiXmlElement *element);
 
+	/**
+	 * 	REQUIRE(this->properlyInitialized(), "NetworkParser was not initialized when calling getNetwork");
+	 *	ENSURE(fNetwork, "Failed to parse network: no network");
+	 */
 	Network *getNetwork() const;
 
+	/**
+	 * 	REQUIRE(a && b, "Failed to compare vehicle pointers: no vehicles");
+	 */
 	static bool compareVehiclePointers(const IVehicle *a, const IVehicle *b);
 
 private:
