@@ -10,7 +10,7 @@
 #include <sstream>
 #include <iostream>
 #include "Network.h"
-#include "tests/DesignByContract.h"
+#include "../tests/DesignByContract.h"
 
 const int Network::fgkMaxTicks = 1000;
 

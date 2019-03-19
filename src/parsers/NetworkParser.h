@@ -13,7 +13,7 @@
 
 #include <string>
 #include <vector>
-#include "../Network.h"
+#include "../datatypes/Network.h"
 #include "VAbstractParser.h"
 
 class NetworkParser : public VAbstractParser {

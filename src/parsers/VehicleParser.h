@@ -12,7 +12,7 @@
 
 #include <set>
 #include "tinyxml/tinyxml.h"
-#include "../IVehicle.h"
+#include "../datatypes/IVehicle.h"
 #include "VAbstractParser.h"
 
 class VehicleParser : public VAbstractParser {

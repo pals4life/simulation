@@ -11,19 +11,16 @@ include_directories(${simulation_SOURCE_DIR}/gtest/include)
 # Set Library dir
 link_directories(${simulation_SOURCE_DIR}/gtest/lib)
 
-file(GLOB_RECURSE HDRS ${simulation_SOURCE_DIR}/src/*.h)
-file(GLOB_RECURSE SRCS ${simulation_SOURCE_DIR}/src/*.cpp)
+# Set SOURCE and HEADER files
+file(GLOB_RECURSE HDRS ${simulation_SOURCE_DIR}/src/datatypes/*.h   ${simulation_SOURCE_DIR}/src/parsers/*.h   ${simulation_SOURCE_DIR}/src/tests/*.h  )
+file(GLOB_RECURSE SRCS ${simulation_SOURCE_DIR}/src/datatypes/*.cpp ${simulation_SOURCE_DIR}/src/parsers/*.cpp ${simulation_SOURCE_DIR}/src/tests/*.cpp)
 
-# Set source files for RELEASE target
-set(RELEASE_SOURCE_FILES ${SRCS} ${HDRS})
+# Set source files for RELEASE/DEBUG target
+set(RELEASE_SOURCE_FILES ${SRCS} ${HDRS} src/main.cpp    )
+set(DEBUG_SOURCE_FILES   ${SRCS} ${HDRS} src/testMain.cpp)
 
-# Set source files for DEBUG target
-set(DEBUG_SOURCE_FILES ${SRCS} ${HDRS})
-
-# Create RELEASE target
+# Create RELEASE / DEBUG target
 add_executable(simulation ${RELEASE_SOURCE_FILES})
-
-# Create DEBUG target
 add_executable(simulation_debug ${DEBUG_SOURCE_FILES})
 
 # Link library

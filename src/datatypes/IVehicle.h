@@ -94,6 +94,8 @@ protected:
     double fPosition;
     double fVelocity;
     double fAcceleration;
+
+    static const double fgkMinVehicleDist;
 };
 
 

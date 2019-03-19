@@ -8,7 +8,7 @@
 //============================================================================
 #include <stdint.h>
 #include "Road.h"
-#include "tests/DesignByContract.h"
+#include "../tests/DesignByContract.h"
 
 Road::Road(const std::string& name, Road* next, double length, double speedLimit)
 {

@@ -1,6 +1,8 @@
 #include "IVehicle.h"
 #include <iostream>
-#include "tests/DesignByContract.h"
+#include "../tests/DesignByContract.h"
+
+const double IVehicle::fgkMinVehicleDist = 5.0;
 
 IVehicle::IVehicle(const std::string& license, double position, double velocity)
 {
