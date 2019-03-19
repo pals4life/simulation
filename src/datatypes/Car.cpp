@@ -17,9 +17,9 @@ void Car::move(const IVehicle* const next, double speedLimit)
     REQUIRE(this->properlyInitialized(), "moved vehicle must be properly initialized");
     if(next != NULL) REQUIRE(next->getPosition() - this->getPosition() > fgkMinVehicleDist, "distance between vehicles must be greater than minVehicleDist");
 
-    fPosition += fVelocity;
-    fVelocity += fAcceleration;
-
+    fPosition += fVelocity;                                                                 // Calculate new positions
+    fVelocity += fAcceleration;                                                             // Calculate new velocity
+                                                                                            // Calculate new acceleration in following code
     if(next == NULL)
     {
         fAcceleration = fgkMaxAcceleration;                                                 // if nobody is ahead, go max acceleration
