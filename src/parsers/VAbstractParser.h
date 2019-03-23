@@ -16,50 +16,48 @@
 class VAbstractParser {
 public:
 
-	/**
-	 * 	REQUIRE(this->properlyInitialized(), "Parser was not initialized when calling loadfile");
-	 *	REQUIRE(!kFilename.empty(), "Failed to load file: no filename");
-	 *	ENSURE(fDoc.LoadFile(kFilename.c_str()), fDoc.ErrorDesc());
-	 *	ENSURE(fRoot, "Failed to load file: no root element");
-	 */
-	bool loadFile(const std::string &kFilename);
+    /**
+     * 	REQUIRE(this->properlyInitialized(), "Parser was not initialized when calling loadfile");
+     *	REQUIRE(!kFilename.empty(), "Failed to load file: no filename");
+     *	ENSURE(fDoc.LoadFile(kFilename.c_str()), fDoc.ErrorDesc());
+     *	ENSURE(fRoot, "Failed to load file: no root element");
+     */
+    bool loadFile(const std::string &kFilename);
 
-	/**
-	 * 	REQUIRE(this->properlyInitialized(), "Parser was not initialized when calling getRoot");
-	 *	ENSURE(fRoot, "Failed to get root: no root element");
-	 */
-	TiXmlElement *getRoot() const;
+    /**
+     * 	REQUIRE(this->properlyInitialized(), "Parser was not initialized when calling getRoot");
+     *	ENSURE(fRoot, "Failed to get root: no root element");
+     */
+    TiXmlElement *getRoot() const;
 
-	/**
-	 * 	REQUIRE(this->properlyInitialized(), "Parser was not initialized when calling clear");
-	 */
-	void clear();
+    /**
+     * 	REQUIRE(this->properlyInitialized(), "Parser was not initialized when calling clear");
+     */
+    void clear();
 
-	bool properlyInitialized() const;
+    bool properlyInitialized() const;
 
-	/**
-	 * 	ENSURE(this->properlyInitialized(), "Parser was not initialized when constructed");
-	 */
-	VAbstractParser();
+    /**
+     * 	ENSURE(this->properlyInitialized(), "Parser was not initialized when constructed");
+     */
+    VAbstractParser();
 
-	/**
-	 * 	REQUIRE(this->properlyInitialized(), "Parser was not initialized when calling destructor");
-	 */
-	virtual ~VAbstractParser();
+    /**
+     * 	REQUIRE(this->properlyInitialized(), "Parser was not initialized when calling destructor");
+     */
+    virtual ~VAbstractParser();
 
-protected:
-
-	/**
-	 * 	REQUIRE(this->properlyInitialized(), "Parser was not initialized when calling readElement");
-	 *	REQUIRE(element, "Failed to read element: no element");
-	 *	REQUIRE(!kTag.empty(), "Failed to read element: no tag");
-	 */
-	const std::string readElement(TiXmlElement *element, const std::string &kTag);
+    /**
+     * 	REQUIRE(this->properlyInitialized(), "Parser was not initialized when calling readElement");
+     *	REQUIRE(element, "Failed to read element: no element");
+     *	REQUIRE(!kTag.empty(), "Failed to read element: no tag");
+     */
+    const std::string readElement(TiXmlElement *element, const std::string &kTag);
 
 private:
-	TiXmlElement *fRoot;
-	TiXmlDocument fDoc;
-	VAbstractParser *_initCheck;
+    TiXmlElement *fRoot;
+    TiXmlDocument fDoc;
+    VAbstractParser *_initCheck;
 };
 
 

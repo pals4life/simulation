@@ -28,8 +28,8 @@ TiXmlElement *VAbstractParser::getRoot() const {
 
 const std::string VAbstractParser::readElement(TiXmlElement *const element, const std::string &kTag) {
 	REQUIRE(this->properlyInitialized(), "Parser was not initialized when calling readElement");
-	REQUIRE(element, "Failed to read element: no element");
-	REQUIRE(!kTag.empty(), "Failed to read element: no tag");
+    REQUIRE(!kTag.empty(), "Failed to read element: no tag");
+    REQUIRE(element, "Failed to read element: no element");
 	TiXmlElement *elem = element->FirstChildElement(kTag.c_str());
 	if (elem) {
 		TiXmlNode *node = elem->FirstChild();

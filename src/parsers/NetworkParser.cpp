@@ -32,7 +32,6 @@ Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
 			}
 		}
 	}
-	//TODO consistent: comments
 	uint32_t roadNr = 0;
 	for (TiXmlElement *elem = element->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement()) {
 		const std::string kType = elem->Value();
