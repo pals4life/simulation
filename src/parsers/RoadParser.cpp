@@ -64,5 +64,6 @@ Road *RoadParser::getRoad() const {
 
 std::string RoadParser::parseConnection(TiXmlElement *element) {
 	REQUIRE(this->properlyInitialized(), "RoadParser was not initialized when calling parseConnection");
-	return readElement(element, "verbinding");
+    REQUIRE(element, "Failed to parse connection: no element");
+    return readElement(element, "verbinding");
 }

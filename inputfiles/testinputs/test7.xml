@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NETWERK>
+    <VOERTUIG>
+        <type>AUTO<type>
+        <nummerplaat>1THK180</nummerplaat>
+        <baan>E19</baan>
+        <positie>10</positie>
+        <snelheid>0</snelheid>
+    </VOERTUIG>
+</NETWERK>

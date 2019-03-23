@@ -69,5 +69,6 @@ IVehicle *VehicleParser::getVehicle() const {
 
 std::string VehicleParser::parseRoad(TiXmlElement *const element) {
 	REQUIRE(this->properlyInitialized(), "VehicleParser was not initialized when calling parseRoad");
+	REQUIRE(element, "Failed to parse road: no element");
 	return readElement(element, "baan");
 }

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VOERTUIGEN>
+    <VOERTUIG>
+        <type>AUTO</type>
+        <nummerplaat>1THK180</nummerplaat>
+        <baan>E19</baan>
+        <positie>10</positie>
+        <snelheid>0</snelheid>
+    </VOERTUIG>
+
+    <VOERTUIG>
+        <type>AUTO</type>
+        <nummerplaat></nummerplaat>
+        <baan>E19</baan>
+        <positie>0</positie>
+        <snelheid>0</snelheid>
+    </VOERTUIG>
+
+    <VOERTUIG>
+        <type>AUTO</type>
+        <nummerplaat>1THK180</nummerplaat>
+        <baan>E19</baan>
+        <positie>10</positie>
+        <snelheid>0</snelheid>
+    </VOERTUIG>
+
+    <VOERTUIG>
+        <type>AUTO</type>
+        <nummerplaat>4UYI840</nummerplaat>
+        <baan>E19</baan>
+        <positie>-10</positie>
+        <snelheid>0</snelheid>
+    </VOERTUIG>
+
+    <VOERTUIG>
+        <type>AUTO</type>
+        <nummerplaat>6UYI240</nummerplaat>
+        <baan>E19</baan>
+        <positie>10</positie>
+        <snelheid>-50</snelheid>
+    </VOERTUIG>
+
+    <VOERTUIG>
+        <type>FIETS</type>
+        <nummerplaat>6UYI240</nummerplaat>
+        <baan>E19</baan>
+        <positie>10</positie>
+        <snelheid>-50</snelheid>
+    </VOERTUIG>
+</VOERTUIGEN>

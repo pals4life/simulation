@@ -39,6 +39,7 @@ public:
 
 	/**
 	 * 	REQUIRE(this->properlyInitialized(), "RoadParser was not initialized when calling parseConnection");
+	 * 	REQUIRE(element, "Failed to parse connection: no element");
 	 */
 	std::string parseConnection(TiXmlElement *element);
 

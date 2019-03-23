@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BANEN>
+    <BAAN>
+        <naam>E19</naam>
+        <snelheidslimiet>10</snelheidslimiet>
+        <lengte>2000</lengte>
+        <verbinding>E313</verbinding>
+    </BAAN>
+
+    <BAAN>
+        <naam></naam>
+        <snelheidslimiet>100</snelheidslimiet>
+        <lengte>2000</lengte>
+        <verbinding>E313</verbinding>
+    </BAAN>
+
+    <BAAN>
+        <naam>E19</naam>
+        <snelheidslimiet>10</snelheidslimiet>
+        <lengte>2000</lengte>
+        <verbinding>E313</verbinding>
+    </BAAN>
+
+    <BAAN>
+        <naam>E20</naam>
+        <snelheidslimiet>-100</snelheidslimiet>
+        <lengte>2000</lengte>
+        <verbinding>E313</verbinding>
+    </BAAN>
+
+    <BAAN>
+        <naam>E21</naam>
+        <snelheidslimiet>100</snelheidslimiet>
+        <lengte>-2000</lengte>
+        <verbinding>E313</verbinding>
+    </BAAN>
+</BANEN>
