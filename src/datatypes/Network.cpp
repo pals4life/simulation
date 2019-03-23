@@ -38,7 +38,7 @@ int Network::getTicksPassed() const
     return fTicksPassed;
 }
 
-void Network::startSimulation(int amountOfTicks)
+void Network::startSimulation(int amountOfTicks, bool print)
 {
     REQUIRE(this->properlyInitialized(), "Network was not initialized when calling startSimulation");
     REQUIRE(amountOfTicks >= 0, "Amount of ticks must be a positive integer");
@@ -57,7 +57,7 @@ void Network::startSimulation(int amountOfTicks)
         }
 
         fTicksPassed++;
-        printNetwork();
+        if(print) printNetwork();
     }
 }
 

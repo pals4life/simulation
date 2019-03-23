@@ -1,6 +1,6 @@
 //============================================================================
 // @name        : Network.h
-// @author      : Mano Marichal
+// @author      : Thomas Dooms
 // @date        : 27.02.19
 // @version     : 
 // @copyright   : Project Software Engineering - BA1 Informatica - Mano Marichal - University of Antwerp
@@ -32,7 +32,7 @@ public:
      * REQUIRE(this->properlyInitialized(), "Network was not initialized when calling startSimulation");
      * REQUIRE(amountOfTicks >= 0, "Amount of ticks must be a positive integer");
      */
-    void startSimulation(int amountOfTicks = fgkMaxTicks);
+    void startSimulation(int amountOfTicks = fgkMaxTicks, bool print = false);
 
 
 
