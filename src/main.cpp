@@ -20,8 +20,7 @@ int main(int argc, char **argv) {
 
 	NetworkParser parser;
 	parser.loadFile(argv[1]);
-	parser.parseNetwork(parser.getRoot());
-	Network *network = parser.getNetwork();
+	Network *network = 	parser.parseNetwork(parser.getRoot());
 	parser.clear();
 
 	network->startSimulation(100, true);

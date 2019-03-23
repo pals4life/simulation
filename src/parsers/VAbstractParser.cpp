@@ -51,6 +51,7 @@ bool VAbstractParser::properlyInitialized() const {
 
 VAbstractParser::VAbstractParser() {
 	_initCheck = this;
+	fRoot = NULL;
 	ENSURE(this->properlyInitialized(), "Parser was not initialized when constructed");
 }
 
