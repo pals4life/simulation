@@ -117,4 +117,6 @@ TEST_F(RoadTester, RoadUpdate6)
 
     testRoad->enqueue(testCar);
     testRoad->update();
+
+    ASSERT_EQ(testCar->getAcceleration(), -2);
 }
