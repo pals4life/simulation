@@ -91,10 +91,10 @@ TEST_F(RoadTester, RoadUpdate4)
 }
 
 
-
-/*
 TEST_F(RoadTester, RoadUpdate5)
 {
+    testing::internal::CaptureStderr();
+
     Road* testRoad = new Road("E13", NULL, 100, 50);
     Car* testCar0 = new Car("12R3", 50, 10);
     Car* testCar1 = new Car("AE-12", 40, 30);
@@ -104,10 +104,17 @@ TEST_F(RoadTester, RoadUpdate5)
 
     testRoad->update();
     ASSERT_EQ(testCar0->getPosition(), 60);
-    ASSERT_EQ(testCar1->getPosition(), ?);
+    ASSERT_EQ(testCar1->getPosition(), 70);
+
+    std::cerr << testing::internal::GetCapturedStderr() << " in test 5\n";
 
     delete testRoad;
-
 }
+TEST_F(RoadTester, RoadUpdate6)
+{
+    Road* testRoad = new Road("E13", NULL, 1000, 100);
+    Car* testCar = new Car("12R3", 0, 120);
 
-*/
+    testRoad->enqueue(testCar);
+    testRoad->update();
+}

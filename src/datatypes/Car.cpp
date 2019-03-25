@@ -35,11 +35,15 @@ void Car::move(const IVehicle* const next, double speedLimit)
     }
 
     if(fVelocity > speedLimit) fAcceleration = fVelocity - speedLimit;                      // if above speed limit, slow down (occurs when changing roads)
-    double minAcceleration = std::max(fVelocity, fgkMinAcceleration);                       // determine min acceleration, to prevent negative speed
+    double minAcceleration = std::max(-fVelocity, fgkMinAcceleration);                      // determine min acceleration, to prevent negative speed
     double maxAcceleration = std::min(speedLimit - fVelocity, fgkMaxAcceleration);          // determine max acceleration, to prevent from going too fast
+
+    minAcceleration = std::min(minAcceleration, fgkMaxAcceleration);                        // make sure the resulting min acceleration is smaller than the max acceleration
+    maxAcceleration = std::max(maxAcceleration, fgkMinAcceleration);                        // make sure the resulting max acceleration is greater than the min acceleration
 
     fAcceleration = std::min(std::max(fAcceleration, minAcceleration), maxAcceleration);    // clamp the acceleration
 
+    ENSURE(fVelocity >= 0, "Velocity cannot be negative");
     ENSURE((fAcceleration >= fgkMinAcceleration) && (fAcceleration <= fgkMaxAcceleration), "Acceleration is too high / low");
 }
 
