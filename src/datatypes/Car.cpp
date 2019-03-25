@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Car.h"
 #include "../tests/DesignByContract.h"
 
@@ -16,6 +17,8 @@ void Car::move(const IVehicle* const next, double speedLimit)
     REQUIRE(speedLimit > 0, "Speedlimit must be greater than 0");
     REQUIRE(this->properlyInitialized(), "moved vehicle must be properly initialized");
     if(next != NULL) REQUIRE(next->getPosition() - this->getPosition() > fgkMinVehicleDist, "distance between vehicles must be greater than minVehicleDist");
+
+    if(next != NULL and fPosition + fVelocity >= next->getPosition() + next->getVelocity() - next->getVehicleLength()) std::cerr << "car crash is imminent.\n";
 
     fPosition += fVelocity;                                                                 // Calculate new positions
     fVelocity += fAcceleration;                                                             // Calculate new velocity

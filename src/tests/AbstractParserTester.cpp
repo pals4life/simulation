@@ -15,7 +15,6 @@ protected:
     friend class VAbstractParser;
 
     virtual void SetUp() {}
-
     virtual void TearDown() {}
 
 };
