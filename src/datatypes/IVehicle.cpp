@@ -67,6 +67,12 @@ double& IVehicle::getAcceleration()
     return fAcceleration;
 }
 
+bool& IVehicle::setMoved()
+{
+    REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling setMoved");
+    return moved;
+}
+
 bool operator<(const IVehicle& a, const IVehicle& b)
 {
     REQUIRE(a.properlyInitialized() && b.properlyInitialized(), "one of the Vehicles was not initialized when calling operator<");

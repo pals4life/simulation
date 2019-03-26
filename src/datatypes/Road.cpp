@@ -2,7 +2,7 @@
 // @name        : Road.cpp
 // @author      : Mano Marichal
 // @date        : 27.02.19
-// @version     :
+// @version     : 1.0
 // @copyright   : Project Software Engineering - BA1 Informatica - Mano Marichal - University of Antwerp
 // @description :
 //============================================================================
@@ -37,11 +37,11 @@ Road::~Road()
     for(uint32_t i = 0; i < fVehicles.size(); i++) delete fVehicles[i];
 }
 
-bool Road::update()
+void Road::update()
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");
 
-    if(fVehicles.empty()) return false;                 // if there are no vehicles we do not need to update.
+    if(fVehicles.empty()) return;                           // if there are no vehicles we do not need to update.
 
     for(uint32_t i = 1; i < fVehicles.size(); i++)
     {
@@ -49,36 +49,53 @@ bool Road::update()
     }
 
     if(fNextRoad == NULL) fVehicles.front()->move(NULL, fSpeedLimit);
-    else fVehicles.front()->move(fNextRoad->getBackVehicle(), fSpeedLimit);
+    else fVehicles.front()->move(fNextRoad->getBackVehicle(), fSpeedLimit, fRoadLength);
 
-    while(!fVehicles.empty())                           // as long there are vehicles we can delete
+    while(!fVehicles.empty())                               // as long there are vehicles we can delete
     {
-        if(fVehicles[0]->getPosition() > fRoadLength)   // check if they have left the road
+        if(fVehicles.front()->getPosition() > fRoadLength)  // check if they have left the road
         {
-            if(fNextRoad == NULL) delete fVehicles[0];  // free memory if they leave the simulation
-            else fNextRoad->enqueue(fVehicles[0]);      // enqueue in next road if there is one
-            fVehicles.pop_front();                      // remove from the queue
+            dequeue();
         }
-        else break;                                     // break, because if the first car is still on the road everyone behind him is also still on the road
+        else break;                                         // break, because if the first car is still on the road everyone behind him is also still on the road
     }
-    if(fVehicles.empty()) return false;
+    if(fVehicles.empty()) return;
 
     ENSURE(fVehicles.front()->getPosition() <= fRoadLength, "Update failed to place vehicle on next road or delete it.");
-    return true;
+}
+
+bool Road::isDone()
+{
+    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling isDone");
+    for(uint32_t i = 0; i < fVehicles.size(); i++) fVehicles[i]->setMoved() = false;
+
+    return !isEmpty();
 }
 
 void Road::enqueue(IVehicle* const vehicle)
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling enqueue");
     REQUIRE(vehicle->properlyInitialized(), "Vehicle was not initialized when calling enqueue");
-    fVehicles.push_back(vehicle);
+
+    fVehicles.push_back(vehicle);                       // we can add the new vehicle
+    if(vehicle->getPosition() > fRoadLength) dequeue(); // immediately remove it when it has already traversed the whole road in one tick
 }
 
 void Road::dequeue()
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling dequeue");
-    if (isEmpty()) return;
-    fVehicles.pop_front();
+    REQUIRE(!isEmpty(), "Road was not initialized when calling dequeue");
+
+    if(fNextRoad == NULL)
+    {
+         delete fVehicles.front();     // free memory if they leave the simulation
+    }
+    else
+    {
+        fVehicles.front()->getPosition() -= fRoadLength; // current position minus roadlength
+        fNextRoad->enqueue(fVehicles.front());           // enqueue in next road if there is one
+    }
+    fVehicles.pop_front();                              // remove from the queue
 }
 
 bool Road::isEmpty()

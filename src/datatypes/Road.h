@@ -32,7 +32,12 @@ public:
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");
 	 */
-	bool update();
+	void update();
+
+	/**
+	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling isDone");
+	 */
+	bool isDone();
 
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");

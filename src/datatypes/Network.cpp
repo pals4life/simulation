@@ -46,10 +46,15 @@ void Network::startSimulation(int amountOfTicks, bool print)
     while(fTicksPassed < amountOfTicks)
     {
         bool simulationDone = true;
-
+        if(fTicksPassed == 27)
+            fTicksPassed = 27;
         for(uint32_t i = 0; i < fRoads.size(); i++)
         {
-            if(fRoads[i]->update()) simulationDone = false;
+            fRoads[i]->update();
+        }
+        for(uint32_t i = 0; i < fRoads.size(); i++)
+        {
+            if(fRoads[i]->isDone()) simulationDone = false;
         }
         if (simulationDone)
         {

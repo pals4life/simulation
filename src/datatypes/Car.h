@@ -31,7 +31,7 @@ public:
     *
     * ENSURE((fAcceleration >= fgkMinAcceleration) && (fAcceleration <= fgkMaxAcceleration), "Acceleration is too high / low");
     */
-    virtual void move(const IVehicle* next, double speedLimit);
+    virtual void move(const IVehicle* next, double speedLimit, double offset = 0);
 
     /**
     * REQUIRE(this->properlyInitialized(), "Car was not initialized when calling getVehicleLength");

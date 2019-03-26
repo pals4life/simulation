@@ -27,7 +27,7 @@ public:
     IVehicle(const std::string& license, double pos, double velocity);
     virtual ~IVehicle(){}
 
-    virtual void move(const IVehicle* next, double speedLimit) = 0;
+    virtual void move(const IVehicle* next, double speedLimit, double offset = 0) = 0;
 
     virtual double getVehicleLength() const = 0;
     virtual EVehicleType getType() const = 0;
@@ -76,6 +76,11 @@ public:
     double& getAcceleration();
 
     /**
+     * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling setMoved");
+     */
+    bool& setMoved();
+
+    /**
      * REQUIRE(a.properlyInitialized() && b.properlyInitialized(), "one of the Vehicles was not initialized when calling operator<");
      */
     friend bool operator<(const IVehicle& a, const IVehicle& b);
@@ -90,6 +95,7 @@ protected:
     IVehicle* _initCheck;
 
     std::string fLicensePlate;
+    bool moved;
 
     double fPosition;
     double fVelocity;

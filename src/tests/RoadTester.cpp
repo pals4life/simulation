@@ -106,8 +106,7 @@ TEST_F(RoadTester, RoadUpdate5)
     ASSERT_EQ(testCar0->getPosition(), 60);
     ASSERT_EQ(testCar1->getPosition(), 70);
 
-    std::cerr << testing::internal::GetCapturedStderr() << " in test 5\n";
-
+    testing::internal::GetCapturedStderr();
     delete testRoad;
 }
 
@@ -122,20 +121,18 @@ TEST_F(RoadTester, RoadUpdate6)
     ASSERT_EQ(testCar->getAcceleration(), -2);
 }
 
-/*
 TEST_F(RoadTester, RoadUpdate7)
 {
 
     Road* testRoad0 = new Road("E13", NULL, 50, 150);
     Road* testRoad1 = new Road("E13", testRoad0, 50, 150);
 
-    Car* testCar0 = new Car("12R3", 25, 75);
+    Car* testCar0 = new Car("12R3", 20, 70);
 
     testRoad1->enqueue(testCar0);
     testRoad1->update();
 
-
-    ASSERT_EQ(testCar0->getPosition(), 50);     // wordt de positie na van een auto opnieuw op nul gezet na het overgaan tussen 2 banen? Zo ja, waarom klopt deze test dan niet
+    ASSERT_EQ(testCar0->getPosition(), 40);
     ASSERT_TRUE(testRoad1->isEmpty());
     ASSERT_FALSE(testRoad0->isEmpty());
 
@@ -143,7 +140,7 @@ TEST_F(RoadTester, RoadUpdate7)
     delete testRoad1;
 }
 
-// Deze test beschrijft wat er gebeurt als een auto per tick meer dan 1 straat aflegt, dit kan de code momenteel niet aan
+// Deze test beschrijft wat er gebeurt als een auto per tick meer dan 1 straat aflegt.
 TEST_F(RoadTester, RoadUpdate8)
 {
 
@@ -162,22 +159,21 @@ TEST_F(RoadTester, RoadUpdate8)
     delete testRoad1;
 }
 
-// ik zie niet goed waarom hier een imminent car crash optreedt
+// Deze test beschrijft wat er gebeurt als een auto enqueud wordt met hogere position dan het einde v/d straat.
 TEST_F(RoadTester, RoadUpdate9)
 {
-
     Road* testRoad0 = new Road("E13", NULL, 50, 150);
     Road* testRoad1 = new Road("E13", testRoad0, 50, 150);
 
-    Car* testCar0 = new Car("12R3", 25, 75);
+    Car* testCar0 = new Car("12R3", 20, 70);
     Car* testCar1 = new Car("AE-12", 0, 60);
 
     testRoad1->enqueue(testCar0);
+    testRoad1->enqueue(testCar1);
 
     testRoad1->update();
 
-
-    ASSERT_EQ(testCar0->getPosition(), 50);     // zelfde vraag als bij 7
+    ASSERT_EQ(testCar0->getPosition(), 40);
     ASSERT_EQ(testCar1->getPosition(), 10);
 
     ASSERT_TRUE(testRoad1->isEmpty());
@@ -186,4 +182,3 @@ TEST_F(RoadTester, RoadUpdate9)
     delete testRoad0;
     delete testRoad1;
 }
- */

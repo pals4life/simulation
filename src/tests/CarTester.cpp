@@ -1,8 +1,8 @@
 //============================================================================
 // @name        : CarTester.cpp
 // @author      : Thomas Dooms
-// @date        : 3/19/19
-// @version     : 
+// @date        : 19.03.19
+// @version     : 1.0
 // @copyright   : BA1 Informatica - Thomas Dooms - University of Antwerp
 // @description : 
 //============================================================================

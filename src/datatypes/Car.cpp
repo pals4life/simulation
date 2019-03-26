@@ -12,13 +12,13 @@ const double Car::fgkVehicleLength = 3;
 
 Car::Car(const std::string& license, double position, double velocity) : IVehicle(license, position, velocity){}
 
-void Car::move(const IVehicle* const next, double speedLimit)
+void Car::move(const IVehicle* const next, double speedLimit, double offset)
 {
     REQUIRE(speedLimit > 0, "Speedlimit must be greater than 0");
     REQUIRE(this->properlyInitialized(), "moved vehicle must be properly initialized");
-    if(next != NULL) REQUIRE(next->getPosition() - this->getPosition() > fgkMinVehicleDist, "distance between vehicles must be greater than minVehicleDist");
-
-    if(next != NULL and fPosition + fVelocity >= next->getPosition() + next->getVelocity() - next->getVehicleLength()) std::cerr << "car crash is imminent.\n";
+    if(next != NULL) REQUIRE(next->getPosition() + offset - this->getPosition() > fgkMinVehicleDist, "distance between vehicles must be greater than minVehicleDist");
+    if(next != NULL and fPosition + fVelocity >= offset + next->getPosition() + next->getVelocity() - next->getVehicleLength()) std::cerr << "car crash is imminent.\n";
+    if(moved) return;
 
     fPosition += fVelocity;                                                                 // Calculate new positions
     fVelocity += fAcceleration;                                                             // Calculate new velocity
@@ -30,7 +30,7 @@ void Car::move(const IVehicle* const next, double speedLimit)
     else
     {
         double ideal  = 0.75 * fVelocity + next->getVehicleLength() + 2;                    // ideal following distance = 3/4 speed + 2 meters extra
-        double actual = next->getPosition() - next->getVehicleLength() - fPosition;         // distance between 2 vehicles
+        double actual = offset+next->getPosition() - next->getVehicleLength() - fPosition;  // distance between 2 vehicles
         fAcceleration = 0.5 * (actual - ideal);                                             // take the average
     }
 
@@ -42,6 +42,7 @@ void Car::move(const IVehicle* const next, double speedLimit)
     maxAcceleration = std::max(maxAcceleration, fgkMinAcceleration);                        // make sure the resulting max acceleration is greater than the min acceleration
 
     fAcceleration = std::min(std::max(fAcceleration, minAcceleration), maxAcceleration);    // clamp the acceleration
+    moved = true;
 
     ENSURE(fVelocity >= 0, "Velocity cannot be negative");
     ENSURE((fAcceleration >= fgkMinAcceleration) && (fAcceleration <= fgkMaxAcceleration), "Acceleration is too high / low");
