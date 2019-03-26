@@ -10,6 +10,7 @@
 #include <sstream>
 #include <iostream>
 #include "Network.h"
+#include "NetworkExporter.h"
 #include "../tests/DesignByContract.h"
 
 const int Network::fgkMaxTicks = 1000;
@@ -43,11 +44,13 @@ void Network::startSimulation(int amountOfTicks, bool print)
     REQUIRE(this->properlyInitialized(), "Network was not initialized when calling startSimulation");
     REQUIRE(amountOfTicks >= 0, "Amount of ticks must be a positive integer");
 
+    NetworkExporter exporter;
+    if(print) exporter.initialize(this, "test");
+
     while(fTicksPassed < amountOfTicks)
     {
         bool simulationDone = true;
-        if(fTicksPassed == 27)
-            fTicksPassed = 27;
+
         for(uint32_t i = 0; i < fRoads.size(); i++)
         {
             fRoads[i]->update();
@@ -62,29 +65,7 @@ void Network::startSimulation(int amountOfTicks, bool print)
         }
 
         fTicksPassed++;
-        if(print) printNetwork();
+        if(print) exporter.addSection(fTicksPassed);
     }
-}
-
-void Network::printNetwork()
-{
-    REQUIRE(this->properlyInitialized(), "Network was not initialized when calling printNetwork");
-
-    std::ostringstream filename;
-    filename << "outputfiles/output-" << fTicksPassed << ".txt";
-
-    std::ofstream outputFile;
-    outputFile.open(filename.str().c_str());
-    std::cout << filename.str() << '\n';
-    outputFile << "\nState of the network after " << fTicksPassed << " ticks have passed:\n\n";
-    for(uint32_t i = 0; i < fRoads.size(); i++)
-    {
-        outputFile << *fRoads[i];
-    }
-    for(uint32_t i = 0; i < fRoads.size(); i++)
-    {
-        fRoads[i]->printVehicles(outputFile);
-    }
-    outputFile << std::flush;
-    outputFile.close();
+    if(print) exporter.finish();
 }

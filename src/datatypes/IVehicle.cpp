@@ -84,8 +84,8 @@ void IVehicle::printVehicle(std::ostream& stream, const std::string& roadName) c
     REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling printVehicle");
     const std::string toString[1] = {"auto"};
     stream << "Voertuig: " + toString[getType()] +'('+ fLicensePlate + ")\n";
-    stream << "  -> Baan    : " << roadName  << '\n';
-    stream << "  -> Positie : " << fPosition << '\n';
-    stream << "  -> Snelheid: " << fVelocity << '\n';
+    stream << "  -> Baan    : " << roadName      << '\n';
+    stream << "  -> Positie : " << fPosition     << '\n';
+    stream << "  -> Snelheid: " << fVelocity*3.6 << '\n';
 }
 

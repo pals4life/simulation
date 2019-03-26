@@ -2,8 +2,8 @@
 #include "Car.h"
 #include "../tests/DesignByContract.h"
 
-const double Car::fgkMaxAcceleration = 8.0;
-const double Car::fgkMinAcceleration = -2.0;
+const double Car::fgkMaxAcceleration = 2.0;
+const double Car::fgkMinAcceleration = -8.0;
 
 const double Car::fgkMinSpeed = 0.0;
 const double Car::fgkMaxSpeed = 150.0;

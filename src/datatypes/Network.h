@@ -15,6 +15,8 @@
 
 class Network {
 
+friend class NetworkExporter;
+
 public:
     /**
      * ENSURE(this->properlyInitialized(), "Network constructor must end in properlyInitialized state");

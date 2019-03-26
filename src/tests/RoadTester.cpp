@@ -29,7 +29,6 @@ TEST_F(RoadTester, RoadInit)
 
     Road testRoad("E13", NULL, 100, 100);
     ASSERT_TRUE(testRoad.properlyInitialized());
-
 }
 
 TEST_F(RoadTester, RoadUpdate1)
@@ -42,7 +41,6 @@ TEST_F(RoadTester, RoadUpdate1)
     ASSERT_FALSE(testRoad->isEmpty());
 
     delete testRoad;
-
 }
 
 TEST_F(RoadTester, RoadUpdate2)
@@ -55,7 +53,6 @@ TEST_F(RoadTester, RoadUpdate2)
     ASSERT_TRUE(testRoad->isEmpty());
 
     delete testRoad;
-
 }
 
 TEST_F(RoadTester, RoadUpdate3)
@@ -69,7 +66,6 @@ TEST_F(RoadTester, RoadUpdate3)
     ASSERT_TRUE(testRoad->isEmpty());
 
     delete testRoad;
-
 }
 
 
@@ -87,7 +83,6 @@ TEST_F(RoadTester, RoadUpdate4)
     ASSERT_EQ(testCar1->getPosition(), 70);
 
     delete testRoad;
-
 }
 
 

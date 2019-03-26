@@ -141,6 +141,7 @@ void Road::printVehicles(std::ostream& stream) const
     for(uint32_t i = 0; i < fVehicles.size(); i++)
     {
         fVehicles[i]->printVehicle(stream, fName);
+        stream << '\n';
     }
 }
 
@@ -160,12 +161,13 @@ std::ostream& operator<<(std::ostream& stream, const Road& road)
 {
     REQUIRE(road.properlyInitialized(), "Road was not initialized when calling operator >>");
     stream << "Baan : " + road.fName + '\n';
-    stream << "  -> snelheidslimiet: "  << road.fSpeedLimit << '\n';
-    stream << "  -> lengte         : "  << road.fRoadLength << '\n';
+    stream << "  -> snelheidslimiet: "  << road.fSpeedLimit * 3.6 << '\n';
+    stream << "  -> lengte         : "  << road.fRoadLength       << '\n';
     return stream;
 }
 
-void Road::setNextRoad(Road *fNextRoad) {
+void Road::setNextRoad(Road *fNextRoad)
+{
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling setNextRoad");
     Road::fNextRoad = fNextRoad;
 }
