@@ -11,6 +11,7 @@ IVehicle::IVehicle(const std::string& license, double position, double velocity)
     REQUIRE(!license.empty(), "License plate must be valid");
 
     _initCheck = this;
+    moved = false;
     fLicensePlate = license;
 
     fPosition = position;
