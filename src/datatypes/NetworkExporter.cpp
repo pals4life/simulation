@@ -7,6 +7,7 @@
 // @description : 
 //============================================================================
 
+#include <libnet.h>
 #include "NetworkExporter.h"
 #include "../tests/DesignByContract.h"
 
@@ -23,7 +24,7 @@ void NetworkExporter::initialize(const Network* network, const std::string& name
     REQUIRE(network->properlyInitialized(), "Network was not initialized when calling printNetwork");
 
     kfNetwork = network;
-
+    mkdir("outputfiles", 0777);
     fOutputFile.open(("outputfiles/" + name + ".txt").c_str());
     ENSURE(fOutputFile.is_open(), "output file is not open");
 
