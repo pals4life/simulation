@@ -110,6 +110,7 @@ TEST_F(RoadTester, RoadUpdate5)
 
     delete testRoad;
 }
+
 TEST_F(RoadTester, RoadUpdate6)
 {
     Road* testRoad = new Road("E13", NULL, 1000, 100);
@@ -120,3 +121,69 @@ TEST_F(RoadTester, RoadUpdate6)
 
     ASSERT_EQ(testCar->getAcceleration(), -2);
 }
+
+/*
+TEST_F(RoadTester, RoadUpdate7)
+{
+
+    Road* testRoad0 = new Road("E13", NULL, 50, 150);
+    Road* testRoad1 = new Road("E13", testRoad0, 50, 150);
+
+    Car* testCar0 = new Car("12R3", 25, 75);
+
+    testRoad1->enqueue(testCar0);
+    testRoad1->update();
+
+
+    ASSERT_EQ(testCar0->getPosition(), 50);     // wordt de positie na van een auto opnieuw op nul gezet na het overgaan tussen 2 banen? Zo ja, waarom klopt deze test dan niet
+    ASSERT_TRUE(testRoad1->isEmpty());
+    ASSERT_FALSE(testRoad0->isEmpty());
+
+    delete testRoad0;
+    delete testRoad1;
+}
+
+// Deze test beschrijft wat er gebeurt als een auto per tick meer dan 1 straat aflegt, dit kan de code momenteel niet aan
+TEST_F(RoadTester, RoadUpdate8)
+{
+
+    Road* testRoad0 = new Road("E13", NULL, 50, 150);
+    Road* testRoad1 = new Road("E13", testRoad0, 50, 150);
+
+    Car* testCar0 = new Car("12R3", 25, 150);
+
+    testRoad1->enqueue(testCar0);
+    testRoad1->update();
+
+    ASSERT_TRUE(testRoad1->isEmpty());
+    ASSERT_TRUE(testRoad0->isEmpty());
+
+    delete testRoad0;
+    delete testRoad1;
+}
+
+// ik zie niet goed waarom hier een imminent car crash optreedt
+TEST_F(RoadTester, RoadUpdate9)
+{
+
+    Road* testRoad0 = new Road("E13", NULL, 50, 150);
+    Road* testRoad1 = new Road("E13", testRoad0, 50, 150);
+
+    Car* testCar0 = new Car("12R3", 25, 75);
+    Car* testCar1 = new Car("AE-12", 0, 60);
+
+    testRoad1->enqueue(testCar0);
+
+    testRoad1->update();
+
+
+    ASSERT_EQ(testCar0->getPosition(), 50);     // zelfde vraag als bij 7
+    ASSERT_EQ(testCar1->getPosition(), 10);
+
+    ASSERT_TRUE(testRoad1->isEmpty());
+    ASSERT_FALSE(testRoad0->isEmpty());
+
+    delete testRoad0;
+    delete testRoad1;
+}
+ */
