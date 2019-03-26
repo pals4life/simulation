@@ -62,6 +62,7 @@ TEST_F(RoadTester, RoadUpdate3)
 
     testRoad->enqueue(testCar);
     testRoad->update();
+    testRoad->isDone();
     testRoad->update();
     ASSERT_TRUE(testRoad->isEmpty());
 
@@ -107,13 +108,13 @@ TEST_F(RoadTester, RoadUpdate5)
 
 TEST_F(RoadTester, RoadUpdate6)
 {
-    Road* testRoad = new Road("E13", NULL, 1000, 100);
+    Road* testRoad = new Road("E13", NULL, 1000, 20);
     Car* testCar = new Car("12R3", 0, 120);
 
     testRoad->enqueue(testCar);
     testRoad->update();
 
-    ASSERT_EQ(testCar->getAcceleration(), -2);
+    ASSERT_EQ(testCar->getAcceleration(), testCar->getMinAcceleration());
 }
 
 TEST_F(RoadTester, RoadUpdate7)
