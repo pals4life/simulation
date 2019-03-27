@@ -10,6 +10,7 @@
 #include "../datatypes/NetworkExporter.h"
 #include <gtest/gtest.h>
 #include <fstream>
+#include <stdlib.h>
 
 class NetworkExporterTester : public ::testing::Test
 {
