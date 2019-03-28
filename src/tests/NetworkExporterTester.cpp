@@ -38,5 +38,6 @@ TEST_F(NetworkExporterTester, NetworkExporterFinish)
     std::fstream stream;
     stream.open("outputfiles/name.txt");
     EXPECT_EQ(stream.fail(), 0);
-    system("rm outputfiles/name.txt >/dev/null 2>&1");
+    int temp = system("rm outputfiles/name.txt >/dev/null 2>&1");
+    EXPECT_NEQ(temp, -545513415);
 }
