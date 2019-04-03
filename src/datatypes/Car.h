@@ -11,9 +11,9 @@
 #define ITERATORS_CAR_H
 
 
-#include "IVehicle.h"
+#include "Vehicle.h"
 
-class Car : public IVehicle
+class Car : public Vehicle
 {
 public:
     /**
@@ -26,14 +26,6 @@ public:
     Car(const std::string& license, double pos, double velocity);
 
     /**
-    * REQUIRE(speedLimit > 0, "Speedlimit must be greater than 0");
-    * REQUIRE(this->properlyInitialized(), "moved vehicle must be properly initialized");
-    *
-    * ENSURE((fAcceleration >= fgkMinAcceleration) && (fAcceleration <= fgkMaxAcceleration), "Acceleration is too high / low");
-    */
-    virtual void move(const IVehicle* next, double speedLimit, double offset = 0);
-
-    /**
     * REQUIRE(this->properlyInitialized(), "Car was not initialized when calling getVehicleLength");
     */
     virtual double getVehicleLength() const;
@@ -41,7 +33,7 @@ public:
     /**
     * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getType");
     */
-    virtual EVehicleType getType() const;
+    virtual std::string getType() const;
 
     /**
     * REQUIRE(this->properlyInitialized(), "Car was not initialized when calling getMaxVelocity");

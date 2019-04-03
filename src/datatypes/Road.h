@@ -11,7 +11,7 @@
 
 #include <deque>
 #include <iterator>
-#include "IVehicle.h"
+#include "Vehicle.h"
 
 class Road {
 
@@ -40,11 +40,11 @@ public:
 	bool isDone();
 
 	/**
-	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");
+	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling enqueue");
 	 *
 	 * ENSURE(fVehicles.front()->getPosition() <= fRoadLength, "Update failed to place vehicle on next road or delete it.");
 	 */
-	void enqueue(IVehicle *const vehicle);
+	void enqueue(Vehicle *const vehicle);
 
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");
@@ -53,59 +53,54 @@ public:
 	void dequeue();
 
 	/**
-	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");
+	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling isEmpty");
 	 */
-	bool isEmpty();
+	bool isEmpty() const;
 
 	/**
-	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");
+	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getBackVehicle");
 	 */
-	IVehicle *const getBackVehicle() const;
+    Vehicle *const getBackVehicle() const;
 
 	/**
-	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");
+	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextRoad");
 	 */
 	Road *const getNextRoad() const;
 
 	/**
-	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");
+	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling setNextRoad");
 	 */
-	void setNextRoad(Road *fNextRoad);
+	void setNextRoad(Road* fNextRoad);
 
 	/**
-	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");
+	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getRoadLength");
 	 */
 	double getRoadLength() const;
 
 	/**
-	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");
+	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getSpeedLimit");
 	 */
 	double getSpeedLimit() const;
 
 	/**
-	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");
+	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getName");
 	 */
 	const std::string &getName() const;
 
 	/**
-	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");
+	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getVehicles");
 	 */
-	void printVehicles(std::ostream &stream) const;
+	const std::deque<Vehicle*>& getVehicles() const;
 
 	/**
 	 * REQUIRE(a->properlyInitialized(), "Road was not initialized when calling operator ==");
 	 */
-	friend bool operator==(Road *const a, const std::string &b);
+	friend bool operator==(Road* a, const std::string &b);
 
 	/**
 	 * REQUIRE(b->properlyInitialized(), "Road was not initialized when calling operator ==");
 	 */
-	friend bool operator==(const std::string &a, Road *const b);
-
-	/**
-	 * REQUIRE(road.properlyInitialized(), "Road was not initialized when calling operator >>");
-	 */
-	friend std::ostream &operator<<(std::ostream &stream, const Road &road);
+	friend bool operator==(const std::string &a, Road* b);
 
 private:
 	double fRoadLength;
@@ -113,10 +108,9 @@ private:
 	std::string fName;
 
 	Road* fNextRoad;
-	std::deque<IVehicle*> fVehicles;
+	std::deque<Vehicle*> fVehicles;
 
 	Road* _initCheck;
-
 };
 
 

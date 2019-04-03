@@ -60,19 +60,18 @@ void Road::update()
         else break;                                         // break, because if the first car is still on the road everyone behind him is also still on the road
     }
     if(fVehicles.empty()) return;
-
     ENSURE(fVehicles.front()->getPosition() <= fRoadLength, "Update failed to place vehicle on next road or delete it.");
 }
 
 bool Road::isDone()
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling isDone");
-    for(uint32_t i = 0; i < fVehicles.size(); i++) fVehicles[i]->setMoved() = false;
+    for(uint32_t i = 0; i < fVehicles.size(); i++) fVehicles[i]->setMoved(false);
 
     return !isEmpty();
 }
 
-void Road::enqueue(IVehicle* const vehicle)
+void Road::enqueue(Vehicle* const vehicle)
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling enqueue");
     REQUIRE(vehicle->properlyInitialized(), "Vehicle was not initialized when calling enqueue");
@@ -88,23 +87,23 @@ void Road::dequeue()
 
     if(fNextRoad == NULL)
     {
-         delete fVehicles.front();     // free memory if they leave the simulation
+         delete fVehicles.front();                                                      // free memory if they leave the simulation
     }
     else
     {
-        fVehicles.front()->getPosition() -= fRoadLength; // current position minus roadlength
-        fNextRoad->enqueue(fVehicles.front());           // enqueue in next road if there is one
+        fVehicles.front()->setPosition(fVehicles.front()->getPosition() - fRoadLength); // current position minus roadlength
+        fNextRoad->enqueue(fVehicles.front());                                          // enqueue in next road if there is one
     }
-    fVehicles.pop_front();                              // remove from the queue
+    fVehicles.pop_front();                                                              // remove from the queue
 }
 
-bool Road::isEmpty()
+bool Road::isEmpty() const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling isEmpty");
     return fVehicles.empty();
 }
 
-IVehicle* const Road::getBackVehicle() const
+Vehicle* const Road::getBackVehicle() const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getBackVehicle");
     if(fVehicles.empty()) return NULL;
@@ -135,14 +134,10 @@ const std::string& Road::getName() const
     return fName;
 }
 
-void Road::printVehicles(std::ostream& stream) const
+const std::deque<Vehicle*>& Road::getVehicles() const
 {
-    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling printVehicles");
-    for(uint32_t i = 0; i < fVehicles.size(); i++)
-    {
-        fVehicles[i]->printVehicle(stream, fName);
-        stream << '\n';
-    }
+    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getVehicles");
+    return fVehicles;
 }
 
 bool operator==(Road* const a, const std::string& b)
@@ -157,19 +152,10 @@ bool operator==(const std::string& a, Road* const b)
     return b->fName == a;
 }
 
-std::ostream& operator<<(std::ostream& stream, const Road& road)
-{
-    REQUIRE(road.properlyInitialized(), "Road was not initialized when calling operator >>");
-    stream << "Baan : " + road.fName + '\n';
-    stream << "  -> snelheidslimiet: "  << road.fSpeedLimit * 3.6 << '\n';
-    stream << "  -> lengte         : "  << road.fRoadLength       << '\n';
-    return stream;
-}
-
-void Road::setNextRoad(Road *fNextRoad)
+void Road::setNextRoad(Road* const kNextRoad)
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling setNextRoad");
-    Road::fNextRoad = fNextRoad;
+    Road::fNextRoad = kNextRoad;
 }
 
 

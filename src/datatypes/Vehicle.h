@@ -12,9 +12,7 @@
 
 #include <string>
 
-enum EVehicleType {kCar};
-
-class IVehicle
+class Vehicle
 {
 public:
     /**
@@ -24,13 +22,11 @@ public:
      *
      * ENSURE(this->properlyInitialized(), "Vehicle constructor must end in properlyInitialized state");
      */
-    IVehicle(const std::string& license, double pos, double velocity);
-    virtual ~IVehicle(){}
-
-    virtual void move(const IVehicle* next, double speedLimit, double offset = 0) = 0;
+    Vehicle(const std::string& license, double pos, double velocity);
+    virtual ~Vehicle(){}
 
     virtual double getVehicleLength() const = 0;
-    virtual EVehicleType getType() const = 0;
+    virtual std::string getType() const = 0;
 
     virtual double getMaxVelocity() const = 0;
     virtual double getMinVelocity() const = 0;
@@ -41,14 +37,32 @@ public:
     bool properlyInitialized() const;
 
     /**
+    * REQUIRE(speedLimit > 0, "Speedlimit must be greater than 0");
+    * REQUIRE(this->properlyInitialized(), "moved vehicle must be properly initialized");
+    *
+    * ENSURE(getVelocity() >= 0, "Velocity cannot be negative");
+    * ENSURE((getAcceleration() >= getMinAcceleration()) && (getAcceleration() <= getMinAcceleration()), "Acceleration is too high / low");
+    */
+    void move(const Vehicle* next, double speedLimit, double offset = 0);
+
+    double getFollowingAcceleration(const Vehicle* next, double offset = 0) const;
+
+    std::pair<double, double> getMinMaxAcceleration(double speedlimit) const;
+
+    /**
      * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getLicensePlate");
      */
-    std::string getLicensePlate();
+    std::string getLicensePlate()const;
 
     /**
      * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getPosition");
      */
     double getPosition() const;
+
+    /**
+     * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling setPosition");
+     */
+    void setPosition(double position);
 
     /**
      * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getVelocity");
@@ -61,41 +75,20 @@ public:
     double getAcceleration() const;
 
     /**
-     * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getPosition");
-     */
-    double& getPosition();
-
-    /**
-     * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getVelocity");
-     */
-    double& getVelocity();
-
-    /**
-     * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getAcceleration");
-     */
-    double& getAcceleration();
-
-    /**
      * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling setMoved");
      */
-    bool& setMoved();
+    void setMoved(bool moved);
 
     /**
      * REQUIRE(a.properlyInitialized() && b.properlyInitialized(), "one of the Vehicles was not initialized when calling operator<");
      */
-    friend bool operator<(const IVehicle& a, const IVehicle& b);
-
-    /**
-     * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling printVehicle");
-     */
-    void printVehicle(std::ostream& stream, const std::string& roadName) const;
-
+    friend bool operator<(const Vehicle& a, const Vehicle& b);
 
 protected:
-    IVehicle* _initCheck;
+    Vehicle* _initCheck;
 
     std::string fLicensePlate;
-    bool moved;
+    bool fMoved;
 
     double fPosition;
     double fVelocity;

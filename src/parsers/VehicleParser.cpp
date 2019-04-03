@@ -18,7 +18,7 @@ VehicleParser::VehicleParser() {
     ENSURE(this->properlyInitialized(), "VehicleParser was not initialized when constructed");
 }
 
-IVehicle *VehicleParser::parseVehicle(TiXmlElement *const element) {
+Vehicle *VehicleParser::parseVehicle(TiXmlElement *const element) {
     REQUIRE(this->properlyInitialized(), "VehicleParser was not initialized when calling parseVehicle");
     REQUIRE(element, "Failed to parse vehicle: no element");
     const std::string kType = readElement(element, "type");
@@ -61,7 +61,7 @@ IVehicle *VehicleParser::parseVehicle(TiXmlElement *const element) {
     return fVehicle;
 }
 
-IVehicle *VehicleParser::getVehicle() const {
+Vehicle *VehicleParser::getVehicle() const {
     REQUIRE(this->properlyInitialized(), "VehicleParser was not initialized when calling getVehicle");
     ENSURE(fVehicle, "Failed to parse vehicle: no vehicle");
     return fVehicle;

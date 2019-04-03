@@ -40,7 +40,7 @@ public:
 	/**
 	 * 	REQUIRE(a && b, "Failed to compare vehicle pointers: no vehicles");
 	 */
-	static bool compareVehiclePointers(const IVehicle *a, const IVehicle *b);
+	static bool compareVehiclePointers(const Vehicle *a, const Vehicle *b);
 
 private:
 	Network *fNetwork;

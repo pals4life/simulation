@@ -31,7 +31,10 @@ void NetworkExporter::initialize(const Network* network, const std::string& name
 
     for(uint32_t i = 0; i < kfNetwork->fRoads.size(); i++)
     {
-        fOutputFile << *kfNetwork->fRoads[i];
+        const Road* road = kfNetwork->fRoads[i];
+        fOutputFile << "Baan : " + road->getName() + '\n';
+        fOutputFile << "  -> snelheidslimiet: "  << road->getSpeedLimit() * 3.6 << '\n';
+        fOutputFile << "  -> lengte         : "  << road->getRoadLength()       << '\n';
     }
     fIsInitialized = true;
 }
@@ -55,7 +58,15 @@ void NetworkExporter::addSection(uint32_t number)
     else fOutputFile << "State of the network after " << number << " tick has passed:\n\n";
     for(uint32_t i = 0; i < kfNetwork->fRoads.size(); i++)
     {
-        kfNetwork->fRoads[i]->printVehicles(fOutputFile);
+        const Road* road = kfNetwork->fRoads[i];
+        for(uint32_t j = 0; j < road->getVehicles().size(); j++)
+        {
+            const Vehicle* vehicle = road->getVehicles()[j];
+            fOutputFile << "Voertuig: " + vehicle->getType() +'('+ vehicle->getLicensePlate() + ")\n";
+            fOutputFile << "  -> Baan    : " << road->getName()            << '\n';
+            fOutputFile << "  -> Positie : " << vehicle->getPosition()     << '\n';
+            fOutputFile << "  -> Snelheid: " << vehicle->getVelocity()*3.6 << '\n';
+        }
     }
 }
 

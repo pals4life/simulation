@@ -22,7 +22,7 @@ Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
 	RoadParser rp;
 	VehicleParser vp;
 	std::vector<Road *> roads;
-	std::map<std::string, std::vector<IVehicle *> > tempRoads;
+	std::map<std::string, std::vector<Vehicle *> > tempRoads;
 	for (TiXmlElement *elem = element->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement()) {
 		const std::string kType = elem->Value();
 		if (kType == "BAAN") {
@@ -49,7 +49,7 @@ Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
 				}
 			}
 		} else if (kType == "VOERTUIG") {
-			IVehicle *vehicle = vp.parseVehicle(elem);
+            Vehicle *vehicle = vp.parseVehicle(elem);
 			if (vehicle) {
 				tempRoads[vp.parseRoad(elem)].push_back(vehicle);
 			}
@@ -57,18 +57,18 @@ Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
 			std::cerr << "Failed to recognize element " + kType + ": skipping element" << std::endl;
 		}
 	}
-	for (std::map<std::string, std::vector<IVehicle *> >::iterator it1 = tempRoads.begin();
+	for (std::map<std::string, std::vector<Vehicle *> >::iterator it1 = tempRoads.begin();
 		 it1 != tempRoads.end(); it1++) {
 		std::sort(it1->second.begin(), it1->second.end(), compareVehiclePointers);
 		std::vector<Road *>::iterator found = std::find(roads.begin(), roads.end(), it1->first);
 		if (found != roads.end()) {
 			Road *foundRoad = *found;
-			for (std::vector<IVehicle *>::iterator it2 = it1->second.begin(); it2 != it1->second.end(); it2++) {
+			for (std::vector<Vehicle *>::iterator it2 = it1->second.begin(); it2 != it1->second.end(); it2++) {
 				if ((*it2)->getPosition() >= foundRoad->getRoadLength()) {
 					std::cerr << "Inconsistent traffic situation: car " << (*it2)->getLicensePlate() << "is not on road "
 							  << it1->first << std::endl;
 				}
-				std::vector<IVehicle *>::iterator it3 = it2;
+				std::vector<Vehicle *>::iterator it3 = it2;
 				if (++it3 < it1->second.end() && (*it2)->getPosition() - (*it3)->getPosition() < 5) {
 					std::cerr << "Inconsistent traffic situation: car " << (*it2)->getLicensePlate()
 							  << " is less than 5m away from car " << (*it3)->getLicensePlate() << " on road "
@@ -77,7 +77,7 @@ Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
 				const double kFromEnd = foundRoad->getRoadLength() - (*it2)->getPosition();
 				if (kFromEnd < 5) {
 					if (Road *nextRoad = foundRoad->getNextRoad()) {
-						IVehicle *nextVehicle = NULL;
+                        Vehicle *nextVehicle = NULL;
 						if (!tempRoads[nextRoad->getName()].empty()) {
 							nextVehicle = tempRoads[nextRoad->getName()].front();
 							if (nextVehicle->getPosition() + kFromEnd < 5) {
@@ -110,7 +110,7 @@ NetworkParser::NetworkParser() {
 	ENSURE(this->properlyInitialized(), "NetworkParser was not initialized when constructed");
 }
 
-bool NetworkParser::compareVehiclePointers(const IVehicle *a, const IVehicle *b) {
+bool NetworkParser::compareVehiclePointers(const Vehicle *a, const Vehicle *b) {
 	REQUIRE(a && b, "Failed to compare vehicle pointers: no vehicles");
 	return *a < *b;
 }
