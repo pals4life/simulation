@@ -24,7 +24,7 @@ void NetworkExporter::initialize(const Network* network, const std::string& name
     REQUIRE(network->properlyInitialized(), "Network was not initialized when calling printNetwork");
 
     kfNetwork = network;
-    int res = system("mkdir outputfiles");
+    int res = system("mkdir outputfiles >/dev/null 2>&1");
     ENSURE(res == 0 or res == 256, "could not make directory");
     fOutputFile.open(("outputfiles/" + name + ".txt").c_str());
     ENSURE(fOutputFile.is_open(), "output file is not open");

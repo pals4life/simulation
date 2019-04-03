@@ -10,6 +10,7 @@
 #include "../datatypes/NetworkExporter.h"
 #include <gtest/gtest.h>
 #include <fstream>
+#include <stdlib.h>
 
 class NetworkExporterTester : public ::testing::Test
 {
@@ -37,4 +38,6 @@ TEST_F(NetworkExporterTester, NetworkExporterFinish)
     std::fstream stream;
     stream.open("outputfiles/name.txt");
     EXPECT_EQ(stream.fail(), 0);
+    int temp = system("rm outputfiles/name.txt >/dev/null 2>&1");
+    EXPECT_NE(temp, -545513415); //TODO no exception
 }

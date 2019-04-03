@@ -14,7 +14,7 @@
 bool VAbstractParser::loadFile(const std::string &kFilename) {
 	REQUIRE(this->properlyInitialized(), "Parser was not initialized when calling loadfile");
 	REQUIRE(!kFilename.empty(), "Failed to load file: no filename");
-	ENSURE(fDoc.LoadFile(kFilename.c_str()), fDoc.ErrorDesc());
+	ENSURE(fDoc.LoadFile(kFilename.c_str()), fDoc.ErrorDesc()); //TODO no ensure
 	fRoot = fDoc.FirstChildElement();
 	ENSURE(fRoot, "Failed to load file: no root element");
 	return true;
