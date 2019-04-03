@@ -1,19 +1,19 @@
 //============================================================================
-// @name        : Car.h
+// @name        : Bus.h
 // @author      : Thomas Dooms
-// @date        : 26/02/2019
-// @version     : 1.0
-// @copyright   : Project Software Engineering - BA1 Informatica - Thomas Dooms - University of Antwerp
-// @description : implementation of the vehicle interface
+// @date        : 4/3/19
+// @version     : 
+// @copyright   : BA1 Informatica - Thomas Dooms - University of Antwerp
+// @description : 
 //============================================================================
 
-#ifndef ITERATORS_CAR_H
-#define ITERATORS_CAR_H
 
+#ifndef SIMULATION_BUS_H
+#define SIMULATION_BUS_H
 
 #include "Vehicle.h"
 
-class Car : public Vehicle
+class Bus : public Vehicle
 {
 public:
     /**
@@ -23,10 +23,10 @@ public:
     *
     * ENSURE(this->properlyInitialized(), "Vehicle constructor must end in properlyInitialized state");
     */
-    Car(const std::string& license, double pos, double velocity);
+    Bus(const std::string& license, double pos, double velocity);
 
     /**
-    * REQUIRE(this->properlyInitialized(), "Car was not initialized when calling getVehicleLength");
+    * REQUIRE(this->properlyInitialized(), "Bus was not initialized when calling getVehicleLength");
     */
     virtual double getVehicleLength() const;
 
@@ -36,22 +36,22 @@ public:
     virtual std::string getType() const;
 
     /**
-    * REQUIRE(this->properlyInitialized(), "Car was not initialized when calling getMaxVelocity");
+    * REQUIRE(this->properlyInitialized(), "Bus was not initialized when calling getMaxSpeed");
     */
-    virtual double getMaxVelocity() const;
+    virtual double getMaxSpeed() const;
 
     /**
-    * REQUIRE(this->properlyInitialized(), "Car was not initialized when calling getMinVelocity");
+    * REQUIRE(this->properlyInitialized(), "Bus was not initialized when calling getMinSpeed");
     */
-    virtual double getMinVelocity() const;
+    virtual double getMinSpeed() const;
 
     /**
-    * REQUIRE(this->properlyInitialized(), "Car was not initialized when calling getMaxAcceleration");
+    * REQUIRE(this->properlyInitialized(), "Bus was not initialized when calling getMaxAcceleration");
     */
     virtual double getMaxAcceleration() const;
 
     /**
-    * REQUIRE(this->properlyInitialized(), "Car was not initialized when calling getMinAcceleration");
+    * REQUIRE(this->properlyInitialized(), "Bus was not initialized when calling getMinAcceleration");
     */
     virtual double getMinAcceleration() const;
 
@@ -66,4 +66,4 @@ protected:
 };
 
 
-#endif //ITERATORS_CAR_H
+#endif //SIMULATION_BUS_H

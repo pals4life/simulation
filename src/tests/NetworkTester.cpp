@@ -9,7 +9,7 @@
 
 #include <gtest/gtest.h>
 #include "../datatypes/Network.h"
-#include "../datatypes/Car.h"
+#include "../datatypes/Vehicles/Car.h"
 
 class NetworkTester : public ::testing::Test
 {

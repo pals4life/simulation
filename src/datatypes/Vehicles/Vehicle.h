@@ -28,8 +28,8 @@ public:
     virtual double getVehicleLength() const = 0;
     virtual std::string getType() const = 0;
 
-    virtual double getMaxVelocity() const = 0;
-    virtual double getMinVelocity() const = 0;
+    virtual double getMaxSpeed() const = 0;
+    virtual double getMinSpeed() const = 0;
 
     virtual double getMaxAcceleration() const = 0;
     virtual double getMinAcceleration() const = 0;

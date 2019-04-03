@@ -37,14 +37,14 @@ public:
     virtual std::string getType() const;
 
     /**
-    * REQUIRE(this->properlyInitialized(), "Motorcycle was not initialized when calling getMaxVelocity");
+    * REQUIRE(this->properlyInitialized(), "Motorcycle was not initialized when calling getMaxSpeed");
     */
-    virtual double getMaxVelocity() const;
+    virtual double getMaxSpeed() const;
 
     /**
-    * REQUIRE(this->properlyInitialized(), "Motorcycle was not initialized when calling getMinVelocity");
+    * REQUIRE(this->properlyInitialized(), "Motorcycle was not initialized when calling getMinSpeed");
     */
-    virtual double getMinVelocity() const;
+    virtual double getMinSpeed() const;
 
     /**
     * REQUIRE(this->properlyInitialized(), "Motorcycle was not initialized when calling getMaxAcceleration");

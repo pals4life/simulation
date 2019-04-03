@@ -10,7 +10,7 @@
 #include <iostream>
 #include <algorithm>
 #include "VehicleParser.h"
-#include "../datatypes/Car.h"
+#include "../datatypes/Vehicles/Car.h"
 #include "../tests/DesignByContract.h"
 
 VehicleParser::VehicleParser() {

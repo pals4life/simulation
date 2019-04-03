@@ -8,7 +8,7 @@
 //============================================================================
 
 #include <gtest/gtest.h>
-#include "../datatypes/Car.h"
+#include "../datatypes/Vehicles/Car.h"
 
 class CarTester : public ::testing::Test
 {

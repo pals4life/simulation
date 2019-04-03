@@ -1,6 +1,6 @@
 #include "Vehicle.h"
 #include <iostream>
-#include "../tests/DesignByContract.h"
+#include "../../tests/DesignByContract.h"
 
 double clamp(double val, double min, double max){ return std::max(std::min(val, max), min); }
 
@@ -61,8 +61,11 @@ double Vehicle::getFollowingAcceleration(const Vehicle* next, double offset) con
 
 std::pair<double, double> Vehicle::getMinMaxAcceleration(double speedlimit) const
 {
-    double maxAcceleration = speedlimit - getVelocity();                                // check if going to fast
-    double minAcceleration = -getVelocity();                                            // check if going too slow
+    double maxSpeed = std::min(speedlimit, getMaxSpeed());                              // take the maxSpeed as the minimum of both
+    double minSpeed = std::max(0.0       , getMinSpeed());                              // if the minimum speed is negative for some reason
+
+    double maxAcceleration = maxSpeed - getVelocity();                                  // check if going to fast
+    double minAcceleration = minSpeed - getVelocity();                                  // check if going too slow
 
     double clampedMax = clamp(maxAcceleration, getMinAcceleration(), getMaxAcceleration());
     double clampedMin = clamp(minAcceleration, getMinAcceleration(), getMaxAcceleration());

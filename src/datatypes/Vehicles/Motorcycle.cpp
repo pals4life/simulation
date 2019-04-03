@@ -8,13 +8,13 @@
 //============================================================================
 
 #include "Motorcycle.h"
-#include "../tests/DesignByContract.h"
+#include "../../tests/DesignByContract.h"
 
 const double Motorcycle::fgkMaxAcceleration = 4.0;
 const double Motorcycle::fgkMinAcceleration = -10.0;
 
 const double Motorcycle::fgkMinSpeed = 0.0;
-const double Motorcycle::fgkMaxSpeed = 180.0;
+const double Motorcycle::fgkMaxSpeed = 180.0 / 3.6;
 
 const double Motorcycle::fgkVehicleLength = 1;
 
@@ -32,15 +32,15 @@ std::string Motorcycle::getType() const
     return "motorfiets";
 }
 
-double Motorcycle::getMaxVelocity() const
+double Motorcycle::getMaxSpeed() const
 {
-    REQUIRE(this->properlyInitialized(), "Motorcycle was not initialized when calling getMaxVelocity");
+    REQUIRE(this->properlyInitialized(), "Motorcycle was not initialized when calling getMaxSpeed");
     return fgkMaxSpeed;
 }
 
-double Motorcycle::getMinVelocity() const
+double Motorcycle::getMinSpeed() const
 {
-    REQUIRE(this->properlyInitialized(), "Motorcycle was not initialized when calling getMinVelocity");
+    REQUIRE(this->properlyInitialized(), "Motorcycle was not initialized when calling getMinSpeed");
     return fgkMinSpeed;
 }
 

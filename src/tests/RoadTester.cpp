@@ -9,7 +9,7 @@
 
 #include <gtest/gtest.h>
 #include "../datatypes/Road.h"
-#include "../datatypes/Car.h"
+#include "../datatypes/Vehicles/Car.h"
 
 class RoadTester : public ::testing::Test
 {
