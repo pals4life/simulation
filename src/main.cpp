@@ -13,7 +13,7 @@
 
 #include "gtest/gtest.h"
 
-#include "tests/DesignByContract.h"
+#include "datatypes/DesignByContract.h"
 
 int main(int argc, char **argv) {
 	REQUIRE(argc == 2, "argument count must be 1");

@@ -7,8 +7,9 @@
 // @description :
 //============================================================================
 #include <stdint.h>
+#include <algorithm>
 #include "Road.h"
-#include "../tests/DesignByContract.h"
+#include "DesignByContract.h"
 
 Road::Road(const std::string& name, Road* next, double length, double speedLimit)
 {
@@ -40,27 +41,32 @@ Road::~Road()
 void Road::update()
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");
-
-    if(fVehicles.empty()) return;                           // if there are no vehicles we do not need to update.
+    if(fVehicles.empty()) return;   // if there are no vehicles we do not need to update.
 
     for(uint32_t i = 1; i < fVehicles.size(); i++)
     {
-        fVehicles[i]->move(fVehicles[i-1], fSpeedLimit);
+        const double pos = fVehicles[i]->getPosition();
+        std::pair<const IVehicle*, double> nextVehicle = std::pair<const IVehicle*, double>(fVehicles[i-1], 0);
+        fVehicles[i]->move(nextVehicle, getNextTrafficLight(pos), getNextBusStop(pos), getSpeedLimit(pos));
     }
 
-    if(fNextRoad == NULL) fVehicles.front()->move(NULL, fSpeedLimit);
-    else fVehicles.front()->move(fNextRoad->getBackVehicle(), fSpeedLimit, fRoadLength);
+    const double    pos  = fVehicles.front()->getPosition();
+    const IVehicle* next = (fNextRoad == NULL) ? NULL : fNextRoad->getBackVehicle();
+    std::pair<const IVehicle*, double> nextVehicle =  std::pair<const IVehicle*, double>(next, fRoadLength);
+    fVehicles.front()->move(nextVehicle, getNextTrafficLight(pos), getNextBusStop(pos), getSpeedLimit(pos));
 
-    while(!fVehicles.empty())                               // as long there are vehicles we can delete
+    dequeueFinishedVehicles();
+}
+
+void Road::dequeueFinishedVehicles()
+{
+    while(!fVehicles.empty())                                           // as long there are vehicles we can delete
     {
-        if(fVehicles.front()->getPosition() > fRoadLength)  // check if they have left the road
-        {
-            dequeue();
-        }
-        else break;                                         // break, because if the first car is still on the road everyone behind him is also still on the road
+        if(fVehicles.front()->getPosition() > fRoadLength) dequeue();   // check if they have left the road
+        else break;                                                     // break, because if the first car is still on the road everyone behind him is also still on the road
     }
     if(fVehicles.empty()) return;
-    ENSURE(fVehicles.front()->getPosition() <= fRoadLength, "Update failed to place vehicle on next road or delete it.");
+    ENSURE(fVehicles.front()->getPosition() <= getRoadLength(), "Update failed to place vehicle on next road or delete it.");
 }
 
 bool Road::isDone()
@@ -71,7 +77,7 @@ bool Road::isDone()
     return !isEmpty();
 }
 
-void Road::enqueue(Vehicle* const vehicle)
+void Road::enqueue(IVehicle* const vehicle)
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling enqueue");
     REQUIRE(vehicle->properlyInitialized(), "Vehicle was not initialized when calling enqueue");
@@ -103,7 +109,7 @@ bool Road::isEmpty() const
     return fVehicles.empty();
 }
 
-Vehicle* const Road::getBackVehicle() const
+IVehicle* const Road::getBackVehicle() const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getBackVehicle");
     if(fVehicles.empty()) return NULL;
@@ -134,7 +140,7 @@ const std::string& Road::getName() const
     return fName;
 }
 
-const std::deque<Vehicle*>& Road::getVehicles() const
+const std::deque<IVehicle*>& Road::getVehicles() const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getVehicles");
     return fVehicles;
@@ -156,6 +162,51 @@ void Road::setNextRoad(Road* const kNextRoad)
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling setNextRoad");
     Road::fNextRoad = kNextRoad;
+}
+
+double Road::getSpeedLimit(double position) const
+{
+    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getSpeedLimit");
+    REQUIRE(position >= 0 and position < getRoadLength(), "position not valid");
+    return (--std::upper_bound(fZones.begin(), fZones.end(), position))->fSpeedlimit;
+}
+
+// als wegen een cirkel vormen en geen bushaltes bevatten, leidt dit tot een oneidige loop.
+std::pair<const BusStop*, double> Road::getNextBusStop(double position) const
+{
+    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextBusStop");
+    REQUIRE(position >= 0 and position < getRoadLength(), "position not valid");
+    const std::vector<BusStop>::const_iterator iter = std::upper_bound(fBusStops.begin(), fBusStops.end(), position);
+    if(iter == fBusStops.end())
+    {
+        if(fNextRoad == NULL) return std::pair<const BusStop*, double>(NULL, 0);
+        else
+        {
+            std::pair<const BusStop*, double> next = getNextBusStop(0);
+            next.second += fRoadLength;
+            return next;
+        }
+    }
+    else return std::pair<const BusStop*, double>(iter.base(), 0);
+}
+
+// als wegen een cirkel vormen en geen bushaltes bevatten, leidt dit tot een oneidige loop.
+std::pair<const TrafficLight*, double> Road::getNextTrafficLight(double position) const
+{
+    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextTrafficLight");
+    REQUIRE(position >= 0 and position < getRoadLength(), "position not valid");
+    const std::vector<TrafficLight>::const_iterator iter = std::upper_bound(fTrafficLights.begin(), fTrafficLights.end(), position);
+    if(iter == fTrafficLights.end())
+    {
+        if(fNextRoad == NULL) return std::pair<const TrafficLight*, double>(NULL, 0);
+        else
+        {
+            std::pair<const TrafficLight*, double> next = getNextTrafficLight(0);
+            next.second += fRoadLength;
+            return next;
+        }
+    }
+    else return std::pair<const TrafficLight*, double>(iter.base(), 0);
 }
 
 

@@ -11,14 +11,14 @@
 #include <algorithm>
 #include "VehicleParser.h"
 #include "../datatypes/Vehicles/Car.h"
-#include "../tests/DesignByContract.h"
+#include "../datatypes/DesignByContract.h"
 
 VehicleParser::VehicleParser() {
     fVehicle = NULL;
     ENSURE(this->properlyInitialized(), "VehicleParser was not initialized when constructed");
 }
 
-Vehicle *VehicleParser::parseVehicle(TiXmlElement *const element) {
+IVehicle *VehicleParser::parseVehicle(TiXmlElement *const element) {
     REQUIRE(this->properlyInitialized(), "VehicleParser was not initialized when calling parseVehicle");
     REQUIRE(element, "Failed to parse vehicle: no element");
     const std::string kType = readElement(element, "type");
@@ -61,7 +61,7 @@ Vehicle *VehicleParser::parseVehicle(TiXmlElement *const element) {
     return fVehicle;
 }
 
-Vehicle *VehicleParser::getVehicle() const {
+IVehicle *VehicleParser::getVehicle() const {
     REQUIRE(this->properlyInitialized(), "VehicleParser was not initialized when calling getVehicle");
     ENSURE(fVehicle, "Failed to parse vehicle: no vehicle");
     return fVehicle;

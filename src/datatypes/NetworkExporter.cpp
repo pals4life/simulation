@@ -8,7 +8,7 @@
 //============================================================================
 
 #include "NetworkExporter.h"
-#include "../tests/DesignByContract.h"
+#include "DesignByContract.h"
 #include <stdlib.h>
 
 NetworkExporter::NetworkExporter()
@@ -61,7 +61,7 @@ void NetworkExporter::addSection(uint32_t number)
         const Road* road = kfNetwork->fRoads[i];
         for(uint32_t j = 0; j < road->getVehicles().size(); j++)
         {
-            const Vehicle* vehicle = road->getVehicles()[j];
+            const IVehicle* vehicle = road->getVehicles()[j];
             fOutputFile << "Voertuig: " + vehicle->getType() +'('+ vehicle->getLicensePlate() + ")\n";
             fOutputFile << "  -> Baan    : " << road->getName()            << '\n';
             fOutputFile << "  -> Positie : " << vehicle->getPosition()     << '\n';

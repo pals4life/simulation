@@ -11,7 +11,9 @@
 
 #include <deque>
 #include <iterator>
-#include "Vehicles/Vehicle.h"
+#include <vector>
+#include "Vehicles/IVehicle.h"
+#include "TrafficSigns.h"
 
 class Road {
 
@@ -34,6 +36,11 @@ public:
 	 */
 	void update();
 
+    /**
+     * ENSURE(fVehicles.front()->getPosition() <= getRoadLength(), "Update failed to place vehicle on next road or delete it.");
+     */
+	void dequeueFinishedVehicles();
+
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling isDone");
 	 */
@@ -42,9 +49,9 @@ public:
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling enqueue");
 	 *
-	 * ENSURE(fVehicles.front()->getPosition() <= fRoadLength, "Update failed to place vehicle on next road or delete it.");
+	 * ENSURE(getVehicles().front()->getPosition() <= getRoadLength(), "Update failed to place vehicle on next road or delete it.");
 	 */
-	void enqueue(Vehicle *const vehicle);
+	void enqueue(IVehicle *const vehicle);
 
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");
@@ -60,7 +67,7 @@ public:
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getBackVehicle");
 	 */
-    Vehicle *const getBackVehicle() const;
+    IVehicle *const getBackVehicle() const;
 
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextRoad");
@@ -79,18 +86,37 @@ public:
 
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getSpeedLimit");
+	 * DEPRECATED!!!
 	 */
 	double getSpeedLimit() const;
 
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getName");
 	 */
-	const std::string &getName() const;
+	const std::string& getName() const;
 
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getVehicles");
 	 */
-	const std::deque<Vehicle*>& getVehicles() const;
+	const std::deque<IVehicle*>& getVehicles() const;
+
+    /**
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getSpeedLimit");
+     * REQUIRE(position >= 0 and position < getRoadLength(), "position not valid");
+     */
+	double getSpeedLimit(double position) const;
+
+    /**
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextBusStop");
+     * REQUIRE(position >= 0 and position < getRoadLength(), "position not valid");
+     */
+    std::pair<const BusStop*, double> getNextBusStop(double position) const;
+
+    /**
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextTrafficLight");
+     * REQUIRE(position >= 0 and position < getRoadLength(), "position not valid");
+     */
+    std::pair<const TrafficLight*, double> getNextTrafficLight(double position) const;
 
 	/**
 	 * REQUIRE(a->properlyInitialized(), "Road was not initialized when calling operator ==");
@@ -108,7 +134,11 @@ private:
 	std::string fName;
 
 	Road* fNextRoad;
-	std::deque<Vehicle*> fVehicles;
+	std::deque<IVehicle*> fVehicles;
+
+	std::vector<Zone> fZones;
+	std::vector<BusStop> fBusStops;
+	std::vector<TrafficLight> fTrafficLights;
 
 	Road* _initCheck;
 };

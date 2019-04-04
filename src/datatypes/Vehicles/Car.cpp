@@ -1,5 +1,5 @@
 #include "Car.h"
-#include "../../tests/DesignByContract.h"
+#include "../DesignByContract.h"
 
 const double Car::fgkMaxAcceleration = 2.0;
 const double Car::fgkMinAcceleration = -8.0;
@@ -9,7 +9,7 @@ const double Car::fgkMaxSpeed = 150.0 / 3.6;
 
 const double Car::fgkVehicleLength = 3;
 
-Car::Car(const std::string& license, double position, double velocity) : Vehicle(license, position, velocity){}
+Car::Car(const std::string& license, double position, double velocity) : IVehicle(license, position, velocity){}
 
 double Car::getVehicleLength() const
 {

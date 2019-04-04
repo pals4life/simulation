@@ -8,7 +8,7 @@
 //============================================================================
 
 #include "Bus.h"
-#include "../../tests/DesignByContract.h"
+#include "../DesignByContract.h"
 
 const double Bus::fgkMaxAcceleration = 1.0;
 const double Bus::fgkMinAcceleration = -7.0;
@@ -18,7 +18,7 @@ const double Bus::fgkMaxSpeed = 70.0 / 3.6;
 
 const double Bus::fgkVehicleLength = 10;
 
-Bus::Bus(const std::string& license, double position, double velocity) : Vehicle(license, position, velocity){}
+Bus::Bus(const std::string& license, double position, double velocity) : IVehicle(license, position, velocity){}
 
 double Bus::getVehicleLength() const
 {

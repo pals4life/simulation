@@ -12,7 +12,7 @@
 
 #include <set>
 #include "tinyxml/tinyxml.h"
-#include "../datatypes/Vehicles/Vehicle.h"
+#include "../datatypes/Vehicles/IVehicle.h"
 #include "VAbstractParser.h"
 
 class VehicleParser : public VAbstractParser {
@@ -28,13 +28,13 @@ public:
 	 *	REQUIRE(element, "Failed to parse vehicle: no element");
 	 *	ENSURE(fVehicle, "Failed to parse vehicle: no vehicle");
 	 */
-    Vehicle *parseVehicle(TiXmlElement *element);
+    IVehicle *parseVehicle(TiXmlElement *element);
 
 	/**
 	 * 	REQUIRE(this->properlyInitialized(), "VehicleParser was not initialized when calling getVehicle");
 	 *	ENSURE(fVehicle, "Failed to parse vehicle: no vehicle");
 	 */
-    Vehicle *getVehicle() const;
+    IVehicle *getVehicle() const;
 
 	/**
 	 * 	REQUIRE(this->properlyInitialized(), "VehicleParser was not initialized when calling parseRoad");
@@ -42,7 +42,7 @@ public:
 	std::string parseRoad(TiXmlElement *element);
 
 private:
-    Vehicle *fVehicle;
+    IVehicle *fVehicle;
 
 	std::set<std::string> fNames;
 };

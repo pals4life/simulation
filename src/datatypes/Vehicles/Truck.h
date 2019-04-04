@@ -10,9 +10,9 @@
 #ifndef SIMULATION_TRUCK_H
 #define SIMULATION_TRUCK_H
 
-#include "Vehicle.h"
+#include "IVehicle.h"
 
-class Truck : public Vehicle
+class Truck : public IVehicle
 {
 public:
     /**

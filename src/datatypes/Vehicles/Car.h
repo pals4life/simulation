@@ -11,9 +11,9 @@
 #define ITERATORS_CAR_H
 
 
-#include "Vehicle.h"
+#include "IVehicle.h"
 
-class Car : public Vehicle
+class Car : public IVehicle
 {
 public:
     /**

@@ -11,9 +11,9 @@
 #ifndef SIMULATION_BUS_H
 #define SIMULATION_BUS_H
 
-#include "Vehicle.h"
+#include "IVehicle.h"
 
-class Bus : public Vehicle
+class Bus : public IVehicle
 {
 public:
     /**

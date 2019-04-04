@@ -11,7 +11,7 @@
 #include <iostream>
 #include "Network.h"
 #include "NetworkExporter.h"
-#include "../tests/DesignByContract.h"
+#include "DesignByContract.h"
 
 const int Network::fgkMaxTicks = 1000;
 

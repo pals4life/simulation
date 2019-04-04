@@ -12,9 +12,9 @@
 #define SIMULATION_MOTORCYCLE_H
 
 
-#include "Vehicle.h"
+#include "IVehicle.h"
 
-class Motorcycle : public Vehicle
+class Motorcycle : public IVehicle
 {
 public:
     /**

@@ -8,7 +8,7 @@
 //============================================================================
 
 #include "Motorcycle.h"
-#include "../../tests/DesignByContract.h"
+#include "../DesignByContract.h"
 
 const double Motorcycle::fgkMaxAcceleration = 4.0;
 const double Motorcycle::fgkMinAcceleration = -10.0;
@@ -18,7 +18,7 @@ const double Motorcycle::fgkMaxSpeed = 180.0 / 3.6;
 
 const double Motorcycle::fgkVehicleLength = 1;
 
-Motorcycle::Motorcycle(const std::string& license, double position, double velocity) : Vehicle(license, position, velocity){}
+Motorcycle::Motorcycle(const std::string& license, double position, double velocity) : IVehicle(license, position, velocity){}
 
 double Motorcycle::getVehicleLength() const
 {

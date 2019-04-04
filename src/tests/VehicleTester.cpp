@@ -10,23 +10,26 @@
 #include <gtest/gtest.h>
 #include "../datatypes/Vehicles/Car.h"
 
-class CarTester : public ::testing::Test
+class VehicleTester : public ::testing::Test
 {
 protected:
     friend class Car;
+    friend class Bus;
+    friend class Motorcycle;
+    friend class Truck;
 
     virtual void SetUp(){}
     virtual void TearDown(){}
 };
 
-TEST_F(CarTester, CarInit)
+TEST_F(VehicleTester, constructor)
 {
     EXPECT_DEATH(Car car(""       ,  0,  0), "License plate must be valid"    );
     EXPECT_DEATH(Car car("AAA-123", -1,  0), "Position must be greater than 0");
     EXPECT_DEATH(Car car("AAA-123",  0, -1), "Velocity must be greater than 0");
 }
 
-TEST_F(CarTester, CarMove)
+TEST_F(VehicleTester, move1)
 {
     Car car("AAA-123", 0, 0);
     car.move(NULL, 100);
@@ -36,7 +39,7 @@ TEST_F(CarTester, CarMove)
     ASSERT_EQ(car.getAcceleration(), car.getMaxAcceleration());
 }
 
-TEST_F(CarTester, CarMove2)
+TEST_F(VehicleTester, move2)
 {
     Car car("AAA-123", 0, 100);
     car.move(NULL, 100);
@@ -46,7 +49,7 @@ TEST_F(CarTester, CarMove2)
     ASSERT_EQ(car.getAcceleration(), 0);
 }
 
-TEST_F(CarTester, CarMove3)
+TEST_F(VehicleTester, move3)
 {
     Car* car1 = new Car("AAA-123", 0, 100);
     Car* car2 = new Car("BBB-123", 0, 104);
