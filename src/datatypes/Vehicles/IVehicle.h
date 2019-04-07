@@ -13,6 +13,8 @@
 #include <string>
 #include "../TrafficSigns.h"
 
+class Road;
+
 class IVehicle
 {
 public:
@@ -26,6 +28,8 @@ public:
     IVehicle(const std::string& license, double pos, double velocity);
     virtual ~IVehicle(){}
 
+    bool properlyInitialized() const;
+
     virtual double getVehicleLength() const = 0;
     virtual std::string getType() const = 0;
 
@@ -35,25 +39,16 @@ public:
     virtual double getMaxAcceleration() const = 0;
     virtual double getMinAcceleration() const = 0;
 
-    bool properlyInitialized() const;
-
     /**
-    * REQUIRE(speedLimit > 0, "Speedlimit must be greater than 0");
     * REQUIRE(this->properlyInitialized(), "moved vehicle must be properly initialized");
-    * REQUIRE(next == NULL or next->getPosition() + offset - this->getPosition() > getMinVehicleDist(), "distance between vehicles must be greater than minVehicleDist");
     *
     * ENSURE(getVelocity() >= 0, "Velocity cannot be negative");
     * ENSURE((getAcceleration() >= getMinAcceleration()) && (getAcceleration() <= getMinAcceleration()), "Acceleration is too high / low");
+    * ENSURE(nextVehicle.first == NULL or pairPosition<IVehicle>(nextVehicle) - getPosition() > getMinVehicleDist(), "distance between vehicles must be greater than minVehicleDist");
     */
-    void move(std::pair<const IVehicle*, double> nextVehicle, std::pair<const TrafficLight*, double> nextTrafficLight, std::pair<const BusStop*, double> nextBusStop, double speedLimit);
+    void move(uint32_t lane, uint32_t index, const Road* road);
 
-    double getFollowingAcceleration(std::pair<const IVehicle*, double> nextVehicle) const;
-
-    std::pair<double, double> getMinMaxAcceleration(double speedlimit) const;
-
-    std::pair<bool, double> checkTrafficLights(std::pair<const TrafficLight*, double> nextTrafficLight) const;
-
-    std::pair<bool, double> checkBusStop(std::pair<const BusStop*, double> nextBusStop) const;
+    //--------------------------------------------------------------------------------------------------//
 
     /**
      * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getLicensePlate");
@@ -81,6 +76,11 @@ public:
     double getAcceleration() const;
 
     /**
+     * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getAcceleration");
+     */
+    double getMinVehicleDist() const;
+
+    /**
      * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling setMoved");
      */
     void setMoved(bool moved);
@@ -89,6 +89,16 @@ public:
      * REQUIRE(a.properlyInitialized() && b.properlyInitialized(), "one of the Vehicles was not initialized when calling operator<");
      */
     friend bool operator<(const IVehicle& a, const IVehicle& b);
+
+private:
+
+    double getFollowingAcceleration(std::pair<const IVehicle*, double> nextVehicle) const;
+
+    std::pair<double, double> getMinMaxAcceleration(double speedlimit) const;
+
+    std::pair<bool, double> checkTrafficLights(std::pair<const TrafficLight*, double> nextTrafficLight) const;
+
+    std::pair<bool, double> checkBusStop(std::pair<const BusStop*, double> nextBusStop) const;
 
 protected:
     IVehicle* _initCheck;

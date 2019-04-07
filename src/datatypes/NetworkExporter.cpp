@@ -59,13 +59,16 @@ void NetworkExporter::addSection(uint32_t number)
     for(uint32_t i = 0; i < kfNetwork->fRoads.size(); i++)
     {
         const Road* road = kfNetwork->fRoads[i];
-        for(uint32_t j = 0; j < road->getVehicles().size(); j++)
+        for(uint32_t j = 0; j < road->getNumLanes(); j++)
         {
-            const IVehicle* vehicle = road->getVehicles()[j];
-            fOutputFile << "Voertuig: " + vehicle->getType() +'('+ vehicle->getLicensePlate() + ")\n";
-            fOutputFile << "  -> Baan    : " << road->getName()            << '\n';
-            fOutputFile << "  -> Positie : " << vehicle->getPosition()     << '\n';
-            fOutputFile << "  -> Snelheid: " << vehicle->getVelocity()*3.6 << '\n';
+            for(uint32_t k = 0; k < road->getLanes()[j].size(); k++)
+            {
+                const IVehicle* vehicle = road->getVehicles(j)[k];
+                fOutputFile << "Voertuig: " + vehicle->getType() +'('+ vehicle->getLicensePlate() + ")\n";
+                fOutputFile << "  -> Baan    : " << road->getName()            << '\n';
+                fOutputFile << "  -> Positie : " << vehicle->getPosition()     << '\n';
+                fOutputFile << "  -> Snelheid: " << vehicle->getVelocity()*3.6 << '\n';
+            }
         }
     }
 }

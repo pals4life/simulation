@@ -20,64 +20,51 @@ class Road {
 public:
 	/**
      * REQUIRE(length > 0, "Failed to construct road: lenght must be greater than 0");
-     * REQUIRE(speedLimit > 0, "Failed to construct road: speed limit must be greater than 0");
      * REQUIRE(!name.empty(), "Failed to construct road: name can not be empty");
      * REQUIRE(lanes > 0, "Failed to construct road: must at least have 1 lane");
+     * REQUIRE(!zones.empty(), "Failed to construct road: must have at least 1 speed zone" );
      *
      * ENSURE(this->properlyInitialized(), "Vehicle constructor must end in properlyInitialized state");
      */
-	Road(const std::string &name, Road *next, double length, double speedLimit, uint32_t lanes);
+	Road(const std::string& name, Road* const next, const double length, const uint32_t lanes, const std::vector<Zone>& zones, const std::vector<BusStop>& busStops, const std::vector<TrafficLight>& trafficLights);
+
+    /**
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling the destructor");
+     */
+    ~Road();
 
 	bool properlyInitialized() const;
 
-	~Road();
+    //--------------------------------------------------------------------------------------------------//
 
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");
 	 */
 	void update();
 
+	/**
+	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling checkAndReset");
+	 */
+	bool checkAndReset();
+
     /**
-     * ENSURE(fVehicles.front()->getPosition() <= getRoadLength(), "Update failed to place vehicle on next road or delete it.");
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling enqueue");
      */
-	void dequeueFinishedVehicles();
+    void enqueue(IVehicle* vehicle);
 
-	/**
-	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling isDone");
-	 */
-	bool isDone();
+    /**
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling enqueue");
+     * REQUIRE(lane < this->getLanes() and lane >= 0, "Cannot get vehicles on an non-existant lane");
+     * REQUIRE(index < fLanes[lane].size() and index >= 0, "Index is out of range");
+     */
+    void changeLaneIfPossible(IVehicle* vehicle, uint32_t lane, uint32_t index, bool left);
 
-	/**
-	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling enqueue");
-	 * REQUIRE(vehicle->properlyInitialized(), "Vehicle was not initialized when calling enqueue");
-	 * REQUIRE(lane < this->getLanes(), "Cannot get back vehicle on an non-existant lane");
-	 *
-	 * ENSURE(getVehicles().front()->getPosition() <= getRoadLength(), "Update failed to place vehicle on next road or delete it.");
-	 */
-	void enqueue(IVehicle* vehicle, uint32_t lane);
-
-	/**
-	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");
-	 * REQUIRE(vehicle->properlyInitialized(), "Vehicle was not initialized when calling enqueue");
-	 * REQUIRE(lane < this->getLanes(), "Cannot dequeue vehicle from an non-existant lane");
-	 */
-	void dequeue(uint32_t lane);
-
-	/**
-	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling isEmpty");
-	 */
-	bool isEmpty() const;
-
-	/**
-	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getBackVehicle");
-	 * REQUIRE(lane < this->getLanes(), "Cannot get back vehicle on an non-existant lane");
-	 */
-    IVehicle* const getBackVehicle(uint32_t lane) const;
+    //--------------------------------------------------------------------------------------------------//
 
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextRoad");
 	 */
-	Road *const getNextRoad() const;
+	const Road* getNextRoad() const;
 
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling setNextRoad");
@@ -90,44 +77,50 @@ public:
 	double getRoadLength() const;
 
 	/**
-	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getSpeedLimit");
-	 * DEPRECATED!!!
-	 */
-	double getSpeedLimit() const;
-
-	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getName");
 	 */
 	const std::string& getName() const;
 
     /**
-     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getLanes");
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNumLanes");
      */
-    uint32_t getLanes() const;
+    uint32_t getNumLanes() const;
 
-	/**
-	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getVehicles");
-	 * REQUIRE(lane < this->getLanes(), "Cannot get vehicles on an non-existant lane");
-	 */
-	const std::deque<IVehicle*>& getVehicles(uint32_t lane) const;
+    /**
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling operator[]");
+     */
+    const std::deque<IVehicle*>& operator[](uint32_t index) const;
+
+    //--------------------------------------------------------------------------------------------------//
+    //      al de onderstaande functies leiden tot een oneindige loop als banen een cirkel vormen       //
+    //--------------------------------------------------------------------------------------------------//
 
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getSpeedLimit");
      * REQUIRE(position >= 0 and position < getRoadLength(), "position not valid");
      */
-	double getSpeedLimit(double position) const;
+	double getSpeedLimit(double position = 0) const;
 
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextBusStop");
      * REQUIRE(position >= 0 and position < getRoadLength(), "position not valid");
      */
-    std::pair<const BusStop*, double> getNextBusStop(double position) const;
+    std::pair<const BusStop*, double> getBusStop(double position = 0) const;
 
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextTrafficLight");
      * REQUIRE(position >= 0 and position < getRoadLength(), "position not valid");
      */
-    std::pair<const TrafficLight*, double> getNextTrafficLight(double position) const;
+    std::pair<const TrafficLight*, double> getTrafficLight(double position = 0) const;
+
+    /**
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextTrafficLight");
+     * REQUIRE(lane < this->getLanes() and lane >= 0, "Cannot get vehicles on an non-existant lane");
+     * REQUIRE(index < fLanes[lane].size() and index >= 0, "Index is out of range");
+     */
+    std::pair<const IVehicle*, double> getNextVehicle(uint32_t lane, uint32_t index) const;
+
+    //--------------------------------------------------------------------------------------------------//
 
 	/**
 	 * REQUIRE(a->properlyInitialized(), "Road was not initialized when calling operator ==");
@@ -140,8 +133,35 @@ public:
 	friend bool operator==(const std::string &a, Road* b);
 
 private:
+    /**
+     * ENSURE(fVehicles.front()->getPosition() <= getRoadLength(), "Update failed to place vehicle on next road or delete it.");
+     */
+    void dequeueFinishedVehicles();
+
+    /**
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling enqueue");
+     * REQUIRE(vehicle->properlyInitialized(), "Vehicle was not initialized when calling enqueue");
+     * REQUIRE(lane < this->getNumLanes() and lane >= 0, "Cannot enqueue on an non-existant lane");
+     *
+     * ENSURE(getVehicles().front()->getPosition() <= getRoadLength(), "Update failed to place vehicle on next road or delete it.");
+     */
+    void enqueue(IVehicle* vehicle, uint32_t lane);
+
+    /**
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");
+     * REQUIRE(vehicle->properlyInitialized(), "Vehicle was not initialized when calling enqueue");
+     * REQUIRE(lane < this->getNumLanes() and lane >= 0, "Cannot dequeue vehicle from an non-existant lane");
+     */
+    void dequeue(uint32_t lane);
+
+    /**
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling isEmpty");
+     */
+    bool isEmpty() const;
+
+    //--------------------------------------------------------------------------------------------------//
+
 	double fRoadLength;
-	double fSpeedLimit;
 	std::string fName;
 
 	Road* fNextRoad;

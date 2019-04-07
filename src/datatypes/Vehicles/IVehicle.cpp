@@ -2,6 +2,7 @@
 #include <iostream>
 #include "../DesignByContract.h"
 #include "../TrafficSigns.h"
+#include "../Road.h"
 
 double clamp(double val, double min, double max){ return std::max(std::min(val, max), min); }
 
@@ -29,24 +30,21 @@ bool IVehicle::properlyInitialized() const
     return _initCheck == this;
 }
 
-void IVehicle::move(std::pair<const IVehicle*, double> nextVehicle, std::pair<const TrafficLight*, double> nextTrafficLight, std::pair<const BusStop*, double> nextBusStop, double speedLimit)
+void IVehicle::move(const uint32_t lane, const uint32_t index, const Road* road)
 {
-    REQUIRE(speedLimit > 0, "Speedlimit must be greater than 0");
     REQUIRE(this->properlyInitialized(), "moved vehicle must be properly initialized");
-    REQUIRE(nextVehicle.first == NULL or nextVehicle.first->getPosition() + nextVehicle.second - this->getPosition() > fgkMinVehicleDist, "distance between vehicles must be greater than minVehicleDist");
 
     if(fMoved) return;
-    if(nextVehicle.first != NULL and fPosition + fVelocity >= pairPosition<IVehicle>(nextVehicle) + nextVehicle.first->getVelocity() - nextVehicle.first->getVehicleLength())
-        std::cerr << "car crash is imminent.\n";
 
     fPosition += fVelocity;                                                                 // Calculate new positions
     fVelocity += fAcceleration;                                                             // Calculate new velocity
 
-    double kAcceleration = getFollowingAcceleration(nextVehicle);                           // calculate the following speed
+    const std::pair<const IVehicle*, double> nextVehicle = road->getNextVehicle(lane, index);       // get the next vehicle
+    double kAcceleration = getFollowingAcceleration(nextVehicle);                                   // calculate the following speed
 
-    const std::pair<double, double> kMinMax = getMinMaxAcceleration(speedLimit);            // calculate the min and max acceleration possible
-    const std::pair<bool  , double> kLight  = checkTrafficLights(nextTrafficLight);         // calculate the slowdown if needed
-    const std::pair<bool  , double> kBus    = checkBusStop(nextBusStop);                    // calculate the slowdown if needed
+    const std::pair<double, double> kMinMax = getMinMaxAcceleration(road->getSpeedLimit(fPosition));// calculate the min and max acceleration possible
+    const std::pair<bool  , double> kLight  = checkTrafficLights(road->getTrafficLight(fPosition)); // calculate the slowdown if needed
+    const std::pair<bool  , double> kBus    = checkBusStop(road->getBusStop(fPosition));            // calculate the slowdown if needed
 
     if(kLight.first) kAcceleration = std::min(kLight.second, kAcceleration);                // we need to take the minimum of these values
     if(kBus.first  ) kAcceleration = std::min(kBus.second  , kAcceleration);                // to ensure we slow down enough
@@ -56,6 +54,7 @@ void IVehicle::move(std::pair<const IVehicle*, double> nextVehicle, std::pair<co
 
     ENSURE(getVelocity() >= 0, "Velocity cannot be negative");
     ENSURE((getAcceleration() >= getMinAcceleration()) && (getAcceleration() <= getMaxAcceleration()), "Acceleration is too high / low");
+    ENSURE(nextVehicle.first == NULL or pairPosition<IVehicle>(nextVehicle) - getPosition() > getMinVehicleDist(), "distance between vehicles must be greater than minVehicleDist");
 }
 
 double IVehicle::getFollowingAcceleration(std::pair<const IVehicle*, double> nextVehicle) const
@@ -84,7 +83,6 @@ std::pair<double, double> IVehicle::getMinMaxAcceleration(double speedlimit) con
 std::pair<bool, double> IVehicle::checkTrafficLights(std::pair<const TrafficLight*, double> nextTrafficLight) const
 {
     if(nextTrafficLight.first == NULL) return std::pair<bool, double>(false, 0);
-
     if(fPosition + fVelocity > pairPosition<TrafficLight>(nextTrafficLight) and nextTrafficLight.first->getColor() == TrafficLight::red) std::cerr<< "someone ran through a red light\n";
 
     double ideal = 0.75 * fVelocity;
@@ -105,6 +103,8 @@ std::pair<bool, double> IVehicle::checkBusStop(std::pair<const BusStop*, double>
     if(dist < 100) return std::pair<bool, double>(true, -fVelocity*fVelocity / dist);
     else return std::pair<bool, double>(false, 0);
 }
+
+//--------------------------------------------------------------------------------------------------//
 
 std::string IVehicle::getLicensePlate() const
 {
@@ -133,6 +133,12 @@ double IVehicle::getAcceleration() const
 {
     REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getLicensePlate");
     return fAcceleration;
+}
+
+double IVehicle::getMinVehicleDist() const
+{
+    REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getMinVehicleDist");
+    return fgkMinVehicleDist;
 }
 
 void IVehicle::setMoved(bool moved)

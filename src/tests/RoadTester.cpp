@@ -62,7 +62,7 @@ TEST_F(RoadTester, RoadUpdate3)
 
     testRoad->enqueue(testCar);
     testRoad->update();
-    testRoad->isDone();
+    testRoad->checkAndReset();
     testRoad->update();
     ASSERT_TRUE(testRoad->isEmpty());
 
