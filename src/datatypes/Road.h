@@ -22,10 +22,11 @@ public:
      * REQUIRE(length > 0, "Failed to construct road: lenght must be greater than 0");
      * REQUIRE(speedLimit > 0, "Failed to construct road: speed limit must be greater than 0");
      * REQUIRE(!name.empty(), "Failed to construct road: name can not be empty");
+     * REQUIRE(lanes > 0, "Failed to construct road: must at least have 1 lane");
      *
      * ENSURE(this->properlyInitialized(), "Vehicle constructor must end in properlyInitialized state");
      */
-	Road(const std::string &name, Road *next, double length, double speedLimit);
+	Road(const std::string &name, Road *next, double length, double speedLimit, uint32_t lanes);
 
 	bool properlyInitialized() const;
 
@@ -48,16 +49,19 @@ public:
 
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling enqueue");
+	 * REQUIRE(vehicle->properlyInitialized(), "Vehicle was not initialized when calling enqueue");
+	 * REQUIRE(lane < this->getLanes(), "Cannot get back vehicle on an non-existant lane");
 	 *
 	 * ENSURE(getVehicles().front()->getPosition() <= getRoadLength(), "Update failed to place vehicle on next road or delete it.");
 	 */
-	void enqueue(IVehicle *const vehicle);
+	void enqueue(IVehicle* vehicle, uint32_t lane);
 
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");
 	 * REQUIRE(vehicle->properlyInitialized(), "Vehicle was not initialized when calling enqueue");
+	 * REQUIRE(lane < this->getLanes(), "Cannot dequeue vehicle from an non-existant lane");
 	 */
-	void dequeue();
+	void dequeue(uint32_t lane);
 
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling isEmpty");
@@ -66,8 +70,9 @@ public:
 
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getBackVehicle");
+	 * REQUIRE(lane < this->getLanes(), "Cannot get back vehicle on an non-existant lane");
 	 */
-    IVehicle *const getBackVehicle() const;
+    IVehicle* const getBackVehicle(uint32_t lane) const;
 
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextRoad");
@@ -95,10 +100,16 @@ public:
 	 */
 	const std::string& getName() const;
 
+    /**
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getLanes");
+     */
+    uint32_t getLanes() const;
+
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getVehicles");
+	 * REQUIRE(lane < this->getLanes(), "Cannot get vehicles on an non-existant lane");
 	 */
-	const std::deque<IVehicle*>& getVehicles() const;
+	const std::deque<IVehicle*>& getVehicles(uint32_t lane) const;
 
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getSpeedLimit");
@@ -134,7 +145,7 @@ private:
 	std::string fName;
 
 	Road* fNextRoad;
-	std::deque<IVehicle*> fVehicles;
+	std::vector< std::deque<IVehicle*> > fLanes;
 
 	std::vector<Zone> fZones;
 	std::vector<BusStop> fBusStops;

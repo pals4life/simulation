@@ -8,21 +8,25 @@
 //============================================================================
 #include <stdint.h>
 #include <algorithm>
+#include <iostream>
 #include "Road.h"
 #include "DesignByContract.h"
 
-Road::Road(const std::string& name, Road* next, double length, double speedLimit)
+Road::Road(const std::string& name, Road* const next, const double length, const double speedLimit, const uint32_t lanes)
 {
 
     REQUIRE(length > 0, "Failed to construct road: length must be greater than 0");
     REQUIRE(speedLimit > 0, "Failed to construct road: speed limit must be greater than 0");
     REQUIRE(!name.empty(), "Failed to construct road: name can not be empty");
+    REQUIRE(lanes > 0, "Failed to construct road: must at least have 1 lane");
 
     fName = name;
     fNextRoad = next;
 
     fRoadLength = length;
     fSpeedLimit = speedLimit;
+    fLanes.resize(lanes);
+
     _initCheck = this;
 
     ENSURE(this->properlyInitialized(), "Road constructor must end in properlyInitialized state");
@@ -35,85 +39,109 @@ bool Road::properlyInitialized() const
 
 Road::~Road()
 {
-    for(uint32_t i = 0; i < fVehicles.size(); i++) delete fVehicles[i];
+    for(uint32_t i = 0; i < fLanes.size(); i++)
+    {
+        for(uint32_t j = 0; j < fLanes[i].size(); j++) delete fLanes[i][j];
+    }
 }
 
 void Road::update()
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");
-    if(fVehicles.empty()) return;   // if there are no vehicles we do not need to update.
 
-    for(uint32_t i = 1; i < fVehicles.size(); i++)
+    for(uint32_t i = 0; i < fLanes.size(); i++)
     {
-        const double pos = fVehicles[i]->getPosition();
-        std::pair<const IVehicle*, double> nextVehicle = std::pair<const IVehicle*, double>(fVehicles[i-1], 0);
-        fVehicles[i]->move(nextVehicle, getNextTrafficLight(pos), getNextBusStop(pos), getSpeedLimit(pos));
-    }
+        const std::deque<IVehicle*> vehicles = fLanes[i];
+        if(vehicles.empty()) continue;
 
-    const double    pos  = fVehicles.front()->getPosition();
-    const IVehicle* next = (fNextRoad == NULL) ? NULL : fNextRoad->getBackVehicle();
-    std::pair<const IVehicle*, double> nextVehicle =  std::pair<const IVehicle*, double>(next, fRoadLength);
-    fVehicles.front()->move(nextVehicle, getNextTrafficLight(pos), getNextBusStop(pos), getSpeedLimit(pos));
+        for(uint32_t j = 1; j < vehicles.size(); j++)
+        {
+            const double pos = vehicles[j]->getPosition();
+            std::pair<const IVehicle*, double> nextVehicle = std::pair<const IVehicle*, double>(vehicles[j-1], 0);
+            vehicles[j]->move(nextVehicle, getNextTrafficLight(pos), getNextBusStop(pos), getSpeedLimit(pos));
+        }
+
+        const double    pos  = vehicles.front()->getPosition();
+        const IVehicle* next = (fNextRoad == NULL) ? NULL : fNextRoad->getBackVehicle(i);
+        std::pair<const IVehicle*, double> nextVehicle =  std::pair<const IVehicle*, double>(next, fRoadLength);
+        vehicles.front()->move(nextVehicle, getNextTrafficLight(pos), getNextBusStop(pos), getSpeedLimit(pos));
+    }
 
     dequeueFinishedVehicles();
 }
 
 void Road::dequeueFinishedVehicles()
 {
-    while(!fVehicles.empty())                                           // as long there are vehicles we can delete
+    for(uint32_t i = 0; i < fLanes.size(); i++)
     {
-        if(fVehicles.front()->getPosition() > fRoadLength) dequeue();   // check if they have left the road
-        else break;                                                     // break, because if the first car is still on the road everyone behind him is also still on the road
+        while(!fLanes[i].empty())                                           // as long there are vehicles we can delete
+        {
+            if(fLanes[i].front()->getPosition() > fRoadLength) dequeue(i);  // check if they have left the road
+            else break;                                                     // break, because if the first car is still on the road everyone behind him is also still on the road
+        }
+        if(fLanes[i].empty()) return;
+        ENSURE(fLanes[i].front()->getPosition() <= getRoadLength(), "Update failed to place vehicle on next road or delete it.");
     }
-    if(fVehicles.empty()) return;
-    ENSURE(fVehicles.front()->getPosition() <= getRoadLength(), "Update failed to place vehicle on next road or delete it.");
 }
 
 bool Road::isDone()
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling isDone");
-    for(uint32_t i = 0; i < fVehicles.size(); i++) fVehicles[i]->setMoved(false);
+    for(uint32_t i = 0; i < fLanes.size(); i++)
+    {
+        for(uint32_t j = 0; j < fLanes[i].size(); j++) fLanes[i][j]->setMoved(false);
+    }
 
     return !isEmpty();
 }
 
-void Road::enqueue(IVehicle* const vehicle)
+void Road::enqueue(IVehicle* const vehicle, const uint32_t lane)
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling enqueue");
     REQUIRE(vehicle->properlyInitialized(), "Vehicle was not initialized when calling enqueue");
+    REQUIRE(lane < this->getLanes(), "Cannot enqueue vehicle on an non-existant lane");
 
-    fVehicles.push_back(vehicle);                       // we can add the new vehicle
-    if(vehicle->getPosition() > fRoadLength) dequeue(); // immediately remove it when it has already traversed the whole road in one tick
+    fLanes[lane].push_back(vehicle);                        // we can add the new vehicle
+    if(vehicle->getPosition() > fRoadLength) dequeue(lane); // immediately remove it when it has already traversed the whole road in one tick
 }
 
-void Road::dequeue()
+void Road::dequeue(const uint32_t lane)
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling dequeue");
     REQUIRE(!isEmpty(), "Road was not initialized when calling dequeue");
-
+    REQUIRE(lane < this->getLanes(), "Cannot dequeue vehicle from an non-existant lane");
+//    for(uint32_t i = 0; i < fLanes.size(); i++)
     if(fNextRoad == NULL)
     {
-         delete fVehicles.front();                                                      // free memory if they leave the simulation
+         delete fLanes[lane].front();                                                      // free memory if they leave the simulation
+    }
+    if(fNextRoad->getLanes() <= lane)
+    {
+        std::cerr << "Next road did not have enough lanes, removeing this vehicle from the simulation.\n";
+        delete fLanes[lane].front();
     }
     else
     {
-        fVehicles.front()->setPosition(fVehicles.front()->getPosition() - fRoadLength); // current position minus roadlength
-        fNextRoad->enqueue(fVehicles.front());                                          // enqueue in next road if there is one
+        fLanes[lane].front()->setPosition(fLanes[lane].front()->getPosition() - fRoadLength); // current position minus roadlength
+        fNextRoad->enqueue(fLanes[lane].front(), lane);                                       // enqueue in next road if there is one
     }
-    fVehicles.pop_front();                                                              // remove from the queue
+    fLanes[lane].pop_front();                                                                // remove from the queue
 }
 
 bool Road::isEmpty() const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling isEmpty");
-    return fVehicles.empty();
+    for(uint32_t i = 0; i < fLanes.size(); i++)
+        if(!fLanes[i].empty()) return false;
+    return true;
 }
 
-IVehicle* const Road::getBackVehicle() const
+IVehicle* const Road::getBackVehicle(const uint32_t lane) const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getBackVehicle");
-    if(fVehicles.empty()) return NULL;
-    return fVehicles.back();
+    REQUIRE(lane < this->getLanes(), "Cannot get back vehicle on an non-existant lane");
+    if(fLanes[lane].empty()) return NULL;
+    return fLanes[lane].back();
 }
 
 Road* const Road::getNextRoad() const
@@ -140,10 +168,17 @@ const std::string& Road::getName() const
     return fName;
 }
 
-const std::deque<IVehicle*>& Road::getVehicles() const
+uint32_t Road::getLanes() const
+{
+    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getLanes");
+    return fLanes.size();
+}
+
+const std::deque<IVehicle*>& Road::getVehicles(const uint32_t lane) const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getVehicles");
-    return fVehicles;
+    REQUIRE(lane < this->getLanes(), "Cannot get vehicles on an non-existant lane");
+    return fLanes[lane];
 }
 
 bool operator==(Road* const a, const std::string& b)
@@ -164,7 +199,7 @@ void Road::setNextRoad(Road* const kNextRoad)
     Road::fNextRoad = kNextRoad;
 }
 
-double Road::getSpeedLimit(double position) const
+double Road::getSpeedLimit(const double position) const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getSpeedLimit");
     REQUIRE(position >= 0 and position < getRoadLength(), "position not valid");
@@ -172,7 +207,7 @@ double Road::getSpeedLimit(double position) const
 }
 
 // als wegen een cirkel vormen en geen bushaltes bevatten, leidt dit tot een oneidige loop.
-std::pair<const BusStop*, double> Road::getNextBusStop(double position) const
+std::pair<const BusStop*, double> Road::getNextBusStop(const double position) const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextBusStop");
     REQUIRE(position >= 0 and position < getRoadLength(), "position not valid");
@@ -191,7 +226,7 @@ std::pair<const BusStop*, double> Road::getNextBusStop(double position) const
 }
 
 // als wegen een cirkel vormen en geen bushaltes bevatten, leidt dit tot een oneidige loop.
-std::pair<const TrafficLight*, double> Road::getNextTrafficLight(double position) const
+std::pair<const TrafficLight*, double> Road::getNextTrafficLight(const double position) const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextTrafficLight");
     REQUIRE(position >= 0 and position < getRoadLength(), "position not valid");
