@@ -3,7 +3,7 @@
 // @author      : Mano Marichal
 // @date        : 27.02.19
 // @version     : 1.0
-// @copyright   : Project Software Engineering - BA1 Informatica - Mano Marichal - University of Antwerp
+// @copyright   : Project Software Engineering - BA1 Informatica - Thomas Dooms - University of Antwerp
 // @description :
 //============================================================================
 #include <stdint.h>
@@ -12,23 +12,22 @@
 #include "Road.h"
 #include "DesignByContract.h"
 
-Road::Road(const std::string& name, Road* const next, const double length, const uint32_t lanes, const std::vector<Zone>& zones, const std::vector<BusStop>& busStops, const std::vector<TrafficLight>& trafficLights)
+Road::Road(const std::string& kName, Road* const kNext, const double kLength, const uint32_t kLanes, const std::vector<Zone>& kZones, const std::vector<BusStop>& kBusStops, const std::vector<TrafficLight>& kTrafficLights)
 {
+    REQUIRE(kLength > 0    , "Failed to construct road: length must be greater than 0"   );
+    REQUIRE(!kName.empty() , "Failed to construct road: name can not be empty"           );
+    REQUIRE(kLanes > 0     , "Failed to construct road: must at least have 1 lane"       );
+    REQUIRE(!kZones.empty(), "Failed to construct road: must have at least 1 speed zone" );
 
-    REQUIRE(length > 0    , "Failed to construct road: length must be greater than 0"   );
-    REQUIRE(!name.empty() , "Failed to construct road: name can not be empty"           );
-    REQUIRE(lanes > 0     , "Failed to construct road: must at least have 1 lane"       );
-    REQUIRE(!zones.empty(), "Failed to construct road: must have at least 1 speed zone" );
+    fName = kName;
+    fNextRoad = kNext;
 
-    fName = name;
-    fNextRoad = next;
+    fRoadLength = kLength;
+    fLanes.resize(kLanes);
 
-    fRoadLength = length;
-    fLanes.resize(lanes);
-
-    fBusStops = busStops;
-    fZones = zones;
-    fTrafficLights = trafficLights;
+    fBusStops = kBusStops;
+    fZones = kZones;
+    fTrafficLights = kTrafficLights;
 
     _initCheck = this;
 
@@ -76,25 +75,25 @@ bool Road::checkAndReset()
     return !isEmpty();
 }
 
-void Road::enqueue(IVehicle* const vehicle)
+void Road::enqueue(IVehicle* const kVehicle)
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling enqueue");
-    enqueue(vehicle, 0);
+    enqueue(kVehicle, 0);
 }
 
-void Road::changeLaneIfPossible(IVehicle* vehicle, const uint32_t lane, const uint32_t index, bool left)
+void Road::changeLaneIfPossible(IVehicle* vehicle, const uint32_t kLane, const uint32_t kIndex, const bool kLeft)
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling changeLaneIfPossible");
-    REQUIRE(laneExists(lane + (left ? 1 : -1)), "Cannot go to non-existing lane");
-    REQUIRE(index < fLanes[lane].size() and index >= 0, "Index is out of range");
+    REQUIRE(laneExists(kLane + (kLeft ? 1 : -1)), "Cannot go to non-existing lane");
+    REQUIRE(kIndex < fLanes[kLane].size() and kIndex >= 0, "Index is out of range");
 
-    std::deque<IVehicle*>& newLane = fLanes[lane + (left ? 1 : -1)];
+    std::deque<IVehicle*>& newLane = fLanes[kLane + (kLeft ? 1 : -1)];
     const double ideal = 0.75 * vehicle->getVelocity();
 
     // this isn't specified but vehicles are not allowed to switch lanes when entering or leaving a road.
     if(vehicle->getPosition() < ideal or vehicle->getPosition() > fRoadLength - ideal) return;
 
-    if(!fLanes[lane].empty())
+    if(!fLanes[kLane].empty())
     {
         // we find the first vehicle that is in front of them on the new lane.
         std::deque<IVehicle*>::iterator iter = std::upper_bound(newLane.begin(), newLane.end(), vehicle->getPosition());
@@ -104,13 +103,13 @@ void Road::changeLaneIfPossible(IVehicle* vehicle, const uint32_t lane, const ui
 
         // insert in front of the iter, which is the vehicle in front.
         newLane.insert(iter, vehicle);
-        fLanes[lane].erase(fLanes[lane].begin() + index);
+        fLanes[kLane].erase(fLanes[kLane].begin() + kIndex);
     }
     else
     {
         // if the lane is empty we can easily push it in front
         newLane.push_front(vehicle);
-        fLanes[lane].erase(fLanes[lane].begin() + index);
+        fLanes[kLane].erase(fLanes[kLane].begin() + kIndex);
     }
 }
 
@@ -138,15 +137,15 @@ uint32_t Road::getNumLanes() const
     return fLanes.size();
 }
 
-bool Road::laneExists(uint32_t lane) const
+bool Road::laneExists(uint32_t kLane) const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling laneExists");
-    return lane >= 0 and lane < getNumLanes();
+    return kLane >= 0 and kLane < getNumLanes();
 }
 
-const std::deque<IVehicle*>& Road::operator[](const uint32_t index) const
+const std::deque<IVehicle*>& Road::operator[](const uint32_t kIndex) const
 {
-    return fLanes[index];
+    return fLanes[kIndex];
 }
 
 void Road::setNextRoad(Road* const kNextRoad)
@@ -155,37 +154,38 @@ void Road::setNextRoad(Road* const kNextRoad)
     Road::fNextRoad = kNextRoad;
 }
 
-double Road::getSpeedLimit(const double position) const
+double Road::getSpeedLimit(const double kPosition) const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getSpeedLimit");
-    REQUIRE(position >= 0 and position < getRoadLength(), "position not valid");
-    return (--std::upper_bound(fZones.begin(), fZones.end(), position))->getSpeedlimit();
+    REQUIRE(kPosition >= 0 and kPosition < getRoadLength(), "position not valid");
+    return (--std::upper_bound(fZones.begin(), fZones.end(), kPosition))->getSpeedlimit();
 }
 
 //--------------------------------------------------------------------------------------------------//
 
-bool operator==(Road* const a, const std::string& b)
+bool operator==(Road* const lhs, const std::string& rhs)
 {
-    REQUIRE(a->properlyInitialized(), "Road was not initialized when calling operator ==");
-    return a->fName == b;
+    REQUIRE(lhs->properlyInitialized(), "Road was not initialized when calling operator ==");
+    return lhs->fName == rhs;
 }
 
-bool operator==(const std::string& a, Road* const b)
+bool operator==(const std::string& lhs, Road* const rhs)
 {
-    REQUIRE(b->properlyInitialized(), "Road was not initialized when calling operator ==");
-    return b->fName == a;
+    REQUIRE(rhs->properlyInitialized(), "Road was not initialized when calling operator ==");
+    return rhs->fName == lhs;
 }
 
 //--------------------------------------------------------------------------------------------------//
 //      al de onderstaande functies leiden tot een oneindige loop als banen een cirkel vormen       //
 //--------------------------------------------------------------------------------------------------//
 
-std::pair<BusStop*, double> Road::getBusStop(const double position) const
+std::pair<BusStop*, double> Road::getBusStop(const double kPosition) const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getBusStop");
-    REQUIRE(position >= 0 and position < getRoadLength(), "position not valid");
-    const std::vector<BusStop>::const_iterator iter = std::upper_bound(fBusStops.begin(), fBusStops.end(), position);
-    if(iter == fBusStops.end())
+    REQUIRE(kPosition >= 0 and kPosition < getRoadLength(), "position not valid");
+
+    const std::vector<BusStop>::const_iterator kIter = std::upper_bound(fBusStops.begin(), fBusStops.end(), kPosition);
+    if(kIter == fBusStops.end())
     {
         if(fNextRoad == NULL) return std::pair<const BusStop*, double>(NULL, 0);
         else
@@ -195,15 +195,16 @@ std::pair<BusStop*, double> Road::getBusStop(const double position) const
             return next;
         }
     }
-    else return std::pair<const BusStop*, double>(iter.base(), 0);
+    else return std::pair<const BusStop*, double>(kIter.base(), 0);
 }
 
-std::pair<TrafficLight*, double> Road::getTrafficLight(const double position) const
+std::pair<TrafficLight*, double> Road::getTrafficLight(const double kPosition) const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getTrafficLight");
-    REQUIRE(position >= 0 and position < getRoadLength(), "position not valid");
-    const std::vector<TrafficLight>::const_iterator iter = std::upper_bound(fTrafficLights.begin(), fTrafficLights.end(), position);
-    if(iter == fTrafficLights.end())
+    REQUIRE(kPosition >= 0 and kPosition < getRoadLength(), "position not valid");
+
+    const std::vector<TrafficLight>::const_iterator kIter = std::upper_bound(fTrafficLights.begin(), fTrafficLights.end(), kPosition);
+    if(kIter == fTrafficLights.end())
     {
         if(fNextRoad == NULL) return std::pair<const TrafficLight*, double>(NULL, 0);
         else
@@ -213,32 +214,32 @@ std::pair<TrafficLight*, double> Road::getTrafficLight(const double position) co
             return next;
         }
     }
-    else return std::pair<const TrafficLight*, double>(iter.base(), 0);
+    else return std::pair<const TrafficLight*, double>(kIter.base(), 0);
 }
 
-std::pair<const IVehicle*, double> Road::getNextVehicle(uint32_t lane, uint32_t index) const
+std::pair<const IVehicle*, double> Road::getNextVehicle(const uint32_t kLane, const uint32_t kIndex) const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getTrafficLight");
-    REQUIRE(laneExists(lane), "Cannot get vehicles on an non-existant lane");
-    REQUIRE(index < fLanes[lane].size() and index >= 0, "Index is out of range");
+    REQUIRE(laneExists(kLane), "Cannot get vehicles on an non-existant kLane");
+    REQUIRE(kIndex < fLanes[kLane].size() and kIndex >= 0, "Index is out of range");
 
-    if(index == 0)
+    if(kIndex == 0)
     {
         const Road* iter = fNextRoad;
         double offset = fRoadLength;
         while(iter != NULL)
         {
-            if(iter->getNumLanes() <= lane) break;
-            else if(iter->fLanes[lane].empty())
+            if(iter->getNumLanes() <= kLane) break;
+            else if(iter->fLanes[kLane].empty())
             {
                 iter = iter->fNextRoad;
                 offset += iter->fRoadLength;
             }
-            else return std::pair<const IVehicle*, double>(iter->fLanes[lane].back(), offset);
+            else return std::pair<const IVehicle*, double>(iter->fLanes[kLane].back(), offset);
         }
         return std::pair<const IVehicle*, double>(NULL, 0);
     }
-    else return std::pair<const IVehicle*, double>(fLanes[lane][index-1], 0);
+    else return std::pair<const IVehicle*, double>(fLanes[kLane][kIndex-1], 0);
 }
 
 //--------------------------------------------------------------------------------------------------//
@@ -259,44 +260,46 @@ void Road::dequeueFinishedVehicles()
     }
 }
 
-void Road::enqueue(IVehicle* const vehicle, const uint32_t lane)
+void Road::enqueue(IVehicle* const kVehicle, const uint32_t kLane)
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling enqueue");
-    REQUIRE(vehicle->properlyInitialized(), "Vehicle was not initialized when calling enqueue");
-    REQUIRE(lane < this->getNumLanes() and lane >= 0, "Cannot enqueue on an non-existant lane");
+    REQUIRE(kVehicle->properlyInitialized(), "Vehicle was not initialized when calling enqueue");
+    REQUIRE(kLane < this->getNumLanes() and kLane >= 0, "Cannot enqueue on an non-existant lane");
 
-    fLanes[lane].push_back(vehicle);                        // we can add the new vehicle
-    if(vehicle->getPosition() > fRoadLength) dequeue(lane); // immediately remove it when it has already traversed the whole road in one tick
+    fLanes[kLane].push_back(kVehicle);                        // we can add the new kVehicle
+    if(kVehicle->getPosition() > fRoadLength) dequeue(kLane); // immediately remove it when it has already traversed the whole road in one tick
 }
 
-void Road::dequeue(const uint32_t lane)
+void Road::dequeue(const uint32_t kLane)
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling dequeue");
     REQUIRE(!isEmpty(), "Road cannot be empty when calling dequeue");
-    REQUIRE(lane < this->getNumLanes() and lane >= 0, "Cannot dequeue vehicle from an non-existant lane");
+    REQUIRE(kLane < this->getNumLanes() and kLane >= 0, "Cannot dequeue vehicle from an non-existant lane");
 
     if(fNextRoad == NULL)
     {
-        delete fLanes[lane].front();                                                      // free memory if they leave the simulation
+        delete fLanes[kLane].front();                                                      // free memory if they leave the simulation
     }
-    if(fNextRoad->getNumLanes() <= lane)
+    if(fNextRoad->getNumLanes() <= kLane)
     {
-        std::cerr << "Next road did not have enough lanes, removeing this vehicle from the simulation.\n";
-        delete fLanes[lane].front();
+        std::cerr << "Next road did not have enough lanes, removing this vehicle from the simulation.\n";
+        delete fLanes[kLane].front();
     }
     else
     {
-        fLanes[lane].front()->setPosition(fLanes[lane].front()->getPosition() - fRoadLength); // current position minus roadlength
-        fNextRoad->enqueue(fLanes[lane].front(), lane);                                       // enqueue in next road if there is one
+        fLanes[kLane].front()->setPosition(fLanes[kLane].front()->getPosition() - fRoadLength); // current position minus roadlength
+        fNextRoad->enqueue(fLanes[kLane].front(), kLane);                                       // enqueue in next road if there is one
     }
-    fLanes[lane].pop_front();                                                                 // remove from the queue
+    fLanes[kLane].pop_front();                                                                 // remove from the queue
 }
 
 bool Road::isEmpty() const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling isEmpty");
     for(uint32_t i = 0; i < fLanes.size(); i++)
+    {
         if(!fLanes[i].empty()) return false;
+    }
     return true;
 }
 

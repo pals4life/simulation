@@ -3,7 +3,7 @@
 // @author      : Mano Marichal
 // @date        : 27.02.19
 // @version     : 
-// @copyright   : Project Software Engineering - BA1 Informatica - Mano Marichal - University of Antwerp
+// @copyright   : Project Software Engineering - BA1 Informatica - Thomas Dooms - University of Antwerp
 // @description :
 //============================================================================
 #ifndef SIMULATION_ROAD_H
@@ -29,7 +29,7 @@ public:
      *
      * ENSURE(this->properlyInitialized(), "Vehicle constructor must end in properlyInitialized state");
      */
-	Road(const std::string& name, Road* const next, const double length, const uint32_t lanes, const std::vector<Zone>& zones, const std::vector<BusStop>& busStops, const std::vector<TrafficLight>& trafficLights);
+	Road(const std::string& kName, Road* const kNext, const double kLength, const uint32_t kLanes, const std::vector<Zone>& kZones, const std::vector<BusStop>& kBusStops, const std::vector<TrafficLight>& kTrafficLights);
 
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling the destructor");
@@ -53,14 +53,14 @@ public:
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling enqueue");
      */
-    void enqueue(IVehicle* vehicle);
+    void enqueue(IVehicle* kVehicle);
 
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling changeLaneIfPossible");
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling laneExists");
      * REQUIRE(index < fLanes[lane].size() and index >= 0, "Index is out of range");
      */
-    void changeLaneIfPossible(IVehicle* vehicle, uint32_t lane, uint32_t index, bool left);
+    void changeLaneIfPossible(IVehicle* vehicle, uint32_t kLane, uint32_t kIndex, bool kLeft);
 
     //--------------------------------------------------------------------------------------------------//
 
@@ -92,12 +92,12 @@ public:
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling laneExists");
      */
-    bool laneExists(uint32_t lane) const;
+    bool laneExists(uint32_t kLane) const;
 
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling operator[]");
      */
-    const std::deque<IVehicle*>& operator[](uint32_t index) const;
+    const std::deque<IVehicle*>& operator[](uint32_t kIndex) const;
 
     //--------------------------------------------------------------------------------------------------//
     //      al de onderstaande functies leiden tot een oneindige loop als banen een cirkel vormen       //
@@ -107,38 +107,38 @@ public:
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getSpeedLimit");
      * REQUIRE(position >= 0 and position < getRoadLength(), "position not valid");
      */
-	double getSpeedLimit(double position = 0) const;
+	double getSpeedLimit(double kPosition = 0) const;
 
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextBusStop");
      * REQUIRE(position >= 0 and position < getRoadLength(), "position not valid");
      */
-    std::pair<BusStop*, double> getBusStop(double position = 0) const;
+    std::pair<BusStop*, double> getBusStop(double kPosition = 0) const;
 
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextTrafficLight");
      * REQUIRE(position >= 0 and position < getRoadLength(), "position not valid");
      */
-    std::pair<TrafficLight*, double> getTrafficLight(double position = 0) const;
+    std::pair<TrafficLight*, double> getTrafficLight(double kPosition = 0) const;
 
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextTrafficLight");
      * REQUIRE(laneExists(lane), "Cannot get vehicles on an non-existant lane");
      * REQUIRE(index < fLanes[lane].size() and index >= 0, "Index is out of range");
      */
-    std::pair<const IVehicle*, double> getNextVehicle(uint32_t lane, uint32_t index) const;
+    std::pair<const IVehicle*, double> getNextVehicle(uint32_t kLane, uint32_t kIndex) const;
 
     //--------------------------------------------------------------------------------------------------//
 
 	/**
 	 * REQUIRE(a->properlyInitialized(), "Road was not initialized when calling operator ==");
 	 */
-	friend bool operator==(Road* a, const std::string &b);
+	friend bool operator==(Road* lhs, const std::string &rhs);
 
 	/**
 	 * REQUIRE(b->properlyInitialized(), "Road was not initialized when calling operator ==");
 	 */
-	friend bool operator==(const std::string &a, Road* b);
+	friend bool operator==(const std::string &lhs, Road* rhs);
 
 private:
     /**
@@ -148,19 +148,19 @@ private:
 
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling enqueue");
-     * REQUIRE(vehicle->properlyInitialized(), "Vehicle was not initialized when calling enqueue");
-     * REQUIRE(lane < this->getNumLanes() and lane >= 0, "Cannot enqueue on an non-existant lane");
+     * REQUIRE(kVehicle->properlyInitialized(), "Vehicle was not initialized when calling enqueue");
+     * REQUIRE(kLane < this->getNumLanes() and lane >= 0, "Cannot enqueue on an non-existant lane");
      *
      * ENSURE(getVehicles().front()->getPosition() <= getRoadLength(), "Update failed to place vehicle on next road or delete it.");
      */
-    void enqueue(IVehicle* vehicle, uint32_t lane);
+    void enqueue(IVehicle* kVehicle, uint32_t kLane);
 
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling dequeue");
      * REQUIRE(!isEmpty(), "Road cannot be empty when calling dequeue");
      * REQUIRE(lane < this->getNumLanes() and lane >= 0, "Cannot dequeue vehicle from an non-existant lane");
      */
-    void dequeue(uint32_t lane);
+    void dequeue(uint32_t kLane);
 
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling isEmpty");

@@ -93,12 +93,12 @@ std::pair<double, double> IVehicle::getMinMaxAcceleration(double speedlimit) con
 std::pair<bool, double> IVehicle::checkTrafficLights(std::pair<TrafficLight*, double> nextTrafficLight) const
 {
     if(nextTrafficLight.first == NULL) return std::pair<bool, double>(false, 0);
-    if(fPosition + fVelocity > pairPosition<TrafficLight>(nextTrafficLight) and nextTrafficLight.first->getColor() == TrafficLight::red) std::cerr<< "someone ran through a red light\n";
+    if(fPosition + fVelocity > pairPosition<TrafficLight>(nextTrafficLight) and nextTrafficLight.first->getColor() == TrafficLight::kRed) std::cerr<< "someone ran through a kRed light\n";
 
     double ideal = 0.75 * fVelocity;
     double dist = nextTrafficLight.first->getPosition() + nextTrafficLight.second - fPosition;
 
-    if(dist < 2 * ideal and nextTrafficLight.first->getColor() != TrafficLight::green)
+    if(dist < 2 * ideal and nextTrafficLight.first->getColor() != TrafficLight::kGreen)
     {
         nextTrafficLight.first->setInRange(this);
         return std::pair<bool, double>(true, -fVelocity*fVelocity / dist);

@@ -19,34 +19,34 @@ TrafficLight::TrafficLight(const double kPosition)
 }
 void TrafficLight::update()
 {
-    if(fInRange->getPosition() >= fPosition) fInRange = NULL;
+    if(fkInRange->getPosition() >= fPosition) fkInRange = NULL;
 
     const uint32_t diff = fRedTime - fGreenTime;
     switch(fColor)
     {
-        case red:
-            // if there is a vehicle incoming or the redTime has been too long, switch to green after 15 ticks
-            if((fInRange != NULL or diff > fgkMaxDifference) and fTimer >= 15)
+        case kRed:
+            // if there is a vehicle incoming or the redTime has been too long, switch to kGreen after 15 ticks
+            if((fkInRange != NULL or diff > fgkMaxDifference) and fTimer >= 15)
             {
-                fColor = green;
+                fColor = kGreen;
                 fTimer = 0;
             }
             break;
 
-        case orange:
-            // switch to red after 5 ticks
+        case kOrange:
+            // switch to kRed after 5 ticks
             if(fTimer >= 5)
             {
-                fColor = red;
+                fColor = kRed;
                 fTimer = 0;
             }
             break;
 
-        case green:
-            // if there is no vehicle incoming or greenTime has been too high, switch to orange after 15 ticks
-            if((fInRange == NULL or diff < -fgkMaxDifference) and fTimer >= 15)
+        case kGreen:
+            // if there is no vehicle incoming or greenTime has been too high, switch to kOrange after 15 ticks
+            if((fkInRange == NULL or diff < -fgkMaxDifference) and fTimer >= 15)
             {
-                fColor = orange;
+                fColor = kOrange;
                 fTimer = 0;
             }
             break;
@@ -57,13 +57,13 @@ void TrafficLight::update()
 
     fTimer++;
 }
-TrafficLight::Color TrafficLight::getColor() const
+TrafficLight::EColor TrafficLight::getColor() const
 {
-    return green;
+    return kGreen;
 }
-void TrafficLight::setInRange(const IVehicle* vehicle)
+void TrafficLight::setInRange(const IVehicle* const kVehicle)
 {
-    fInRange = vehicle;
+    fkInRange = kVehicle;
 }
 double TrafficLight::getPosition() const
 {
