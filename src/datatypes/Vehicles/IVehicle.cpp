@@ -7,6 +7,7 @@
 double clamp(double val, double min, double max){ return std::max(std::min(val, max), min); }
 
 const double IVehicle::fgkMinVehicleDist = 5.0;
+const double IVehicle::fgkEpsilonThreshold = 0.01;
 
 IVehicle::IVehicle(const std::string& license, double position, double velocity)
 {
@@ -22,6 +23,8 @@ IVehicle::IVehicle(const std::string& license, double position, double velocity)
     fVelocity = velocity;
     fAcceleration = 0;
 
+    fPrevAcceleration = std::deque<double>(5, 0);
+
     ENSURE(this->properlyInitialized(), "Vehicle constructor must end in properlyInitialized state");
 }
 
@@ -30,7 +33,7 @@ bool IVehicle::properlyInitialized() const
     return _initCheck == this;
 }
 
-void IVehicle::move(const uint32_t lane, const uint32_t index, const Road* road)
+void IVehicle::move(const uint32_t lane, const uint32_t index, Road* road)
 {
     REQUIRE(this->properlyInitialized(), "moved vehicle must be properly initialized");
 
@@ -52,9 +55,16 @@ void IVehicle::move(const uint32_t lane, const uint32_t index, const Road* road)
     fAcceleration = clamp(kAcceleration, kMinMax.first, kMinMax.second);                    // clamp the values
     fMoved = true;
 
+    fPrevAcceleration.push_front(fAcceleration);
+    fPrevAcceleration.pop_back();
+
+    if(road->laneExists(lane+1)) checkLaneChange(kLight.first, lane, index, road, true );   // overtake if possible
+    if(road->laneExists(lane-1)) checkLaneChange(kLight.first, lane, index, road, false);   // go back if possible
+
     ENSURE(getVelocity() >= 0, "Velocity cannot be negative");
     ENSURE((getAcceleration() >= getMinAcceleration()) && (getAcceleration() <= getMaxAcceleration()), "Acceleration is too high / low");
     ENSURE(nextVehicle.first == NULL or pairPosition<IVehicle>(nextVehicle) - getPosition() > getMinVehicleDist(), "distance between vehicles must be greater than minVehicleDist");
+    ENSURE(fPrevAcceleration.size() == 5, "Previous acceleration must contain 5 elements");
 }
 
 double IVehicle::getFollowingAcceleration(std::pair<const IVehicle*, double> nextVehicle) const
@@ -80,7 +90,7 @@ std::pair<double, double> IVehicle::getMinMaxAcceleration(double speedlimit) con
     return std::pair<double, double>(clampedMin, clampedMax);
 }
 
-std::pair<bool, double> IVehicle::checkTrafficLights(std::pair<const TrafficLight*, double> nextTrafficLight) const
+std::pair<bool, double> IVehicle::checkTrafficLights(std::pair<TrafficLight*, double> nextTrafficLight) const
 {
     if(nextTrafficLight.first == NULL) return std::pair<bool, double>(false, 0);
     if(fPosition + fVelocity > pairPosition<TrafficLight>(nextTrafficLight) and nextTrafficLight.first->getColor() == TrafficLight::red) std::cerr<< "someone ran through a red light\n";
@@ -88,20 +98,45 @@ std::pair<bool, double> IVehicle::checkTrafficLights(std::pair<const TrafficLigh
     double ideal = 0.75 * fVelocity;
     double dist = nextTrafficLight.first->getPosition() + nextTrafficLight.second - fPosition;
 
-    if(dist < 2 * ideal and nextTrafficLight.first->getColor() != TrafficLight::green) return std::pair<bool, double>(true, -fVelocity*fVelocity / dist);
-    else return std::pair<bool, double>(false, 0);
+    if(dist < 2 * ideal and nextTrafficLight.first->getColor() != TrafficLight::green)
+    {
+        nextTrafficLight.first->setInRange(this);
+        return std::pair<bool, double>(true, -fVelocity*fVelocity / dist);
+    }
+    else
+    {
+        return std::pair<bool, double>(false, 0);
+    }
 }
 
-std::pair<bool, double> IVehicle::checkBusStop(std::pair<const BusStop*, double> nextBusStop) const
+std::pair<bool, double> IVehicle::checkBusStop(std::pair<BusStop*, double> nextBusStop) const
 {
     if(nextBusStop.first == NULL or getType() != "bus") return std::pair<bool, double>(false, 0);
-
     if(fPosition + fVelocity == pairPosition<BusStop>(nextBusStop)) std::cerr << "a bus arrived\n";
 
     double dist = nextBusStop.first->getPosition() + nextBusStop.second - fPosition;
 
     if(dist < 100) return std::pair<bool, double>(true, -fVelocity*fVelocity / dist);
     else return std::pair<bool, double>(false, 0);
+}
+
+void IVehicle::checkLaneChange(const bool trafficLight, const uint32_t lane, const uint32_t index, Road* const road, const bool left)
+{
+    // 5. Het voertuig is van type auto of motorfiets.
+    if(getType() != "auto" or getType() != "motorfiets") return;
+
+    // 4. Het voertuig rijdt volgens de regels in Use case 3.1, en is dus niet aan het vertragen voor een verkeersteken.
+    if(trafficLight) return;
+
+    // 3. Het voertuig heeft 5 seconden op rij een versnelling van 0.
+    for(uint32_t i = 0; i < 5; i++) if(fPrevAcceleration[i] > fgkEpsilonThreshold) return;
+
+    // 1. Het voertuig rijdt trager dan de snelheidslimiet van de baan of zone,
+    // 2. Het voertuig rijdt trager dan zijn maximaal haalbare snelheid.
+    if(left and fVelocity > std::min(road->getSpeedLimit(fPosition), getMaxSpeed())) return;
+
+    // 6. Er is geen voertuig op de nieuwe rijstrook in een straal van de ideale volgafstand (dus zowel voor als achter het voertuig).
+    road->changeLaneIfPossible(this, lane, index, left);
 }
 
 //--------------------------------------------------------------------------------------------------//

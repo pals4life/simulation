@@ -15,7 +15,10 @@
 #include "Vehicles/IVehicle.h"
 #include "TrafficSigns.h"
 
-class Road {
+typedef std::deque<IVehicle*>::const_iterator Iter;
+
+class Road
+{
 
 public:
 	/**
@@ -53,8 +56,8 @@ public:
     void enqueue(IVehicle* vehicle);
 
     /**
-     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling enqueue");
-     * REQUIRE(lane < this->getLanes() and lane >= 0, "Cannot get vehicles on an non-existant lane");
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling changeLaneIfPossible");
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling laneExists");
      * REQUIRE(index < fLanes[lane].size() and index >= 0, "Index is out of range");
      */
     void changeLaneIfPossible(IVehicle* vehicle, uint32_t lane, uint32_t index, bool left);
@@ -87,6 +90,11 @@ public:
     uint32_t getNumLanes() const;
 
     /**
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling laneExists");
+     */
+    bool laneExists(uint32_t lane) const;
+
+    /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling operator[]");
      */
     const std::deque<IVehicle*>& operator[](uint32_t index) const;
@@ -105,17 +113,17 @@ public:
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextBusStop");
      * REQUIRE(position >= 0 and position < getRoadLength(), "position not valid");
      */
-    std::pair<const BusStop*, double> getBusStop(double position = 0) const;
+    std::pair<BusStop*, double> getBusStop(double position = 0) const;
 
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextTrafficLight");
      * REQUIRE(position >= 0 and position < getRoadLength(), "position not valid");
      */
-    std::pair<const TrafficLight*, double> getTrafficLight(double position = 0) const;
+    std::pair<TrafficLight*, double> getTrafficLight(double position = 0) const;
 
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextTrafficLight");
-     * REQUIRE(lane < this->getLanes() and lane >= 0, "Cannot get vehicles on an non-existant lane");
+     * REQUIRE(laneExists(lane), "Cannot get vehicles on an non-existant lane");
      * REQUIRE(index < fLanes[lane].size() and index >= 0, "Index is out of range");
      */
     std::pair<const IVehicle*, double> getNextVehicle(uint32_t lane, uint32_t index) const;
@@ -148,8 +156,8 @@ private:
     void enqueue(IVehicle* vehicle, uint32_t lane);
 
     /**
-     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");
-     * REQUIRE(vehicle->properlyInitialized(), "Vehicle was not initialized when calling enqueue");
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling dequeue");
+     * REQUIRE(!isEmpty(), "Road cannot be empty when calling dequeue");
      * REQUIRE(lane < this->getNumLanes() and lane >= 0, "Cannot dequeue vehicle from an non-existant lane");
      */
     void dequeue(uint32_t lane);

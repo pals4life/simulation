@@ -21,40 +21,71 @@ double pairPosition(std::pair<const T*, double> next)
     return next.first->getPosition() + next.second;
 }
 
+//--------------------------------------------------------------------------------------------------//
+
 class TrafficLight
 {
 public:
     enum Color{red, orange, green};
 
-    void update() const;
-    Color getColor() const;
-    double getPosition() const{ return fPosition; }
+    TrafficLight(double kPosition);
 
-    friend bool operator<(const double a, const TrafficLight& b);
+    void update();
+    Color getColor() const;
+    void setInRange(const IVehicle* vehicle);
+    double getPosition() const;
+
+    friend bool operator<(double lhs, const TrafficLight& rhs);
 
 private:
     Color fColor;
     double fPosition;
+    const IVehicle* fInRange;
+
+    uint32_t fRedTime;
+    uint32_t fGreenTime;
+    uint32_t fTimer;
+
+    static const uint32_t fgkMaxDifference;
 };
 
+//--------------------------------------------------------------------------------------------------//
 
-struct BusStop
+class BusStop
 {
-    double fPosition;
-    IVehicle* stationed;
+public:
+    BusStop(double kPosition);
 
     void update();
-    double getPosition() const{ return fPosition; }
+    void setStationed(IVehicle* vehicle);
+    double getPosition() const;
 
-    friend bool operator<(const double a, const BusStop& b);
+    friend bool operator<(double lhs, const BusStop& rhs);
+
+private:
+    double fPosition;
+    IVehicle* fStationed;
+
+    uint32_t fTimer;
+
+    static const uint32_t stationTime;
 };
 
-struct Zone
+//--------------------------------------------------------------------------------------------------//
+
+class Zone
 {
+public:
+    Zone(double kPosition, double kSpeedLimit);
+
+    double getPosition() const;
+    double getSpeedlimit() const;
+
+    friend bool operator<(double lhs, const Zone& rhs);
+
+private:
     double fPosition;
     double fSpeedlimit;
-
-    friend bool operator<(const double a, const Zone& b);
 };
 
 #endif //SIMULATION_TRAFFICSIGNS_H

@@ -12,6 +12,7 @@
 
 #include <string>
 #include "../TrafficSigns.h"
+#include <deque>
 
 class Road;
 
@@ -45,8 +46,9 @@ public:
     * ENSURE(getVelocity() >= 0, "Velocity cannot be negative");
     * ENSURE((getAcceleration() >= getMinAcceleration()) && (getAcceleration() <= getMinAcceleration()), "Acceleration is too high / low");
     * ENSURE(nextVehicle.first == NULL or pairPosition<IVehicle>(nextVehicle) - getPosition() > getMinVehicleDist(), "distance between vehicles must be greater than minVehicleDist");
+    * ENSURE(fPrevAcceleration.size() == 5, "Previous acceleration must contain 5 elements");
     */
-    void move(uint32_t lane, uint32_t index, const Road* road);
+    void move(uint32_t lane, uint32_t index, Road* road);
 
     //--------------------------------------------------------------------------------------------------//
 
@@ -96,9 +98,11 @@ private:
 
     std::pair<double, double> getMinMaxAcceleration(double speedlimit) const;
 
-    std::pair<bool, double> checkTrafficLights(std::pair<const TrafficLight*, double> nextTrafficLight) const;
+    std::pair<bool, double> checkTrafficLights(std::pair<TrafficLight*, double> nextTrafficLight) const;
 
-    std::pair<bool, double> checkBusStop(std::pair<const BusStop*, double> nextBusStop) const;
+    std::pair<bool, double> checkBusStop(std::pair<BusStop*, double> nextBusStop) const;
+
+    void checkLaneChange(bool trafficLight, uint32_t lane, uint32_t index, Road* road, bool left);
 
 protected:
     IVehicle* _initCheck;
@@ -110,7 +114,10 @@ protected:
     double fVelocity;
     double fAcceleration;
 
+    std::deque<double> fPrevAcceleration;
+
     static const double fgkMinVehicleDist;
+    static const double fgkEpsilonThreshold;
 };
 
 
