@@ -25,14 +25,14 @@ double pairPosition(std::pair<const T*, double> next)
 
 class TrafficLight
 {
+public:
     enum EColor{kRed, kOrange, kGreen};
 
-public:
     TrafficLight(double kPosition);
 
     void update();
     EColor getColor() const;
-    void setInRange(const IVehicle* kVehicle);
+    void setInRange(const IVehicle* kVehicle) const;
     double getPosition() const;
 
     friend bool operator<(double lhs, const TrafficLight& rhs);
@@ -40,7 +40,7 @@ public:
 private:
     EColor fColor;
     double fPosition;
-    const IVehicle* fkInRange;
+    mutable const IVehicle* fkInRange;
 
     uint32_t fRedTime;
     uint32_t fGreenTime;

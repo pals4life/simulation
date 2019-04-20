@@ -96,7 +96,7 @@ void Road::changeLaneIfPossible(IVehicle* vehicle, const uint32_t kLane, const u
     if(!fLanes[kLane].empty())
     {
         // we find the first vehicle that is in front of them on the new lane.
-        std::deque<IVehicle*>::iterator iter = std::upper_bound(newLane.begin(), newLane.end(), vehicle->getPosition());
+        std::deque<IVehicle*>::iterator iter = std::upper_bound(newLane.begin(), newLane.end(), vehicle->getPosition(), compareVehicleDist);
 
         if(iter != newLane.begin() and (*--iter)->getPosition() + ideal > vehicle->getPosition()) return;    // if iter == begin there is no vehicle behind them
         if(iter != newLane.end()   and (*iter  )->getPosition() - ideal > vehicle->getPosition()) return;    // if iter == end there is no vehicle in front
@@ -114,6 +114,12 @@ void Road::changeLaneIfPossible(IVehicle* vehicle, const uint32_t kLane, const u
 }
 
 const Road* Road::getNextRoad() const
+{
+    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextRoad");
+    return fNextRoad;
+}
+
+Road* Road::getNextRoad()
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextRoad");
     return fNextRoad;
@@ -179,7 +185,7 @@ bool operator==(const std::string& lhs, Road* const rhs)
 //      al de onderstaande functies leiden tot een oneindige loop als banen een cirkel vormen       //
 //--------------------------------------------------------------------------------------------------//
 
-std::pair<BusStop*, double> Road::getBusStop(const double kPosition) const
+std::pair<const BusStop*, double> Road::getBusStop(const double kPosition) const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getBusStop");
     REQUIRE(kPosition >= 0 and kPosition < getRoadLength(), "position not valid");
@@ -198,7 +204,7 @@ std::pair<BusStop*, double> Road::getBusStop(const double kPosition) const
     else return std::pair<const BusStop*, double>(kIter.base(), 0);
 }
 
-std::pair<TrafficLight*, double> Road::getTrafficLight(const double kPosition) const
+std::pair<const TrafficLight*, double> Road::getTrafficLight(const double kPosition) const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getTrafficLight");
     REQUIRE(kPosition >= 0 and kPosition < getRoadLength(), "position not valid");
@@ -301,6 +307,11 @@ bool Road::isEmpty() const
         if(!fLanes[i].empty()) return false;
     }
     return true;
+}
+
+bool Road::compareVehicleDist(double lhs, const IVehicle* rhs)
+{
+    return lhs < rhs->getPosition();
 }
 
 

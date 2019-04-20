@@ -61,9 +61,9 @@ void NetworkExporter::addSection(uint32_t number)
         const Road* road = kfNetwork->fRoads[i];
         for(uint32_t j = 0; j < road->getNumLanes(); j++)
         {
-            for(uint32_t k = 0; k < road->getLanes()[j].size(); k++)
+            for(uint32_t k = 0; k < (*road)[j].size(); k++)
             {
-                const IVehicle* vehicle = road->getVehicles(j)[k];
+                const IVehicle* vehicle = (*road)[j][k];
                 fOutputFile << "Voertuig: " + vehicle->getType() +'('+ vehicle->getLicensePlate() + ")\n";
                 fOutputFile << "  -> Baan    : " << road->getName()            << '\n';
                 fOutputFile << "  -> Positie : " << vehicle->getPosition()     << '\n';

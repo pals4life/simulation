@@ -69,6 +69,11 @@ public:
 	 */
 	const Road* getNextRoad() const;
 
+    /**
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextRoad");
+     */
+    Road* getNextRoad();
+
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling setNextRoad");
 	 */
@@ -113,13 +118,13 @@ public:
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextBusStop");
      * REQUIRE(position >= 0 and position < getRoadLength(), "position not valid");
      */
-    std::pair<BusStop*, double> getBusStop(double kPosition = 0) const;
+    std::pair<const BusStop*, double> getBusStop(double kPosition = 0) const;
 
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextTrafficLight");
      * REQUIRE(position >= 0 and position < getRoadLength(), "position not valid");
      */
-    std::pair<TrafficLight*, double> getTrafficLight(double kPosition = 0) const;
+    std::pair<const TrafficLight*, double> getTrafficLight(double kPosition = 0) const;
 
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextTrafficLight");
@@ -166,6 +171,8 @@ private:
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling isEmpty");
      */
     bool isEmpty() const;
+
+    static bool compareVehicleDist(double lhs, const IVehicle* rhs);
 
     //--------------------------------------------------------------------------------------------------//
 

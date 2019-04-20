@@ -90,7 +90,7 @@ std::pair<double, double> IVehicle::getMinMaxAcceleration(double speedlimit) con
     return std::pair<double, double>(clampedMin, clampedMax);
 }
 
-std::pair<bool, double> IVehicle::checkTrafficLights(std::pair<TrafficLight*, double> nextTrafficLight) const
+std::pair<bool, double> IVehicle::checkTrafficLights(std::pair<const TrafficLight*, double> nextTrafficLight) const
 {
     if(nextTrafficLight.first == NULL) return std::pair<bool, double>(false, 0);
     if(fPosition + fVelocity > pairPosition<TrafficLight>(nextTrafficLight) and nextTrafficLight.first->getColor() == TrafficLight::kRed) std::cerr<< "someone ran through a kRed light\n";
@@ -109,7 +109,7 @@ std::pair<bool, double> IVehicle::checkTrafficLights(std::pair<TrafficLight*, do
     }
 }
 
-std::pair<bool, double> IVehicle::checkBusStop(std::pair<BusStop*, double> nextBusStop) const
+std::pair<bool, double> IVehicle::checkBusStop(std::pair<const BusStop*, double> nextBusStop) const
 {
     if(nextBusStop.first == NULL or getType() != "bus") return std::pair<bool, double>(false, 0);
     if(fPosition + fVelocity == pairPosition<BusStop>(nextBusStop)) std::cerr << "a bus arrived\n";
@@ -180,11 +180,5 @@ void IVehicle::setMoved(bool moved)
 {
     REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling setMoved");
     fMoved = moved;
-}
-
-bool operator<(const IVehicle& a, const IVehicle& b)
-{
-    REQUIRE(a.properlyInitialized() && b.properlyInitialized(), "one of the Vehicles was not initialized when calling operator<");
-    return a.fPosition > b.fPosition;
 }
 

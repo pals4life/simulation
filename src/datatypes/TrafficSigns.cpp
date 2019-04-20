@@ -61,7 +61,7 @@ TrafficLight::EColor TrafficLight::getColor() const
 {
     return kGreen;
 }
-void TrafficLight::setInRange(const IVehicle* const kVehicle)
+void TrafficLight::setInRange(const IVehicle* const kVehicle) const
 {
     fkInRange = kVehicle;
 }

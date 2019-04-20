@@ -112,5 +112,5 @@ NetworkParser::NetworkParser() {
 
 bool NetworkParser::compareVehiclePointers(const IVehicle *a, const IVehicle *b) {
 	REQUIRE(a && b, "Failed to compare vehicle pointers: no vehicles");
-	return *a < *b;
+	return a->getPosition() < b->getPosition();
 }

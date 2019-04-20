@@ -87,20 +87,15 @@ public:
      */
     void setMoved(bool moved);
 
-    /**
-     * REQUIRE(a.properlyInitialized() && b.properlyInitialized(), "one of the Vehicles was not initialized when calling operator<");
-     */
-    friend bool operator<(const IVehicle& a, const IVehicle& b);
-
 private:
 
     double getFollowingAcceleration(std::pair<const IVehicle*, double> nextVehicle) const;
 
     std::pair<double, double> getMinMaxAcceleration(double speedlimit) const;
 
-    std::pair<bool, double> checkTrafficLights(std::pair<TrafficLight*, double> nextTrafficLight) const;
+    std::pair<bool, double> checkTrafficLights(std::pair<const TrafficLight*, double> nextTrafficLight) const;
 
-    std::pair<bool, double> checkBusStop(std::pair<BusStop*, double> nextBusStop) const;
+    std::pair<bool, double> checkBusStop(std::pair<const BusStop*, double> nextBusStop) const;
 
     void checkLaneChange(bool trafficLight, uint32_t lane, uint32_t index, Road* road, bool left);
 
