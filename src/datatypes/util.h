@@ -12,6 +12,7 @@
 
 
 #include <utility>
+#include <algorithm>
 
 template<typename T>
 double pairPosition(std::pair<const T*, double> next)
@@ -39,6 +40,10 @@ struct Comparator : public std::unary_function<Road*, bool>
     const std::string& base;
 };
 
+template<typename T, typename F>
+typename std::vector<T>::iterator insert_sorted(std::vector<T> &vec, T const &item, F comp) {
+    return vec.insert(std::upper_bound(vec.begin(), vec.end(), item, comp), item);
+}
 
 
 #endif //SIMULATION_UTIL_H
