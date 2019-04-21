@@ -29,7 +29,7 @@ public:
      *
      * ENSURE(this->properlyInitialized(), "Vehicle constructor must end in properlyInitialized state");
      */
-	Road(const std::string& kName, Road* const kNext, const double kLength, const uint32_t kLanes, const std::vector<Zone>& kZones, const std::vector<BusStop>& kBusStops, const std::vector<TrafficLight>& kTrafficLights);
+	Road(const std::string& kName, Road* const kNext, const double kLength, const uint32_t kLanes, const std::vector<Zone*>& kZones, const std::vector<BusStop*>& kBusStops, const std::vector<TrafficLight*>& kTrafficLights);
 
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling the destructor");
@@ -133,18 +133,6 @@ public:
      */
     std::pair<const IVehicle*, double> getNextVehicle(uint32_t kLane, uint32_t kIndex) const;
 
-    //--------------------------------------------------------------------------------------------------//
-
-	/**
-	 * REQUIRE(a->properlyInitialized(), "Road was not initialized when calling operator ==");
-	 */
-	friend bool operator==(Road* lhs, const std::string &rhs);
-
-	/**
-	 * REQUIRE(b->properlyInitialized(), "Road was not initialized when calling operator ==");
-	 */
-	friend bool operator==(const std::string &lhs, Road* rhs);
-
 private:
     /**
      * ENSURE(fVehicles.front()->getPosition() <= getRoadLength(), "Update failed to place vehicle on next road or delete it.");
@@ -172,8 +160,6 @@ private:
      */
     bool isEmpty() const;
 
-    static bool compareVehicleDist(double lhs, const IVehicle* rhs);
-
     //--------------------------------------------------------------------------------------------------//
 
 	double fRoadLength;
@@ -182,9 +168,9 @@ private:
 	Road* fNextRoad;
 	std::vector< std::deque<IVehicle*> > fLanes;
 
-	std::vector<Zone> fZones;
-	std::vector<BusStop> fBusStops;
-	std::vector<TrafficLight> fTrafficLights;
+	std::vector<Zone*> fZones;
+	std::vector<BusStop*> fBusStops;
+	std::vector<TrafficLight*> fTrafficLights;
 
 	Road* _initCheck;
 };

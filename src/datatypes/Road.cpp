@@ -11,8 +11,9 @@
 #include <iostream>
 #include "Road.h"
 #include "DesignByContract.h"
+#include "util.h"
 
-Road::Road(const std::string& kName, Road* const kNext, const double kLength, const uint32_t kLanes, const std::vector<Zone>& kZones, const std::vector<BusStop>& kBusStops, const std::vector<TrafficLight>& kTrafficLights)
+Road::Road(const std::string& kName, Road* const kNext, const double kLength, const uint32_t kLanes, const std::vector<Zone*>& kZones, const std::vector<BusStop*>& kBusStops, const std::vector<TrafficLight*>& kTrafficLights)
 {
     REQUIRE(kLength > 0    , "Failed to construct road: length must be greater than 0"   );
     REQUIRE(!kName.empty() , "Failed to construct road: name can not be empty"           );
@@ -96,7 +97,7 @@ void Road::changeLaneIfPossible(IVehicle* vehicle, const uint32_t kLane, const u
     if(!fLanes[kLane].empty())
     {
         // we find the first vehicle that is in front of them on the new lane.
-        std::deque<IVehicle*>::iterator iter = std::upper_bound(newLane.begin(), newLane.end(), vehicle->getPosition(), compareVehicleDist);
+        std::deque<IVehicle*>::iterator iter = std::upper_bound(newLane.begin(), newLane.end(), vehicle->getPosition(), comparePosition<IVehicle>);
 
         if(iter != newLane.begin() and (*--iter)->getPosition() + ideal > vehicle->getPosition()) return;    // if iter == begin there is no vehicle behind them
         if(iter != newLane.end()   and (*iter  )->getPosition() - ideal > vehicle->getPosition()) return;    // if iter == end there is no vehicle in front
@@ -164,21 +165,7 @@ double Road::getSpeedLimit(const double kPosition) const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getSpeedLimit");
     REQUIRE(kPosition >= 0 and kPosition < getRoadLength(), "position not valid");
-    return (--std::upper_bound(fZones.begin(), fZones.end(), kPosition))->getSpeedlimit();
-}
-
-//--------------------------------------------------------------------------------------------------//
-
-bool operator==(Road* const lhs, const std::string& rhs)
-{
-    REQUIRE(lhs->properlyInitialized(), "Road was not initialized when calling operator ==");
-    return lhs->fName == rhs;
-}
-
-bool operator==(const std::string& lhs, Road* const rhs)
-{
-    REQUIRE(rhs->properlyInitialized(), "Road was not initialized when calling operator ==");
-    return rhs->fName == lhs;
+    return (*--std::upper_bound(fZones.begin(), fZones.end(), kPosition, comparePosition<Zone>))->getSpeedlimit();
 }
 
 //--------------------------------------------------------------------------------------------------//
@@ -190,7 +177,7 @@ std::pair<const BusStop*, double> Road::getBusStop(const double kPosition) const
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getBusStop");
     REQUIRE(kPosition >= 0 and kPosition < getRoadLength(), "position not valid");
 
-    const std::vector<BusStop>::const_iterator kIter = std::upper_bound(fBusStops.begin(), fBusStops.end(), kPosition);
+    const std::vector<BusStop*>::const_iterator kIter = std::upper_bound(fBusStops.begin(), fBusStops.end(), kPosition, comparePosition<BusStop>);
     if(kIter == fBusStops.end())
     {
         if(fNextRoad == NULL) return std::pair<const BusStop*, double>(NULL, 0);
@@ -201,7 +188,7 @@ std::pair<const BusStop*, double> Road::getBusStop(const double kPosition) const
             return next;
         }
     }
-    else return std::pair<const BusStop*, double>(kIter.base(), 0);
+    else return std::pair<const BusStop*, double>(*kIter.base(), 0);
 }
 
 std::pair<const TrafficLight*, double> Road::getTrafficLight(const double kPosition) const
@@ -209,7 +196,7 @@ std::pair<const TrafficLight*, double> Road::getTrafficLight(const double kPosit
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getTrafficLight");
     REQUIRE(kPosition >= 0 and kPosition < getRoadLength(), "position not valid");
 
-    const std::vector<TrafficLight>::const_iterator kIter = std::upper_bound(fTrafficLights.begin(), fTrafficLights.end(), kPosition);
+    const std::vector<TrafficLight*>::const_iterator kIter = std::upper_bound(fTrafficLights.begin(), fTrafficLights.end(), kPosition, comparePosition<TrafficLight>);
     if(kIter == fTrafficLights.end())
     {
         if(fNextRoad == NULL) return std::pair<const TrafficLight*, double>(NULL, 0);
@@ -220,7 +207,7 @@ std::pair<const TrafficLight*, double> Road::getTrafficLight(const double kPosit
             return next;
         }
     }
-    else return std::pair<const TrafficLight*, double>(kIter.base(), 0);
+    else return std::pair<const TrafficLight*, double>(*kIter.base(), 0);
 }
 
 std::pair<const IVehicle*, double> Road::getNextVehicle(const uint32_t kLane, const uint32_t kIndex) const
@@ -307,11 +294,6 @@ bool Road::isEmpty() const
         if(!fLanes[i].empty()) return false;
     }
     return true;
-}
-
-bool Road::compareVehicleDist(double lhs, const IVehicle* rhs)
-{
-    return lhs < rhs->getPosition();
 }
 
 

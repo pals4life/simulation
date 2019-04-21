@@ -118,19 +118,3 @@ double Zone::getPosition() const
     return fPosition;
 }
 
-//--------------------------------------------------------------------------------------------------//
-
-bool operator<(const double lhs, const TrafficLight& rhs)
-{
-    return lhs < rhs.fPosition;
-}
-
-bool operator<(const double lhs, const BusStop& rhs)
-{
-    return lhs < rhs.fPosition;
-}
-
-bool operator<(const double lhs, const Zone& rhs)
-{
-    return lhs < rhs.fPosition;
-}

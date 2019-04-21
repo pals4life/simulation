@@ -15,11 +15,7 @@
 class IVehicle;
 
 
-template<typename T>
-double pairPosition(std::pair<const T*, double> next)
-{
-    return next.first->getPosition() + next.second;
-}
+
 
 //--------------------------------------------------------------------------------------------------//
 
@@ -34,8 +30,6 @@ public:
     EColor getColor() const;
     void setInRange(const IVehicle* kVehicle) const;
     double getPosition() const;
-
-    friend bool operator<(double lhs, const TrafficLight& rhs);
 
 private:
     EColor fColor;
@@ -60,14 +54,11 @@ public:
     void setStationed(IVehicle* vehicle);
     double getPosition() const;
 
-    friend bool operator<(double lhs, const BusStop& rhs);
-
 private:
     double fPosition;
     IVehicle* fStationed;
 
     uint32_t fTimer;
-
     static const uint32_t stationTime;
 };
 
@@ -80,8 +71,6 @@ public:
 
     double getPosition() const;
     double getSpeedlimit() const;
-
-    friend bool operator<(double lhs, const Zone& rhs);
 
 private:
     double fPosition;

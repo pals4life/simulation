@@ -3,6 +3,7 @@
 #include "../DesignByContract.h"
 #include "../TrafficSigns.h"
 #include "../Road.h"
+#include "../util.h"
 
 double clamp(double val, double min, double max){ return std::max(std::min(val, max), min); }
 
