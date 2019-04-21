@@ -27,9 +27,9 @@ public:
      * REQUIRE(lanes > 0, "Failed to construct road: must at least have 1 lane");
      * REQUIRE(!zones.empty(), "Failed to construct road: must have at least 1 speed zone" );
      *
-     * ENSURE(this->properlyInitialized(), "Vehicle constructor must end in properlyInitialized state");
+     * ENSURE(this->properlyInitialized(), "Vde zones zijehicle constructor must end in properlyInitialized state");
      */
-	Road(const std::string& kName, Road* const kNext, const double kLength, const uint32_t kLanes, const std::vector<Zone*>& kZones, const std::vector<BusStop*>& kBusStops, const std::vector<TrafficLight*>& kTrafficLights);
+    Road(const std::string& kName, Road* kNext, double kLength, uint32_t kLanes, const std::vector<const Zone*>& kZones, const std::vector<const BusStop*>& kBusStops, const std::vector<const TrafficLight*>& kTrafficLights);
 
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling the destructor");
@@ -104,6 +104,12 @@ public:
      */
     const std::deque<IVehicle*>& operator[](uint32_t kIndex) const;
 
+    void addZone(const Zone* kZone);
+
+    void addBusStop(const BusStop* kBusStop);
+
+    void addTrafficLight(const TrafficLight* kTrafficLight);
+
     //--------------------------------------------------------------------------------------------------//
     //      al de onderstaande functies leiden tot een oneindige loop als banen een cirkel vormen       //
     //--------------------------------------------------------------------------------------------------//
@@ -168,9 +174,9 @@ private:
 	Road* fNextRoad;
 	std::vector< std::deque<IVehicle*> > fLanes;
 
-	std::vector<Zone*> fZones;
-	std::vector<BusStop*> fBusStops;
-	std::vector<TrafficLight*> fTrafficLights;
+	std::vector<const Zone*> fZones;
+	std::vector<const BusStop*> fBusStops;
+	std::vector<const TrafficLight*> fTrafficLights;
 
 	Road* _initCheck;
 };

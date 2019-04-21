@@ -13,7 +13,7 @@
 #include "DesignByContract.h"
 #include "util.h"
 
-Road::Road(const std::string& kName, Road* const kNext, const double kLength, const uint32_t kLanes, const std::vector<Zone*>& kZones, const std::vector<BusStop*>& kBusStops, const std::vector<TrafficLight*>& kTrafficLights)
+Road::Road(const std::string& kName, Road* const kNext, const double kLength, const uint32_t kLanes, const std::vector<const Zone*>& kZones, const std::vector<const BusStop*>& kBusStops, const std::vector<const TrafficLight*>& kTrafficLights)
 {
     REQUIRE(kLength > 0    , "Failed to construct road: length must be greater than 0"   );
     REQUIRE(!kName.empty() , "Failed to construct road: name can not be empty"           );
@@ -155,6 +155,21 @@ const std::deque<IVehicle*>& Road::operator[](const uint32_t kIndex) const
     return fLanes[kIndex];
 }
 
+void Road::addZone(const Zone* kZone)
+{
+    insert_sorted<Zone>(fZones, kZone);
+}
+
+void Road::addBusStop(const BusStop* kBusStop)
+{
+    insert_sorted<BusStop>(fBusStops, kBusStop);
+}
+
+void Road::addTrafficLight(const TrafficLight* kTrafficLight)
+{
+    insert_sorted<TrafficLight>(fTrafficLights, kTrafficLight);
+}
+
 void Road::setNextRoad(Road* const kNextRoad)
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling setNextRoad");
@@ -168,6 +183,7 @@ double Road::getSpeedLimit(const double kPosition) const
     return (*--std::upper_bound(fZones.begin(), fZones.end(), kPosition, comparePosition<Zone>))->getSpeedlimit();
 }
 
+
 //--------------------------------------------------------------------------------------------------//
 //      al de onderstaande functies leiden tot een oneindige loop als banen een cirkel vormen       //
 //--------------------------------------------------------------------------------------------------//
@@ -177,7 +193,7 @@ std::pair<const BusStop*, double> Road::getBusStop(const double kPosition) const
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getBusStop");
     REQUIRE(kPosition >= 0 and kPosition < getRoadLength(), "position not valid");
 
-    const std::vector<BusStop*>::const_iterator kIter = std::upper_bound(fBusStops.begin(), fBusStops.end(), kPosition, comparePosition<BusStop>);
+    const std::vector<const BusStop*>::const_iterator kIter = std::upper_bound(fBusStops.begin(), fBusStops.end(), kPosition, comparePosition<BusStop>);
     if(kIter == fBusStops.end())
     {
         if(fNextRoad == NULL) return std::pair<const BusStop*, double>(NULL, 0);
@@ -196,7 +212,7 @@ std::pair<const TrafficLight*, double> Road::getTrafficLight(const double kPosit
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getTrafficLight");
     REQUIRE(kPosition >= 0 and kPosition < getRoadLength(), "position not valid");
 
-    const std::vector<TrafficLight*>::const_iterator kIter = std::upper_bound(fTrafficLights.begin(), fTrafficLights.end(), kPosition, comparePosition<TrafficLight>);
+    const std::vector<const TrafficLight*>::const_iterator kIter = std::upper_bound(fTrafficLights.begin(), fTrafficLights.end(), kPosition, comparePosition<TrafficLight>);
     if(kIter == fTrafficLights.end())
     {
         if(fNextRoad == NULL) return std::pair<const TrafficLight*, double>(NULL, 0);
