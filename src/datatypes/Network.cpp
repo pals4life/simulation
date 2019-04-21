@@ -68,7 +68,6 @@ void Network::startSimulation(int amountOfTicks, bool print)
         {
             break;
         }
-
         fTicksPassed++;
         if(print) exporter.addSection(fTicksPassed);
     }

@@ -85,7 +85,7 @@ public:
     /**
      * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling setMoved");
      */
-    void setMoved(bool moved);
+    void setMoved(bool moved) const;
 
 private:
 
@@ -103,7 +103,7 @@ protected:
     IVehicle* _initCheck;
 
     std::string fLicensePlate;
-    bool fMoved;
+    mutable bool fMoved;
 
     double fPosition;
     double fVelocity;

@@ -88,18 +88,18 @@ Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
     }
     for (std::map<std::string, std::vector<IVehicle *> >::iterator it1 = tempRoads.begin(); //check voor inconsistente verkeersituaties en plaats de auto's op de wegen
          it1 != tempRoads.end(); it1++) {
-        std::sort(it1->second.begin(), it1->second.end(), comparePositions<IVehicle>);
+        std::sort(it1->second.rbegin(), it1->second.rend(), comparePositions<IVehicle>);
         std::vector<Road *>::iterator found = std::find_if(roads.begin(), roads.end(), Comparator(it1->first));
         if (found != roads.end()) {
             Road *foundRoad = *found;
-            for (std::vector<IVehicle *>::reverse_iterator it2 = it1->second.rbegin(); it2 != it1->second.rend(); it2++) {
+            for (std::vector<IVehicle *>::iterator it2 = it1->second.begin(); it2 != it1->second.end(); it2++) {
                 if ((*it2)->getPosition() >= foundRoad->getRoadLength()) {
                     std::cerr << "Inconsistent traffic situation: car " << (*it2)->getLicensePlate()
                               << "is not on road "
                               << it1->first << std::endl;
                 }
-                std::vector<IVehicle *>::reverse_iterator it3 = it2;
-                if (++it3 < it1->second.rend() && abs((*it2)->getPosition() - (*it3)->getPosition()) < 5) {
+                std::vector<IVehicle *>::iterator it3 = it2;
+                if (++it3 < it1->second.end() && abs((*it2)->getPosition() - (*it3)->getPosition()) < 5) {
                     std::cerr << "Inconsistent traffic situation: car " << (*it2)->getLicensePlate()
                               << " is less than 5m away from car " << (*it3)->getLicensePlate() << " on road "
                               << it1->first << std::endl;
