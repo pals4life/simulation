@@ -60,13 +60,28 @@ Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
         } else if (kType == "VERKEERSTEKEN") {
             const TrafficSigns kSign = tp.parseTrafficSign(elem);
             if (kSign != error) {
-                std::vector<Road *>::iterator found = std::find_if(roads.begin(), roads.end(), Comparator(tp.parseRoad(elem)));
+                std::vector<Road *>::iterator found = std::find_if(roads.begin(), roads.end(),
+                                                                   Comparator(tp.parseRoad(elem)));
                 if (found != roads.end()) {
                     Road *foundRoad = *found;
-                    foundRoad.
+                    switch (kSign) {
+                        case trafficLight:
+                            foundRoad->addTrafficLight(tp.getTrafficLight());
+                            break;
+                        case busStop:
+                            foundRoad->addBusStop(tp.getBusStop());
+                            break;
+                        case zone:
+                            foundRoad->addZone(tp.getZone());
+                            break;
+                        default:
+                            break;
+                    }
                 } else {
-                    std::cerr << "Inconsistent traffic situation: road " << tp.parseRoad(elem) << " does not exist" << std::endl;
+                    std::cerr << "Inconsistent traffic situation: road " << tp.parseRoad(elem) << " does not exist"
+                              << std::endl;
                 }
+            }
         } else {
             std::cerr << "Failed to recognize element " + kType + ": skipping element" << std::endl;
         }
@@ -98,7 +113,8 @@ Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
                             if (nextVehicle->getPosition() + kFromEnd < 5) {
                                 std::cerr << "Inconsistent traffic situation: car " << (*it2)->getLicensePlate()
                                           << " is less than 5m away from car " << nextVehicle->getLicensePlate()
-                                          << " on roads " << it1->first << " and " << nextRoad->getName() << std::endl;
+                                          << " on roads " << it1->first << " and " << nextRoad->getName()
+                                          << std::endl;
                             }
                         }
                     }

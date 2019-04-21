@@ -38,6 +38,7 @@ public:
 
 	/**
 	 * 	REQUIRE(this->properlyInitialized(), "VehicleParser was not initialized when calling parseRoad");
+	 *  REQUIRE(element, "Failed to parse road: no element");
 	 */
 	std::string parseRoad(TiXmlElement *element);
 

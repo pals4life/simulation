@@ -63,10 +63,10 @@ Road *RoadParser::parseRoad(TiXmlElement *const element) {
     if (kLan.empty()) {
         lanes = 1;
     }
-    std::vector<Zone *> zones;
+    std::vector<const Zone *> zones;
     zones.push_back(new Zone(0, kMaxSpeed));
-    std::vector<BusStop *> stops;
-    std::vector<TrafficLight *> lights;
+    std::vector<const BusStop *> stops;
+    std::vector<const TrafficLight *> lights;
     fRoad = new Road(kName, NULL, kLength, lanes, zones, stops, lights);
     ENSURE(fRoad, "Failed to parse road: no road");
     return fRoad;

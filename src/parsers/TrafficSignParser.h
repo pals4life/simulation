@@ -49,6 +49,10 @@ public:
      */
     Zone *getZone() const;
 
+    /**
+     *  REQUIRE(this->properlyInitialized(), "TrafficSignParser was not initialized when calling parseRoad");
+     *  REQUIRE(element, "Failed to parse road: no element");
+     */
     std::string parseRoad(TiXmlElement *element);
 
 

@@ -48,14 +48,14 @@ TrafficSigns TrafficSignParser::parseTrafficSign(TiXmlElement *element) {
     }
     const double kPosition = std::atof(kPos.c_str());
     if (kType == "ZONE") {
-        const std::string kMax = readElement(element, "positie");
+        const std::string kMax = readElement(element, "snelheidslimiet");
         std::string::const_iterator it2 = kMax.begin();
-        while (it2 != kPos.end() && std::isdigit(*it2)) ++it2;
-        if (!(!kMax.empty() && it1 == kMax.end())) {
+        while (it2 != kMax.end() && std::isdigit(*it2)) ++it2;
+        if (!(!kMax.empty() && it2 == kMax.end())) {
             std::cerr << "Failed to parse zone: max speed is no positive integer" << std::endl;
             return error;
         }
-        const double kMaxSpeed = std::atof(kMax.c_str());
+        const double kMaxSpeed = std::atof(kMax.c_str()) / 3.6;;
         fZone = new Zone(kPosition, kMaxSpeed);
         ENSURE(fZone, "Failed to parse traffic sign: no traffic sign");
         return zone;
