@@ -7,6 +7,7 @@
 // @description : Tests for NetworkParser.
 //============================================================================
 
+//TODO no interrupts
 
 #include <gtest/gtest.h>
 #include "../parsers/NetworkParser.h"
@@ -29,8 +30,10 @@ TEST_F(NetworkParserTester, ParseNetwork) {
     network->startSimulation(1000, false);
     EXPECT_EQ(234, network->getTicksPassed());
     testing::internal::CaptureStderr();
-    parser.loadFile("inputfiles/testinputs/test11.xml");
-    parser.parseNetwork(parser.getRoot());
+    if(parser.loadFile("inputfiles/testinputs/test11.xml")) {
+        parser.parseNetwork(parser.getRoot());
+    }
+    parser.clear();
     std::string output = testing::internal::GetCapturedStderr();
     EXPECT_STREQ(
             "Inconsistent traffic situation: road E20 does not exist\n"

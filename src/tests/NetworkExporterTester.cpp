@@ -39,5 +39,5 @@ TEST_F(NetworkExporterTester, NetworkExporterFinish)
     stream.open("outputfiles/name.txt");
     EXPECT_EQ(stream.fail(), 0);
     int temp = system("rm outputfiles/name.txt >/dev/null 2>&1");
-    EXPECT_NE(temp, -545513415); //TODO no exception
+    EXPECT_EQ(temp, 0);
 }

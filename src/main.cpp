@@ -19,13 +19,15 @@ int main(int argc, char **argv) {
 	REQUIRE(argc == 2, "argument count must be 1");
 
 	NetworkParser parser;
-	parser.loadFile(argv[1]);
-	Network* network = parser.parseNetwork(parser.getRoot());
-	parser.clear();
+	if (parser.loadFile(argv[1])) {
+        Network* network = parser.parseNetwork(parser.getRoot());
+        parser.clear();
 
-	network->startSimulation(1000, true);
-	std::cout << "simulation ended in: " << network->getTicksPassed() << " ticks\n";
-	delete network;
+        network->startSimulation(1000, true);
+        std::cout << "simulation ended in: " << network->getTicksPassed() << " ticks\n";
+        delete network;
 
-	return 0;
+        return 0;
+    }
+    return 1;
 }

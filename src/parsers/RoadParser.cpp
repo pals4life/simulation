@@ -51,7 +51,23 @@ Road *RoadParser::parseRoad(TiXmlElement *const element) {
         return NULL;
     }
     const double kLength = std::atof(kLen.c_str());
-    fRoad = new Road(kName, NULL, kLength, kMaxSpeed);
+    const std::string kLan = readElement(element, "rijstroken");
+    std::string::const_iterator it3 = kLan.begin();
+    while (it3 != kLan.end() && std::isdigit(*it3)) ++it3;
+    if (it3 != kLan.end()) {
+        std::cerr << "Failed to parse road with name " << kName
+                  << ": number of lanes is no positive integer" << std::endl;
+        return NULL;
+    }
+    uint32_t lanes = std::atoi(kLan.c_str());
+    if (kLan.empty()) {
+        lanes = 1;
+    }
+    std::vector<Zone *> zones;
+    zones.push_back(new Zone(0, kMaxSpeed));
+    std::vector<BusStop *> stops;
+    std::vector<TrafficLight *> lights;
+    fRoad = new Road(kName, NULL, kLength, lanes, zones, stops, lights);
     ENSURE(fRoad, "Failed to parse road: no road");
     return fRoad;
 }
