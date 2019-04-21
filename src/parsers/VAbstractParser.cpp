@@ -9,7 +9,7 @@
 
 #include <iostream>
 #include "VAbstractParser.h"
-#include "../datatypes/DesignByContract.h"
+#include "../DesignByContract.h"
 
 bool VAbstractParser::loadFile(const std::string &kFilename) {
 	REQUIRE(this->properlyInitialized(), "Parser was not initialized when calling loadfile");

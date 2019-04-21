@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <iostream>
 #include "Road.h"
-#include "DesignByContract.h"
+#include "../DesignByContract.h"
 #include "util.h"
 
 Road::Road(const std::string& kName, Road* const kNext, const double kLength, const uint32_t kLanes, const std::vector<const Zone*>& kZones, const std::vector<const BusStop*>& kBusStops, const std::vector<const TrafficLight*>& kTrafficLights)
@@ -48,10 +48,16 @@ bool Road::properlyInitialized() const
     return _initCheck == this;
 }
 
-
-void Road::update()
+void Road::updateTrafficSigns()
 {
-    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");
+    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling updateTrafficSigns");
+    for(uint32_t i = 0; i < fTrafficLights.size(); i++) fTrafficLights[i]->update();
+    for(uint32_t i = 0; i < fBusStops     .size(); i++) fBusStops     [i]->update();
+}
+
+void Road::updateVehicles()
+{
+    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling updateVehicles");
 
     for(uint32_t i = 0; i < fLanes.size(); i++)
     {
@@ -157,6 +163,9 @@ const std::deque<IVehicle*>& Road::operator[](const uint32_t kIndex) const
 
 void Road::addZone(const Zone* kZone)
 {
+    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling laneExists");
+    REQUIRE(kZone->getPosition(), "");
+
     insert_sorted<Zone>(fZones, kZone);
 }
 
@@ -255,7 +264,7 @@ std::pair<const IVehicle*, double> Road::getNextVehicle(const uint32_t kLane, co
 
 void Road::dequeueFinishedVehicles()
 {
-    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");
+    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling updateVehicles");
 
     for(uint32_t i = 0; i < fLanes.size(); i++)
     {

@@ -37,7 +37,7 @@ TEST_F(RoadTester, RoadUpdate1)
     Car* testCar = new Car("12R3", 30, 30);
 
     testRoad->enqueue(testCar);
-    testRoad->update();
+    testRoad->updateVehicles();
     ASSERT_FALSE(testRoad->isEmpty());
 
     delete testRoad;
@@ -49,7 +49,7 @@ TEST_F(RoadTester, RoadUpdate2)
     Car* testCar = new Car("12R3", 50, 60);
 
     testRoad->enqueue(testCar);
-    testRoad->update();
+    testRoad->updateVehicles();
     ASSERT_TRUE(testRoad->isEmpty());
 
     delete testRoad;
@@ -61,9 +61,9 @@ TEST_F(RoadTester, RoadUpdate3)
     Car* testCar = new Car("12R3", 30, 40);
 
     testRoad->enqueue(testCar);
-    testRoad->update();
+    testRoad->updateVehicles();
     testRoad->checkAndReset();
-    testRoad->update();
+    testRoad->updateVehicles();
     ASSERT_TRUE(testRoad->isEmpty());
 
     delete testRoad;
@@ -79,7 +79,7 @@ TEST_F(RoadTester, RoadUpdate4)
     testRoad->enqueue(testCar0);
     testRoad->enqueue(testCar1);
 
-    testRoad->update();
+    testRoad->updateVehicles();
     ASSERT_EQ(testCar0->getPosition(), 80);
     ASSERT_EQ(testCar1->getPosition(), 70);
 
@@ -98,7 +98,7 @@ TEST_F(RoadTester, RoadUpdate5)
     testRoad->enqueue(testCar0);
     testRoad->enqueue(testCar1);
 
-    testRoad->update();
+    testRoad->updateVehicles();
     ASSERT_EQ(testCar0->getPosition(), 60);
     ASSERT_EQ(testCar1->getPosition(), 70);
 
@@ -112,7 +112,7 @@ TEST_F(RoadTester, RoadUpdate6)
     Car* testCar = new Car("12R3", 0, 120);
 
     testRoad->enqueue(testCar);
-    testRoad->update();
+    testRoad->updateVehicles();
 
     ASSERT_EQ(testCar->getAcceleration(), testCar->getMinAcceleration());
 }
@@ -126,7 +126,7 @@ TEST_F(RoadTester, RoadUpdate7)
     Car* testCar0 = new Car("12R3", 20, 70);
 
     testRoad1->enqueue(testCar0);
-    testRoad1->update();
+    testRoad1->updateVehicles();
 
     ASSERT_EQ(testCar0->getPosition(), 40);
     ASSERT_TRUE(testRoad1->isEmpty());
@@ -146,7 +146,7 @@ TEST_F(RoadTester, RoadUpdate8)
     Car* testCar0 = new Car("12R3", 25, 150);
 
     testRoad1->enqueue(testCar0);
-    testRoad1->update();
+    testRoad1->updateVehicles();
 
     ASSERT_TRUE(testRoad1->isEmpty());
     ASSERT_TRUE(testRoad0->isEmpty());
@@ -167,7 +167,7 @@ TEST_F(RoadTester, RoadUpdate9)
     testRoad1->enqueue(testCar0);
     testRoad1->enqueue(testCar1);
 
-    testRoad1->update();
+    testRoad1->updateVehicles();
 
     ASSERT_EQ(testCar0->getPosition(), 40);
     ASSERT_EQ(testCar1->getPosition(), 10);

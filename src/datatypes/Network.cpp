@@ -11,7 +11,7 @@
 #include <iostream>
 #include "Network.h"
 #include "NetworkExporter.h"
-#include "DesignByContract.h"
+#include "../DesignByContract.h"
 
 const int Network::fgkMaxTicks = 1000;
 
@@ -53,12 +53,17 @@ void Network::startSimulation(int amountOfTicks, bool print)
 
         for(uint32_t i = 0; i < fRoads.size(); i++)
         {
-            fRoads[i]->update();
+            fRoads[i]->updateTrafficSigns();
+        }
+        for(uint32_t i = 0; i < fRoads.size(); i++)
+        {
+            fRoads[i]->updateVehicles();
         }
         for(uint32_t i = 0; i < fRoads.size(); i++)
         {
             if(fRoads[i]->checkAndReset()) simulationDone = false;
         }
+
         if (simulationDone)
         {
             break;

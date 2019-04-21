@@ -8,7 +8,7 @@
 //============================================================================
 #include <iostream>
 #include "TrafficSignParser.h"
-#include "../datatypes/DesignByContract.h"
+#include "../DesignByContract.h"
 
 TrafficSignParser::TrafficSignParser() {
     fTrafficLight = NULL;

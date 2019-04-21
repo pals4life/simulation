@@ -9,7 +9,7 @@
 
 #include <vector>
 #include "RoadParser.h"
-#include "../datatypes/DesignByContract.h"
+#include "../DesignByContract.h"
 #include <algorithm>
 #include <iostream>
 

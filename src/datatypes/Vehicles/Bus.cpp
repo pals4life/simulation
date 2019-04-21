@@ -8,7 +8,7 @@
 //============================================================================
 
 #include "Bus.h"
-#include "../DesignByContract.h"
+#include "../../DesignByContract.h"
 
 const double Bus::fgkMaxAcceleration = 1.0;
 const double Bus::fgkMinAcceleration = -7.0;

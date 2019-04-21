@@ -8,7 +8,7 @@
 //============================================================================
 
 #include "Truck.h"
-#include "../DesignByContract.h"
+#include "../../DesignByContract.h"
 
 const double Truck::fgkMaxAcceleration = 1.0;
 const double Truck::fgkMinAcceleration = -6.0;

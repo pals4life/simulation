@@ -8,7 +8,7 @@
 //============================================================================
 
 #include "Motorcycle.h"
-#include "../DesignByContract.h"
+#include "../../DesignByContract.h"
 
 const double Motorcycle::fgkMaxAcceleration = 4.0;
 const double Motorcycle::fgkMinAcceleration = -10.0;

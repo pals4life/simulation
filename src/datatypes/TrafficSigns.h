@@ -25,22 +25,26 @@ public:
     enum EColor{kRed, kOrange, kGreen};
 
     TrafficLight(double kPosition);
+    bool properlyInitialized() const;
 
-    void update();
+    void update() const;
     EColor getColor() const;
     void setInRange(const IVehicle* kVehicle) const;
     double getPosition() const;
 
 private:
-    EColor fColor;
     double fPosition;
+
+    mutable EColor fColor;
     mutable const IVehicle* fkInRange;
 
-    uint32_t fRedTime;
-    uint32_t fGreenTime;
-    uint32_t fTimer;
+    mutable uint32_t fRedTime;
+    mutable uint32_t fGreenTime;
+    mutable uint32_t fTimer;
 
     static const uint32_t fgkMaxDifference;
+
+    TrafficLight* _initCheck;
 };
 
 //--------------------------------------------------------------------------------------------------//
@@ -49,17 +53,23 @@ class BusStop
 {
 public:
     BusStop(double kPosition);
+    bool properlyInitialized() const;
 
-    void update();
-    void setStationed(IVehicle* vehicle);
+    void update() const;
+    void setStationed(IVehicle* vehicle) const;
     double getPosition() const;
+
+
 
 private:
     double fPosition;
-    IVehicle* fStationed;
 
-    uint32_t fTimer;
+    mutable IVehicle* fStationed;
+    mutable uint32_t fTimer;
+
     static const uint32_t stationTime;
+
+    BusStop* _initCheck;
 };
 
 //--------------------------------------------------------------------------------------------------//
@@ -68,6 +78,7 @@ class Zone
 {
 public:
     Zone(double kPosition, double kSpeedLimit);
+    bool properlyInitialized() const;
 
     double getPosition() const;
     double getSpeedlimit() const;
@@ -75,6 +86,8 @@ public:
 private:
     double fPosition;
     double fSpeedlimit;
+
+    Zone* _initCheck;
 };
 
 #endif //SIMULATION_TRAFFICSIGNS_H

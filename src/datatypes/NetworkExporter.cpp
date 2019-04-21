@@ -8,7 +8,7 @@
 //============================================================================
 
 #include "NetworkExporter.h"
-#include "DesignByContract.h"
+#include "../DesignByContract.h"
 #include <stdlib.h>
 
 NetworkExporter::NetworkExporter()

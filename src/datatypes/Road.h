@@ -27,7 +27,7 @@ public:
      * REQUIRE(lanes > 0, "Failed to construct road: must at least have 1 lane");
      * REQUIRE(!zones.empty(), "Failed to construct road: must have at least 1 speed zone" );
      *
-     * ENSURE(this->properlyInitialized(), "Vde zones zijehicle constructor must end in properlyInitialized state");
+     * ENSURE(this->properlyInitialized(), "Vehicle constructor must end in properlyInitialized state");
      */
     Road(const std::string& kName, Road* kNext, double kLength, uint32_t kLanes, const std::vector<const Zone*>& kZones, const std::vector<const BusStop*>& kBusStops, const std::vector<const TrafficLight*>& kTrafficLights);
 
@@ -40,10 +40,15 @@ public:
 
     //--------------------------------------------------------------------------------------------------//
 
-	/**
-	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling update");
+    /**
+	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling updateTrafficSigns");
 	 */
-	void update();
+    void updateTrafficSigns();
+
+	/**
+	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling updateVehicles");
+	 */
+	void updateVehicles();
 
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling checkAndReset");

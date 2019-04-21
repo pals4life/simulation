@@ -14,7 +14,7 @@
 #include "../datatypes/Vehicles/Bus.h"
 #include "../datatypes/Vehicles/Motorcycle.h"
 #include "../datatypes/Vehicles/Truck.h"
-#include "../datatypes/DesignByContract.h"
+#include "../DesignByContract.h"
 
 VehicleParser::VehicleParser() {
     fVehicle = NULL;
