@@ -31,9 +31,14 @@ bool comparePositions(const T* lhs, const T* rhs)
     return lhs->getPosition() < rhs->getPosition();
 }
 
-bool compareName(const Road* lhs, const std::string& rhs)
+struct Comparator : public std::unary_function<Road*, bool>
 {
-    return lhs->getName() == rhs;
-}
+    explicit Comparator(const std::string& base) : base(base) {}
+    bool operator()(Road* road) { return base == road->getName(); }
+
+    const std::string& base;
+};
+
+
 
 #endif //SIMULATION_UTIL_H
