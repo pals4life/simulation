@@ -65,7 +65,7 @@ void Road::updateVehicles()
 
         for(uint32_t j = 0; j < fLanes[i].size(); j++)
         {
-            fLanes[i][j]->move(j,i, this);
+            fLanes[i][j]->move(i,j, this);
         }
     }
 
@@ -192,7 +192,6 @@ double Road::getSpeedLimit(const double kPosition) const
     return (*--std::upper_bound(fZones.begin(), fZones.end(), kPosition, comparePosition<Zone>))->getSpeedlimit();
 }
 
-
 //--------------------------------------------------------------------------------------------------//
 //      al de onderstaande functies leiden tot een oneindige loop als banen een cirkel vormen       //
 //--------------------------------------------------------------------------------------------------//
@@ -202,18 +201,21 @@ std::pair<const BusStop*, double> Road::getBusStop(const double kPosition) const
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getBusStop");
     REQUIRE(kPosition >= 0 and kPosition < getRoadLength(), "position not valid");
 
-    const std::vector<const BusStop*>::const_iterator kIter = std::upper_bound(fBusStops.begin(), fBusStops.end(), kPosition, comparePosition<BusStop>);
-    if(kIter == fBusStops.end())
+    const Road* current = this;
+    double offset = 0;
+
+    while(current != NULL)
     {
-        if(fNextRoad == NULL) return std::pair<const BusStop*, double>(NULL, 0);
-        else
+        const std::vector<const BusStop*>::const_iterator kIter = std::upper_bound(fBusStops.begin(), fBusStops.end(), kPosition, comparePosition<BusStop>);
+        if(kIter == fBusStops.end())
         {
-            std::pair<const BusStop*, double> next = getBusStop(0);
-            next.second += fRoadLength;
-            return next;
+            if(fNextRoad == NULL) break;
+            offset += current->fRoadLength;
+            current = current->fNextRoad;
         }
+        else return std::pair<const BusStop*, double>(*kIter, offset);
     }
-    else return std::pair<const BusStop*, double>(*kIter.base(), 0);
+    return std::pair<const BusStop*, double>(NULL, 0);
 }
 
 std::pair<const TrafficLight*, double> Road::getTrafficLight(const double kPosition) const
@@ -221,18 +223,21 @@ std::pair<const TrafficLight*, double> Road::getTrafficLight(const double kPosit
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getTrafficLight");
     REQUIRE(kPosition >= 0 and kPosition < getRoadLength(), "position not valid");
 
-    const std::vector<const TrafficLight*>::const_iterator kIter = std::upper_bound(fTrafficLights.begin(), fTrafficLights.end(), kPosition, comparePosition<TrafficLight>);
-    if(kIter == fTrafficLights.end())
+    const Road* current = this;
+    double offset = 0;
+
+    while(current != NULL)
     {
-        if(fNextRoad == NULL) return std::pair<const TrafficLight*, double>(NULL, 0);
-        else
+        const std::vector<const TrafficLight*>::const_iterator kIter = std::upper_bound(fTrafficLights.begin(), fTrafficLights.end(), kPosition, comparePosition<TrafficLight>);
+        if(kIter == fTrafficLights.end())
         {
-            std::pair<const TrafficLight*, double> next = getTrafficLight(0);
-            next.second += fRoadLength;
-            return next;
+            if(fNextRoad == NULL) break;
+            offset += current->fRoadLength;
+            current = current->fNextRoad;
         }
+        else return std::pair<const TrafficLight*, double>(*kIter, offset);
     }
-    else return std::pair<const TrafficLight*, double>(*kIter.base(), 0);
+    return std::pair<const TrafficLight*, double>(NULL, 0);
 }
 
 std::pair<const IVehicle*, double> Road::getNextVehicle(const uint32_t kLane, const uint32_t kIndex) const
@@ -244,14 +249,14 @@ std::pair<const IVehicle*, double> Road::getNextVehicle(const uint32_t kLane, co
     if(kIndex == 0)
     {
         const Road* iter = fNextRoad;
-        double offset = fRoadLength;
+        double offset = 0;
         while(iter != NULL)
         {
             if(iter->getNumLanes() <= kLane) break;
             else if(iter->fLanes[kLane].empty())
             {
-                iter = iter->fNextRoad;
                 offset += iter->fRoadLength;
+                iter = iter->fNextRoad;
             }
             else return std::pair<const IVehicle*, double>(iter->fLanes[kLane].back(), offset);
         }
@@ -298,7 +303,7 @@ void Road::dequeue(const uint32_t kLane)
     {
         delete fLanes[kLane].front();                                                      // free memory if they leave the simulation
     }
-    if(fNextRoad->getNumLanes() <= kLane)
+    else if(fNextRoad->getNumLanes() <= kLane)
     {
         std::cerr << "Next road did not have enough lanes, removing this vehicle from the simulation.\n";
         delete fLanes[kLane].front();

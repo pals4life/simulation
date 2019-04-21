@@ -92,14 +92,14 @@ Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
         std::vector<Road *>::iterator found = std::find_if(roads.begin(), roads.end(), Comparator(it1->first));
         if (found != roads.end()) {
             Road *foundRoad = *found;
-            for (std::vector<IVehicle *>::iterator it2 = it1->second.begin(); it2 != it1->second.end(); it2++) {
+            for (std::vector<IVehicle *>::reverse_iterator it2 = it1->second.rbegin(); it2 != it1->second.rend(); it2++) {
                 if ((*it2)->getPosition() >= foundRoad->getRoadLength()) {
                     std::cerr << "Inconsistent traffic situation: car " << (*it2)->getLicensePlate()
                               << "is not on road "
                               << it1->first << std::endl;
                 }
-                std::vector<IVehicle *>::iterator it3 = it2;
-                if (++it3 < it1->second.end() && abs((*it2)->getPosition() - (*it3)->getPosition()) < 5) {
+                std::vector<IVehicle *>::reverse_iterator it3 = it2;
+                if (++it3 < it1->second.rend() && abs((*it2)->getPosition() - (*it3)->getPosition()) < 5) {
                     std::cerr << "Inconsistent traffic situation: car " << (*it2)->getLicensePlate()
                               << " is less than 5m away from car " << (*it3)->getLicensePlate() << " on road "
                               << it1->first << std::endl;

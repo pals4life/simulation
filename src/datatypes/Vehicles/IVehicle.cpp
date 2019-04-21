@@ -40,9 +40,6 @@ void IVehicle::move(const uint32_t lane, const uint32_t index, Road* road)
 
     if(fMoved) return;
 
-    fPosition += fVelocity;                                                                 // Calculate new positions
-    fVelocity += fAcceleration;                                                             // Calculate new velocity
-
     const std::pair<const IVehicle*, double> nextVehicle = road->getNextVehicle(lane, index);       // get the next vehicle
     double kAcceleration = getFollowingAcceleration(nextVehicle);                                   // calculate the following speed
 
@@ -62,9 +59,12 @@ void IVehicle::move(const uint32_t lane, const uint32_t index, Road* road)
     if(road->laneExists(lane+1)) checkLaneChange(kLight.first, lane, index, road, true );   // overtake if possible
     if(road->laneExists(lane-1)) checkLaneChange(kLight.first, lane, index, road, false);   // go back if possible
 
+    fPosition += fVelocity;                                                                 // Calculate new positions
+    fVelocity += fAcceleration;                                                             // Calculate new velocity
+
     ENSURE(getVelocity() >= 0, "Velocity cannot be negative");
     ENSURE((getAcceleration() >= getMinAcceleration()) && (getAcceleration() <= getMaxAcceleration()), "Acceleration is too high / low");
-    ENSURE(nextVehicle.first == NULL or pairPosition<IVehicle>(nextVehicle) - getPosition() > getMinVehicleDist(), "distance between vehicles must be greater than minVehicleDist");
+    //ENSURE(nextVehicle.first == NULL or pairPosition<IVehicle>(nextVehicle) - getPosition() > getMinVehicleDist(), "distance between vehicles must be greater than minVehicleDist");
     ENSURE(fPrevAcceleration.size() == 5, "Previous acceleration must contain 5 elements");
 }
 
