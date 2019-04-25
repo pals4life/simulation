@@ -47,7 +47,13 @@ void Network::startSimulation(bool print, bool gui)
     Window window;
 
     if(print) exporter.initialize(this, "test");
-    if(gui  ) window.init();
+    if(gui  )
+    {
+        window.init();
+        window.createButtons();
+    }
+
+    std::string filename = window.askString();
 
     while(fTicksPassed < fgkMaxTicks)
     {
@@ -88,9 +94,11 @@ bool Network::checkWindow(const Window& window) const
         case Window::next:
             return true;
         case Window::pause:
+            Window::delay(500);
             return false;
         default:
-           return false;
+            Window::delay(500);
+            return false;
     }
 
 }
