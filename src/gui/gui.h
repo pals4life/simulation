@@ -67,6 +67,10 @@ public:
      * to close the window
      */
     void closeEvent (QCloseEvent *event);
+    /*
+     *
+     */
+    void processEvents();
 
 private:
 
