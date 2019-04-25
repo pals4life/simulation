@@ -49,7 +49,11 @@ void Network::startSimulation(const Window& window, bool print, bool gui)
 
     while(fTicksPassed < fgkMaxTicks)
     {
-        if(!gui or checkWindow(window)) update();
+        if(!gui or checkWindow(window))
+        {
+            if(update()) break;
+        }
+
         if(print) exporter.addSection(fTicksPassed);
         if(gui) Window::processEvents();
     }
@@ -72,7 +76,6 @@ bool Network::update()
     {
         if(fRoads[i]->checkAndReset()) simulationDone = false;
     }
-
     fTicksPassed++;
     return simulationDone;
 }

@@ -23,7 +23,7 @@ int main(int argc, char **argv)
     window.init();
     window.createButtons();
 
-    std::string filename = window.askString();
+//    std::string filename = window.askString();
 
     NetworkParser parser;
     if (parser.loadFile(argv[1]))
@@ -31,10 +31,11 @@ int main(int argc, char **argv)
         Network* network = parser.parseNetwork(parser.getRoot());
         parser.clear();
 
-        network->startSimulation(window, false, false);
+        network->startSimulation(window, true, false);
         delete network;
     }
 
     QApplication::exit();
+    exit(0);
     return QApplication::exec();
 }
