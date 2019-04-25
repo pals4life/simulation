@@ -43,6 +43,10 @@ bool Window::checkProperlyInitialized()
     return properlyInitialized;
 }
 
+void Window::processEvents() {
+    QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+}
+
 void Window::createButtons()
 {
 
