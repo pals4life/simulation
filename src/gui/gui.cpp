@@ -103,8 +103,8 @@ void Window::closeEvent (QCloseEvent *event)
 
 std::string Window::askString() {
     bool ok;
-    QString text = QInputDialog::getText(this, tr("QInputDialog::getText()"),
-                                         tr("User name:"), QLineEdit::Normal,
+    QString text = QInputDialog::getText(this, tr("enter your filename"),
+                                         tr("filename"), QLineEdit::Normal,
                                          QString("test.txt"), &ok);
 
     if (ok && !text.isEmpty())
