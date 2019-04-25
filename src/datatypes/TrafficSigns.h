@@ -56,18 +56,16 @@ public:
     bool properlyInitialized() const;
 
     void update() const;
-    void setStationed(IVehicle* vehicle) const;
+    void setStationed(const IVehicle* vehicle) const;
     double getPosition() const;
-
-
 
 private:
     double fPosition;
 
-    mutable IVehicle* fStationed;
+    mutable const IVehicle* fStationed;
     mutable uint32_t fTimer;
 
-    static const uint32_t stationTime;
+    static const uint32_t fgkStationTime;
 
     BusStop* _initCheck;
 };

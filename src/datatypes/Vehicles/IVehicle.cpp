@@ -40,12 +40,16 @@ void IVehicle::move(const uint32_t lane, const uint32_t index, Road* road)
 
     if(fMoved) return;
 
+    double oldPosition = fPosition;
+    fPosition += fVelocity;                                                                 // Calculate new positions
+    fVelocity += fAcceleration;                                                             // Calculate new velocity
+
     const std::pair<const IVehicle*, double> nextVehicle = road->getNextVehicle(lane, index);       // get the next vehicle
     double kAcceleration = getFollowingAcceleration(nextVehicle);                                   // calculate the following speed
 
-    const std::pair<double, double> kMinMax = getMinMaxAcceleration(road->getSpeedLimit(fPosition));// calculate the min and max acceleration possible
-    const std::pair<bool  , double> kLight  = checkTrafficLights(road->getTrafficLight(fPosition)); // calculate the slowdown if needed
-    const std::pair<bool  , double> kBus    = checkBusStop(road->getBusStop(fPosition));            // calculate the slowdown if needed
+    const std::pair<double, double> kMinMax = getMinMaxAcceleration(road->getSpeedLimit(oldPosition));// calculate the min and max acceleration possible
+    const std::pair<bool  , double> kLight  = checkTrafficLights(road->getTrafficLight(oldPosition)); // calculate the slowdown if needed
+    const std::pair<bool  , double> kBus    = checkBusStop(road->getBusStop(oldPosition));            // calculate the slowdown if needed
 
     if(kLight.first) kAcceleration = std::min(kLight.second, kAcceleration);                // we need to take the minimum of these values
     if(kBus.first  ) kAcceleration = std::min(kBus.second  , kAcceleration);                // to ensure we slow down enough
@@ -58,9 +62,6 @@ void IVehicle::move(const uint32_t lane, const uint32_t index, Road* road)
 
     if(road->laneExists(lane+1)) checkLaneChange(kLight.first, lane, index, road, true );   // overtake if possible
     if(road->laneExists(lane-1)) checkLaneChange(kLight.first, lane, index, road, false);   // go back if possible
-
-    fPosition += fVelocity;                                                                 // Calculate new positions
-    fVelocity += fAcceleration;                                                             // Calculate new velocity
 
     ENSURE(getVelocity() >= 0, "Velocity cannot be negative");
     ENSURE((getAcceleration() >= getMinAcceleration()) && (getAcceleration() <= getMaxAcceleration()), "Acceleration is too high / low");
@@ -99,10 +100,14 @@ std::pair<bool, double> IVehicle::checkTrafficLights(std::pair<const TrafficLigh
     double ideal = 0.75 * fVelocity;
     double dist = nextTrafficLight.first->getPosition() + nextTrafficLight.second - fPosition;
 
-    if(dist < 2 * ideal and nextTrafficLight.first->getColor() != TrafficLight::kGreen)
+    if(dist < 2 * ideal)
     {
         nextTrafficLight.first->setInRange(this);
-        return std::pair<bool, double>(true, -fVelocity*fVelocity / dist);
+        if(nextTrafficLight.first->getColor() != TrafficLight::kGreen)
+        {
+            return std::pair<bool, double>(true, -fVelocity*fVelocity / dist);
+        }
+        else return std::pair<bool, double>(false, 0);
     }
     else
     {
@@ -113,7 +118,10 @@ std::pair<bool, double> IVehicle::checkTrafficLights(std::pair<const TrafficLigh
 std::pair<bool, double> IVehicle::checkBusStop(std::pair<const BusStop*, double> nextBusStop) const
 {
     if(nextBusStop.first == NULL or getType() != "bus") return std::pair<bool, double>(false, 0);
-    if(fPosition + fVelocity == pairPosition<BusStop>(nextBusStop)) std::cerr << "a bus arrived\n";
+    if(fPosition + fVelocity >= pairPosition<BusStop>(nextBusStop))
+    {
+        nextBusStop.first->setStationed(this);
+    }
 
     double dist = nextBusStop.first->getPosition() + nextBusStop.second - fPosition;
 
@@ -177,7 +185,7 @@ double IVehicle::getMinVehicleDist() const
     return fgkMinVehicleDist;
 }
 
-void IVehicle::setMoved(bool moved)
+void IVehicle::setMoved(bool moved) const
 {
     REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling setMoved");
     fMoved = moved;

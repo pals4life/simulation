@@ -10,24 +10,31 @@
 
 #include "parsers/NetworkParser.h"
 #include <iostream>
-
+#include <QApplication>
+#include "gui/gui.h"
 #include "gtest/gtest.h"
-
 #include "DesignByContract.h"
 
-int main(int argc, char **argv) {
-	REQUIRE(argc == 2, "argument count must be 1");
+int main(int argc, char **argv)
+{
+    QApplication application(argc, argv);
 
-	NetworkParser parser;
-	if (parser.loadFile(argv[1])) {
+    Window window;
+    window.init();
+    window.createButtons();
+
+    std::string filename = window.askString();
+
+    NetworkParser parser;
+    if (parser.loadFile(argv[1]))
+    {
         Network* network = parser.parseNetwork(parser.getRoot());
         parser.clear();
 
-        network->startSimulation(1000, true);
-        std::cout << "simulation ended in: " << network->getTicksPassed() << " ticks\n";
+        network->startSimulation(window, false, false);
         delete network;
-
-        return 0;
     }
-    return 1;
+
+    QApplication::exit();
+    return QApplication::exec();
 }

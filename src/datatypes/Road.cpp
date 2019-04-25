@@ -132,6 +132,12 @@ Road* Road::getNextRoad()
     return fNextRoad;
 }
 
+void Road::setNextRoad(Road* const kNextRoad)
+{
+    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling setNextRoad");
+    Road::fNextRoad = kNextRoad;
+}
+
 double Road::getRoadLength() const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getRoadLength");
@@ -158,32 +164,60 @@ bool Road::laneExists(uint32_t kLane) const
 
 const std::deque<IVehicle*>& Road::operator[](const uint32_t kIndex) const
 {
+    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling operator[]");
+    REQUIRE(laneExists(kIndex), "lane does not exist");
     return fLanes[kIndex];
 }
 
+//--------------------------------------------------------------------------------------------------//
+//              al de onderstaande functies zijn voor verkeerstekens methodes                       //
+//--------------------------------------------------------------------------------------------------//
+
 void Road::addZone(const Zone* kZone)
 {
-    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling laneExists");
-    REQUIRE(kZone->getPosition(), "");
+    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling addZone");
+    REQUIRE(kZone->properlyInitialized(), "Zone was not properly initialized");
 
     insert_sorted<Zone>(fZones, kZone);
 }
 
 void Road::addBusStop(const BusStop* kBusStop)
 {
+    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling addBusStop");
+    REQUIRE(kBusStop->properlyInitialized(), "BusStop was not properly initialized");
+
     insert_sorted<BusStop>(fBusStops, kBusStop);
 }
 
 void Road::addTrafficLight(const TrafficLight* kTrafficLight)
 {
+    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling addTrafficLight");
+    REQUIRE(kTrafficLight->properlyInitialized(), "TrafficLight was not properly initialized");
+
     insert_sorted<TrafficLight>(fTrafficLights, kTrafficLight);
 }
 
-void Road::setNextRoad(Road* const kNextRoad)
+std::vector<const Zone*> Road::getZones()
 {
-    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling setNextRoad");
-    Road::fNextRoad = kNextRoad;
+    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getZones");
+    return fZones;
 }
+
+std::vector<const BusStop*> Road::getBusStops()
+{
+    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getBusStops");
+    return fBusStops;
+}
+
+std::vector<const TrafficLight*> Road::getTrafficLights()
+{
+    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getTrafficLights");
+    return fTrafficLights;
+}
+
+//--------------------------------------------------------------------------------------------------//
+//      al de onderstaande functies leiden tot een oneindige loop als banen een cirkel vormen       //
+//--------------------------------------------------------------------------------------------------//
 
 double Road::getSpeedLimit(const double kPosition) const
 {
@@ -191,10 +225,6 @@ double Road::getSpeedLimit(const double kPosition) const
     REQUIRE(kPosition >= 0 and kPosition < getRoadLength(), "position not valid");
     return (*--std::upper_bound(fZones.begin(), fZones.end(), kPosition, comparePosition<Zone>))->getSpeedlimit();
 }
-
-//--------------------------------------------------------------------------------------------------//
-//      al de onderstaande functies leiden tot een oneindige loop als banen een cirkel vormen       //
-//--------------------------------------------------------------------------------------------------//
 
 std::pair<const BusStop*, double> Road::getBusStop(const double kPosition) const
 {

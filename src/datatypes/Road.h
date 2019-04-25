@@ -106,14 +106,46 @@ public:
 
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling operator[]");
+     * REQUIRE(laneExists(kIndex), "lane does not exist");
      */
     const std::deque<IVehicle*>& operator[](uint32_t kIndex) const;
 
+    //--------------------------------------------------------------------------------------------------//
+    //              al de onderstaande functies zijn voor verkeerstekens methodes                       //
+    //--------------------------------------------------------------------------------------------------//
+
+    /**
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling addZone");
+     * REQUIRE(kZone->properlyInitialized(), "Zone was not properly initialized");
+     */
     void addZone(const Zone* kZone);
 
+    /**
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling addBusStop");
+     * REQUIRE(kBusStop->properlyInitialized(), "BusStop was not properly initialized");
+     */
     void addBusStop(const BusStop* kBusStop);
 
+    /**
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling addTrafficLight");
+     * REQUIRE(kTrafficLight->properlyInitialized(), "TrafficLight was not properly initialized");
+     */
     void addTrafficLight(const TrafficLight* kTrafficLight);
+
+    /**
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getZones");
+     */
+    std::vector<const Zone*> getZones();
+
+    /**
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getBusStops");
+     */
+    std::vector<const BusStop*> getBusStops();
+
+    /**
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getTrafficLights");
+     */
+    std::vector<const TrafficLight*> getTrafficLights();
 
     //--------------------------------------------------------------------------------------------------//
     //      al de onderstaande functies leiden tot een oneindige loop als banen een cirkel vormen       //

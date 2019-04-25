@@ -5,6 +5,9 @@ set(CMAKE_CXX_STANDARD 98)
 set(CMAKE_CXX_FLAGS "-Wall -Werror")
 set(CMAKE_EXE_LINKER_FLAGS -pthread)
 
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+
 # Set include dir
 include_directories(${simulation_SOURCE_DIR}/gtest/include)
 
@@ -12,11 +15,11 @@ include_directories(${simulation_SOURCE_DIR}/gtest/include)
 link_directories(${simulation_SOURCE_DIR}/gtest/lib)
 
 # Set SOURCE and HEADER files
-file(GLOB_RECURSE RELEASE_HDRS ${simulation_SOURCE_DIR}/src/datatypes/*.h   ${simulation_SOURCE_DIR}/src/parsers/*.h  )
-file(GLOB_RECURSE RELEASE_SRCS ${simulation_SOURCE_DIR}/src/datatypes/*.cpp ${simulation_SOURCE_DIR}/src/parsers/*.cpp)
+file(GLOB_RECURSE RELEASE_HDRS ${simulation_SOURCE_DIR}/src/datatypes/*.h   ${simulation_SOURCE_DIR}/src/parsers/*.h  ${simulation_SOURCE_DIR}/src/gui/*.h )
+file(GLOB_RECURSE RELEASE_SRCS ${simulation_SOURCE_DIR}/src/datatypes/*.cpp ${simulation_SOURCE_DIR}/src/parsers/*.cpp ${simulation_SOURCE_DIR}/src/gui/*.cpp)
 
 file(GLOB_RECURSE DEBUG_HDRS ${simulation_SOURCE_DIR}/src/datatypes/*.h   ${simulation_SOURCE_DIR}/src/parsers/*.h   ${simulation_SOURCE_DIR}/src/tests/*.h  )
-file(GLOB_RECURSE DEBUG_SRCS ${simulation_SOURCE_DIR}/src/datatypes/*.cpp ${simulation_SOURCE_DIR}/src/parsers/*.cpp ${simulation_SOURCE_DIR}/src/tests/*.cpp)
+file(GLOB_RECURSE DEBUG_SRCS ${simulation_SOURCE_DIR}/src/datatypes/*.cpp ${simulation_SOURCE_DIR}/src/parsers/*.cpp ${simulation_SOURCE_DIR}/src/tests/*.cpp )
 
 # Set source files for RELEASE/DEBUG target
 set(RELEASE_SOURCE_FILES ${RELEASE_SRCS} ${RELEASE_HDRS} src/main.cpp    )
@@ -31,3 +34,10 @@ target_link_libraries(simulation_debug gtest)
 
 # Link library
 target_link_libraries(simulation gtest)
+
+find_package(Qt5Core    REQUIRED )
+find_package(Qt5Widgets REQUIRED )
+find_package(Qt5Gui     REQUIRED )
+
+qt5_use_modules(simulation Core Widgets Gui)
+qt5_use_modules(simulation_debug Core Widgets Gui)

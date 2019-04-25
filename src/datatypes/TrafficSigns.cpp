@@ -8,6 +8,7 @@
 //============================================================================
 
 #include <stdexcept>
+#include <iostream>
 #include "TrafficSigns.h"
 #include "Vehicles/IVehicle.h"
 #include "../DesignByContract.h"
@@ -19,6 +20,15 @@ TrafficLight::TrafficLight(const double kPosition)
     REQUIRE(kPosition > 0, "kPosition must be greater than 0");
 
     fPosition = kPosition;
+
+    fColor = kGreen;
+    fkInRange = NULL;
+
+    fTimer = 0;
+    fRedTime = 0;
+    fGreenTime = 0;
+
+    _initCheck = this;
 
     ENSURE(properlyInitialized(), "TrafficLight constructor must end in properly initialized state");
 }
@@ -32,7 +42,7 @@ void TrafficLight::update() const
 {
     REQUIRE(properlyInitialized(), "TrafficLight was not properly initialized when calling updateVehicles");
 
-    if(fkInRange->getPosition() >= fPosition) fkInRange = NULL;
+    if(fkInRange != NULL and fkInRange->getPosition() >= fPosition) fkInRange = NULL;
 
     const uint32_t diff = fRedTime - fGreenTime;
     switch(fColor)
@@ -44,6 +54,7 @@ void TrafficLight::update() const
                 fColor = kGreen;
                 fTimer = 0;
             }
+            fRedTime++;
             break;
 
         case kOrange:
@@ -62,10 +73,11 @@ void TrafficLight::update() const
                 fColor = kOrange;
                 fTimer = 0;
             }
+            fGreenTime++;
             break;
 
         default:
-            throw std::runtime_error("unknow trafficlight color");
+            throw std::runtime_error("unknown traffic light color");
     }
 
     fTimer++;
@@ -90,13 +102,18 @@ double TrafficLight::getPosition() const
 
 //--------------------------------------------------------------------------------------------------//
 
-const uint32_t BusStop::stationTime = 30;
+const uint32_t BusStop::fgkStationTime = 30;
 
 BusStop::BusStop(double kPosition)
 {
     REQUIRE(kPosition > 0, "kPosition must be greater than 0");
 
     fPosition = kPosition;
+
+    fStationed = NULL;
+    fTimer = 0;
+
+    _initCheck = this;
 
     ENSURE(properlyInitialized(), "BusStop constructor must end in properly initialized state");
 }
@@ -115,13 +132,13 @@ void BusStop::update() const
         fStationed->setMoved(true);
         fTimer++;
     }
-    if(fTimer == stationTime)
+    if(fTimer == fgkStationTime)
     {
         fStationed = NULL;
         fTimer = 0;
     }
 }
-void BusStop::setStationed(IVehicle* vehicle) const
+void BusStop::setStationed(const IVehicle* vehicle) const
 {
     REQUIRE(properlyInitialized(), "BusStop was not properly initialized when calling updateVehicles");
     REQUIRE(vehicle->properlyInitialized(), "kVehicles must be properly initialized");
@@ -140,6 +157,7 @@ Zone::Zone(const double kPosition, const double kSpeedLimit)
 {
     fPosition = kPosition;
     fSpeedlimit = kSpeedLimit;
+    _initCheck = this;
 }
 
 bool Zone::properlyInitialized() const
