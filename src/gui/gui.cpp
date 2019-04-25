@@ -18,6 +18,7 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
 }
 
 void Window::init() {
+
     this->setWindowTitle("Simulation");
     this->setCentralWidget(root);
     this->show();
@@ -66,8 +67,6 @@ void Window::createButtons()
     layout-> addWidget(pause, 1, 2 ,1, 1);
     layout-> addWidget(skipOne, 1, 3 ,1, 1);
     layout-> addWidget(goBackOne, 1, 0 ,1, 1);
-    layout->setRowStretch(0, this->size().height() - size);
-    layout->setRowStretch(0, size);
 
     connect(play, SIGNAL(pressed()), this, SLOT(onPlay()));
     connect(pause, SIGNAL(pressed()), this, SLOT(onPause()));
@@ -102,4 +101,7 @@ Window::state Window::getState() const {
     return crState;
 }
 
-
+void Window::closeEvent (QCloseEvent *event)
+{
+    crState = quit;
+}

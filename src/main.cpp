@@ -18,22 +18,43 @@
 
 int main(int argc, char **argv) {
 
+    REQUIRE(argc == 2, "argument count must be 1");
+
     QApplication application(argc, argv);
 
     Window window;
     window.createButtons();
     window.init();
 
-	REQUIRE(argc == 2, "argument count must be 1");
-
-	NetworkParser parser;
-	if (parser.loadFile(argv[1])) {
+    NetworkParser parser;
+    if (parser.loadFile(argv[1])) {
         Network* network = parser.parseNetwork(parser.getRoot());
         parser.clear();
 
-        network->startSimulation(1000, true);
-        std::cout << "simulation ended in: " << network->getTicksPassed() << " ticks\n";
+        while(window.getState() != Window::quit)
+        {
+            while(window.getState() == Window::play)
+            {
+                Window::delay(500);
+            }
+            while(window.getState() == Window::pause)
+            {
+                Window::delay(10);
+            }
+            if(window.getState() == Window::next)
+            {
+                Window::delay(500);
+            }
+            else if(window.getState() == Window::previous)
+            {
+                Window::delay(500);
+            }
+        }
+
         delete network;
     }
+
+    application.quit();
+
     return QApplication::exec();
 }

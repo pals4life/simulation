@@ -21,6 +21,7 @@
 #include <QLayout>
 #include <QHBoxLayout>
 #include <QSpacerItem>
+#include <QCloseEvent>
 
 
 #include <random>
@@ -37,7 +38,7 @@ class Window: public QMainWindow
     Q_OBJECT
 
 public:
-    enum state {play, pause, next, previous};
+    enum state {play, pause, next, previous, quit};
     /*
     * Constructor
     */
@@ -62,7 +63,10 @@ public:
      * Getters and Setters
      */
     state getState() const;
-
+    /*
+     * to close the window
+     */
+    void closeEvent (QCloseEvent *event);
 
 private:
 
