@@ -30,6 +30,7 @@
 #include <vector>
 #include <cmath>
 
+#include "../DesignByContract.h"
 
 
 class Window: public QMainWindow
