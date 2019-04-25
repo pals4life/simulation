@@ -36,10 +36,11 @@ int main(int argc, char **argv)
         Network* network = parser.parseNetwork(parser.getRoot());
         parser.clear();
 
-        network->startSimulation(window, false, false);
+        network->startSimulation(window, true, false);
         delete network;
     }
 
     QApplication::exit();
+    exit(0);
     return QApplication::exec();
 }

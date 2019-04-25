@@ -44,12 +44,15 @@ void Network::startSimulation(const Window& window, bool print, bool gui)
     REQUIRE(this->properlyInitialized(), "Network was not initialized when calling startSimulation");
 
     NetworkExporter exporter;
-
-    if(print) exporter.initialize(this, "test");
+    if(print) exporter.initialize(this, "Simple", "Impression");
 
     while(fTicksPassed < fgkMaxTicks)
     {
-        if(!gui or checkWindow(window)) update();
+        if(!gui or checkWindow(window))
+        {
+            if(update()) break;
+        }
+
         if(print) exporter.addSection(fTicksPassed);
         if(gui) Window::processEvents();
     }
@@ -72,7 +75,6 @@ bool Network::update()
     {
         if(fRoads[i]->checkAndReset()) simulationDone = false;
     }
-
     fTicksPassed++;
     return simulationDone;
 }
