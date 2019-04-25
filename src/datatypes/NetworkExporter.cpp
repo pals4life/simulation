@@ -47,6 +47,8 @@ void NetworkExporter::initialize(const Network* network, const std::string& kSim
         if (road->getName().size() > longestName) longestName = road->getName().size();
     }
     scale = maxLength / 120;
+    fImpression << "\n-------------------------------------------------\nOne character is " << scale
+                << " meters";
     fIsInitialized = true;
     addSection(0);
 }
@@ -84,7 +86,6 @@ void NetworkExporter::addSection(uint32_t number)
         }
     }
     fImpression << "\n-------------------------------------------------\n";
-    fImpression << "One character is " << scale << " meters\n";
     if (number != 1) fImpression << "State of the network after " << number << " ticks have passed:\n\n";
     else fImpression << "State of the network after " << number << " tick has passed:\n\n";
     for (uint32_t i = 0; i < kfNetwork->fRoads.size(); i++) {
@@ -93,10 +94,10 @@ void NetworkExporter::addSection(uint32_t number)
         for (uint32_t j = 0; j < road->getNumLanes(); j++) {
             std::vector<std::vector<char> > lane;
             uint32_t max = 0;
-            lane.resize(static_cast<int>(round(road->getRoadLength()/scale)));
+            lane.resize(static_cast<uint32_t >(floor(road->getRoadLength()/scale)+1));
             for (uint32_t k = 0; k < (*road)[j].size(); k++) {
                 const IVehicle *vehicle = (*road)[j][k];
-                uint32_t pos = static_cast<uint32_t >(round(vehicle->getPosition() / scale));
+                uint32_t pos = static_cast<uint32_t >(floor(vehicle->getPosition() / scale));
                 lane[pos].push_back(toupper(vehicle->getType()[0]));
                 if (lane[pos].size() > max) max = lane[pos].size();
             }
