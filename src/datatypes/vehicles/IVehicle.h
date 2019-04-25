@@ -13,6 +13,7 @@
 #include <string>
 #include "../TrafficSigns.h"
 #include <deque>
+#include <tuple>
 
 class Road;
 
@@ -27,7 +28,7 @@ public:
      * ENSURE(this->properlyInitialized(), "Vehicle constructor must end in properlyInitialized state");
      */
     IVehicle(const std::string& license, double pos, double velocity);
-    virtual ~IVehicle(){}
+    virtual ~IVehicle();
 
     bool properlyInitialized() const;
 
@@ -87,6 +88,16 @@ public:
      */
     void setMoved(bool moved) const;
 
+    /**
+     * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling setStationed");
+     */
+    void setStationed(bool stationed) const;
+
+    /**
+     * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getStatistics");
+     */
+    std::tuple<uint32_t, uint32_t, double, double> getStatistics() const;
+
 private:
 
     double getFollowingAcceleration(std::pair<const IVehicle*, double> nextVehicle) const;
@@ -99,14 +110,17 @@ private:
 
     void checkLaneChange(bool trafficLight, uint32_t lane, uint32_t index, Road* road, bool left);
 
-protected:
-
     std::pair<bool, double> calculateStop(double nextPos) const;
 
+    void updateStatistics();
+
+protected:
     IVehicle* _initCheck;
 
     std::string fLicensePlate;
+
     mutable bool fMoved;
+    mutable bool fStationed;
 
     double fPosition;
     double fVelocity;
@@ -116,6 +130,11 @@ protected:
 
     mutable std::pair<bool, double> fTrafficLightAccel;
     mutable std::pair<bool, double> fBusStopAccel;
+
+    uint32_t fTimer;
+    uint32_t fDriveTimer;
+    double fDistance;
+    double fMaxVelocity;
 
     static const double fgkMinVehicleDist;
     static const double fgkEpsilonThreshold;

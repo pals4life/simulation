@@ -81,7 +81,7 @@ public:
 private:
 
     bool properlyInitialized = false;
-    state crState = pause;
+    mutable state crState = pause;
 
     QWidget *root = new QWidget(this);
     QGridLayout *layout = new QGridLayout;

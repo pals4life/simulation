@@ -7,7 +7,7 @@
 // @description : 
 //============================================================================
 
-#include "../datatypes/NetworkExporter.h"
+#include "../exporters/NetworkExporter.h"
 #include <gtest/gtest.h>
 #include <fstream>
 #include <stdlib.h>
@@ -32,7 +32,7 @@ TEST_F(NetworkExporterTester, NetworkExporterFinish)
     std::vector<Road*> roads;
     Network* network = new Network(roads);
     NetworkExporter exporter;
-    exporter.initialize(network, "name");
+    exporter.init(network, "name");
     exporter.finish();
 
     std::fstream stream;

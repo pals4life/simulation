@@ -12,7 +12,7 @@
 #include <deque>
 #include <iterator>
 #include <vector>
-#include "Vehicles/IVehicle.h"
+#include "vehicles/IVehicle.h"
 #include "TrafficSigns.h"
 
 typedef std::deque<IVehicle*>::const_iterator Iter;

@@ -11,7 +11,7 @@
 #ifndef SIMULATION_NETWORKEXPORTER_H
 #define SIMULATION_NETWORKEXPORTER_H
 
-#include "Network.h"
+#include "../datatypes/Network.h"
 #include <fstream>
 #include <stdint.h>
 
@@ -19,45 +19,35 @@ class NetworkExporter {
 public:
 
     /**
-     * ENSURE(this->properlyInitialized(), "constructor did not properlyInitialize");
-     */
-    NetworkExporter();
-
-    /**
      * REQUIRE(this->properlyInitialized(), "NetworkExporter was not constructed when calling printNetwork");
      * REQUIRE(network->properlyInitialized(), "Network was not initialized when calling printNetwork");
      *
      * ENSURE(fOutputFile.is_open(), "output file is not open");
      */
-    void initialize(const Network *network, const std::string &name, const std::string &kImpression);
+    static void init(const Network *network, const std::string &kSimplePath, const std::string &kImpressionPath);
 
     /**
      * REQUIRE(this->properlyInitialized(), "NetworkExporter was not constructed when calling finish");
      * REQUIRE(this->fIsInitialized, "NetworkExporter was not initialized when calling finish");
      */
-    void addSection(uint32_t number);
+    static void addSection(const Network* kNetwork, uint32_t number);
 
     /**
      * REQUIRE(this->properlyInitialized(), "NetworkExporter was not constructed when calling addSection");
      * REQUIRE(this->fIsInitialized, "NetworkExporter was not initialized when calling addSection");
      */
-    void finish();
-
-    bool properlyInitialized();
+    static void finish();
 
 private:
-    std::string whitespace(int amount) const;
+    static std::string whitespace(int amount);
 
-    void printLane(const std::vector<std::vector<char>> &lane, uint32_t max, uint32_t laneNum);
+    static void printLane(const std::vector<std::vector<char>> &lane, uint32_t max, uint32_t laneNum);
 
-    std::ofstream fSimple;
-    std::ofstream fImpression;
-    const Network *kfNetwork;
+    static std::ofstream fSimple;
+    static std::ofstream fImpression;
 
-    const NetworkExporter *_initCheck;
-    bool fIsInitialized;
-    double scale;
-    uint32_t longestName = 0;
+    static double scale;
+    static uint32_t longestName;
 };
 
 

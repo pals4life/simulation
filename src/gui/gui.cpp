@@ -92,8 +92,11 @@ void Window::onNext() {
     crState = next;
 }
 
-Window::state Window::getState() const {
-    return crState;
+Window::state Window::getState() const
+{
+    state temp = crState;
+    if(crState == next) crState = pause;
+    return temp;
 }
 
 void Window::closeEvent (QCloseEvent *event)

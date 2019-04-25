@@ -10,8 +10,9 @@
 #include <sstream>
 #include <iostream>
 #include "Network.h"
-#include "NetworkExporter.h"
+#include "../exporters/NetworkExporter.h"
 #include "../DesignByContract.h"
+#include "../exporters/VehicleExporter.h"
 
 const int Network::fgkMaxTicks = 1000;
 
@@ -42,21 +43,30 @@ int Network::getTicksPassed() const
 void Network::startSimulation(const Window* window, bool print, bool gui)
 {
     REQUIRE(this->properlyInitialized(), "Network was not initialized when calling startSimulation");
-
-    NetworkExporter exporter;
-    if(print) exporter.initialize(this, "Simple", "Impression");
+    if(print)
+    {
+        VehicleExporter::init("statistics");
+        NetworkExporter::init(this, "simple", "impression");
+    }
 
     while(fTicksPassed < fgkMaxTicks)
     {
-        if(!gui or checkWindow(window->getState()))
+        if(not gui or checkWindow(window->getState()))
         {
             if(update()) break;
         }
 
-        if(print) exporter.addSection(fTicksPassed);
-        if(gui) Window::processEvents();
+        if(print) NetworkExporter::addSection(this, fTicksPassed);
+        if(gui  ) Window::processEvents();
     }
-    if(print) exporter.finish();
+
+    if(print)
+    {
+        VehicleExporter::finish();
+        NetworkExporter::finish();
+    }
+
+    std::cout << "the simulation has ended after " << fTicksPassed << " ticks\n";
 }
 
 bool Network::update()
@@ -75,6 +85,7 @@ bool Network::update()
     {
         if(fRoads[i]->checkAndReset()) simulationDone = false;
     }
+
     fTicksPassed++;
     return simulationDone;
 }

@@ -12,67 +12,59 @@
 #include <stdlib.h>
 #include <math.h>
 
-NetworkExporter::NetworkExporter()
-{
-    _initCheck = this;
-    fIsInitialized = false;
-    ENSURE(this->properlyInitialized(), "constructor did not properlyInitialize");
-}
+std::ofstream NetworkExporter::fSimple;
+std::ofstream NetworkExporter::fImpression;
 
-void NetworkExporter::initialize(const Network* network, const std::string& kSimple, const std::string& kImpression)
-{
-    REQUIRE(this->properlyInitialized(), "NetworkExporter was not constructed when calling printNetwork");
-    REQUIRE(network->properlyInitialized(), "Network was not initialized when calling printNetwork");
+double NetworkExporter::scale = 0;
+uint32_t NetworkExporter::longestName = 0;
 
-    kfNetwork = network;
+
+void NetworkExporter::init(const Network* kNetwork, const std::string &kSimplePath, const std::string &kImpressionPath)
+{
     int res = system("mkdir outputfiles >/dev/null 2>&1");
     ENSURE(res == 0 or res == 256, "could not make directory");
-    fSimple.open(("outputfiles/" + kSimple + ".txt").c_str());
+    fSimple.open(("outputfiles/" + kSimplePath + ".txt").c_str());
     ENSURE(fSimple.is_open(), "output file is not open");
 
-    fImpression.open(("outputfiles/" + kImpression + ".txt").c_str());
+    fImpression.open(("outputfiles/" + kImpressionPath + ".txt").c_str());
     ENSURE(fImpression.is_open(), "output file is not open");
 
     double maxLength = 0;
-    for(uint32_t i = 0; i < kfNetwork->fRoads.size(); i++)
+    for(uint32_t i = 0; i < kNetwork->fRoads.size(); i++)
     {
-        const Road* road = kfNetwork->fRoads[i];
+        const Road* road = kNetwork->fRoads[i];
+
         fSimple << "Baan : " + road->getName() + '\n';
         fSimple << "  -> snelheidslimiet: "  << road->getSpeedLimit() * 3.6 << '\n';
         fSimple << "  -> lengte         : "  << road->getRoadLength()       << '\n';
+
         fImpression << "Baan : " + road->getName() + '\n';
         fImpression << "  -> snelheidslimiet: "  << road->getSpeedLimit() * 3.6 << '\n';
         fImpression << "  -> lengte         : "  << road->getRoadLength()       << '\n';
+
         if (road->getRoadLength() > maxLength) maxLength = road->getRoadLength();
         if (road->getName().size() > longestName) longestName = road->getName().size();
     }
     scale = maxLength / 120;
-    fImpression << "\n-------------------------------------------------\nOne character is " << scale
-                << " meters";
-    fIsInitialized = true;
-    addSection(0);
+    fImpression << "\n-------------------------------------------------\nOne character is " << scale << " meters";
+
+    addSection(kNetwork, 0);
 }
 
 void NetworkExporter::finish()
 {
-    REQUIRE(this->properlyInitialized(), "NetworkExporter was not constructed when calling finish");
-    REQUIRE(this->fIsInitialized, "NetworkExporter was not initialized when calling finish");
-
     fSimple << std::flush;
     fSimple.close();
 }
 
-void NetworkExporter::addSection(uint32_t number)
+void NetworkExporter::addSection(const Network* kNetwork, uint32_t number)
 {
-    REQUIRE(this->properlyInitialized(), "NetworkExporter was not constructed when calling addSection");
-    REQUIRE(this->fIsInitialized, "NetworkExporter was not initialized when calling addSection");
-
     fSimple << "\n-------------------------------------------------\n";
     if(number != 1) fSimple << "State of the network after " << number << " ticks have passed:\n\n";
     else fSimple << "State of the network after " << number << " tick has passed:\n\n";
-    for(uint32_t i = 0; i < kfNetwork->fRoads.size(); i++)
+    for(uint32_t i = 0; i < kNetwork->fRoads.size(); i++)
     {
-        const Road* road = kfNetwork->fRoads[i];
+        const Road* road = kNetwork->fRoads[i];
         for(uint32_t j = 0; j < road->getNumLanes(); j++)
         {
             for(uint32_t k = 0; k < (*road)[j].size(); k++)
@@ -88,8 +80,8 @@ void NetworkExporter::addSection(uint32_t number)
     fImpression << "\n-------------------------------------------------\n";
     if (number != 1) fImpression << "State of the network after " << number << " ticks have passed:\n\n";
     else fImpression << "State of the network after " << number << " tick has passed:\n\n";
-    for (uint32_t i = 0; i < kfNetwork->fRoads.size(); i++) {
-        const Road *road = kfNetwork->fRoads[i];
+    for (uint32_t i = 0; i < kNetwork->fRoads.size(); i++) {
+        const Road *road = kNetwork->fRoads[i];
         fImpression << road->getName() << whitespace(longestName - road->getName().size()) << " | ";
         for (uint32_t j = 0; j < road->getNumLanes(); j++) {
             std::vector<std::vector<char> > lane;
@@ -110,12 +102,8 @@ void NetworkExporter::addSection(uint32_t number)
     }
 }
 
-bool NetworkExporter::properlyInitialized()
+std::string NetworkExporter::whitespace(const int amount)
 {
-    return _initCheck == this;
-}
-
-std::string NetworkExporter::whitespace(const int amount) const {
     std::string white;
     for (int i = 0; i < amount; ++i) {
         white+=" ";
@@ -123,8 +111,8 @@ std::string NetworkExporter::whitespace(const int amount) const {
     return white;
 }
 
-void
-NetworkExporter::printLane(const std::vector<std::vector<char>> &lane, const uint32_t max, const uint32_t laneNum) {
+void NetworkExporter::printLane(const std::vector<std::vector<char>> &lane, const uint32_t max, const uint32_t laneNum)
+{
     for (uint32_t l = 0; l < max; ++l) {
         if (laneNum != 0) fImpression << whitespace(longestName + 3);
         if (l == 0) fImpression << std::to_string(laneNum + 1) + " ";

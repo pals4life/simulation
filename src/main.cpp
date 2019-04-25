@@ -18,7 +18,7 @@ int main(int argc, char** argv)
 {
     QApplication application(argc, argv);
 
-    bool gui = false;
+    const bool gui = true;
 
     Window* window = nullptr;
     std::string filename;
@@ -41,7 +41,7 @@ int main(int argc, char** argv)
         Network* network = parser.parseNetwork(parser.getRoot());
         parser.clear();
 
-        network->startSimulation(window, true, false);
+        network->startSimulation(window, true, gui);
         delete network;
     }
 

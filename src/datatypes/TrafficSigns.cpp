@@ -10,7 +10,7 @@
 #include <stdexcept>
 #include <iostream>
 #include "TrafficSigns.h"
-#include "Vehicles/IVehicle.h"
+#include "vehicles/IVehicle.h"
 #include "../DesignByContract.h"
 
 const uint32_t TrafficLight::fgkMaxDifference = 100;
@@ -125,29 +125,30 @@ bool BusStop::properlyInitialized() const
 
 void BusStop::update() const
 {
-    REQUIRE(properlyInitialized(), "BusStop was not properly initialized when calling updateVehicles");
+    REQUIRE(properlyInitialized(), "BusStop was not properly initialized when calling update");
 
     if(fStationed != NULL)
     {
-        fStationed->setMoved(true);
+        fStationed->setStationed(true);
         fTimer++;
     }
     if(fTimer == fgkStationTime)
     {
+        fStationed->setStationed(false);
         fStationed = NULL;
         fTimer = 0;
     }
 }
 void BusStop::setStationed(const IVehicle* vehicle) const
 {
-    REQUIRE(properlyInitialized(), "BusStop was not properly initialized when calling updateVehicles");
+    REQUIRE(properlyInitialized(), "BusStop was not properly initialized when calling setStationed");
     REQUIRE(vehicle->properlyInitialized(), "kVehicles must be properly initialized");
 
     fStationed = vehicle;
 }
 double BusStop::getPosition() const
 {
-    REQUIRE(properlyInitialized(), "BusStop was not properly initialized when calling updateVehicles");
+    REQUIRE(properlyInitialized(), "BusStop was not properly initialized when calling getPosition");
     return fPosition;
 }
 

@@ -925,7 +925,7 @@ class scoped_ptr {
 // Regular Expression syntax.
 class GTEST_API_ RE {
  public:
-  // A copy constructor is required by the Standard to initialize object
+  // A copy constructor is required by the Standard to init object
   // references from r-values.
   RE(const RE& other) { Init(other.pattern()); }
 
@@ -1361,7 +1361,7 @@ class MutexBase {
 
   // A static mutex may be used before main() is entered.  It may even
   // be used before the dynamic initialization stage.  Therefore we
-  // must be able to initialize a static mutex object at link time.
+  // must be able to init a static mutex object at link time.
   // This means MutexBase has to be a POD and its member variables
   // have to be public.
  public:
@@ -1381,7 +1381,7 @@ class MutexBase {
     extern ::testing::internal::MutexBase mutex
 
 // Defines and statically (i.e. at link time) initializes a static mutex.
-// The initialization list here does not explicitly initialize each field,
+// The initialization list here does not explicitly init each field,
 // instead relying on default initialization for the unspecified fields. In
 // particular, the owner_ field (a pthread_t) is not explicitly initialized.
 // This allows initialization to work whether pthread_t is a scalar or struct.
