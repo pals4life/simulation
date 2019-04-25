@@ -15,8 +15,7 @@
 #include <fstream>
 #include <stdint.h>
 
-class NetworkExporter
-{
+class NetworkExporter {
 public:
 
     /**
@@ -30,7 +29,7 @@ public:
      *
      * ENSURE(fOutputFile.is_open(), "output file is not open");
      */
-    void initialize(const Network* network, const std::string& name);
+    void initialize(const Network *network, const std::string &name, const std::string &kImpression);
 
     /**
      * REQUIRE(this->properlyInitialized(), "NetworkExporter was not constructed when calling finish");
@@ -47,11 +46,13 @@ public:
     bool properlyInitialized();
 
 private:
-    std::ofstream fOutputFile;
-    const Network* kfNetwork;
+    std::ofstream fSimple;
+    std::ofstream fImpression;
+    const Network *kfNetwork;
 
-    const NetworkExporter* _initCheck;
+    const NetworkExporter *_initCheck;
     bool fIsInitialized;
+    double scale;
 };
 
 

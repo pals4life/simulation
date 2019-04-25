@@ -44,8 +44,7 @@ void Network::startSimulation(const Window& window, bool print, bool gui)
     REQUIRE(this->properlyInitialized(), "Network was not initialized when calling startSimulation");
 
     NetworkExporter exporter;
-
-    if(print) exporter.initialize(this, "test");
+    if(print) exporter.initialize(this, "Simple", "Impression");
 
     while(fTicksPassed < fgkMaxTicks)
     {
