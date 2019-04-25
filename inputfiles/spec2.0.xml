@@ -21,6 +21,7 @@
         <snelheidslimiet>100</snelheidslimiet>
         <lengte>2000</lengte>
         <verbinding>E313</verbinding>
+        <rijstroken>2</rijstroken>
     </BAAN>
 
     <BAAN>

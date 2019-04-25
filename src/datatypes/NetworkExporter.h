@@ -46,6 +46,10 @@ public:
     bool properlyInitialized();
 
 private:
+    std::string whitespace(int amount) const;
+
+    void printLane(const std::vector<std::vector<char>> &lane, uint32_t max, uint32_t laneNum);
+
     std::ofstream fSimple;
     std::ofstream fImpression;
     const Network *kfNetwork;
@@ -53,6 +57,7 @@ private:
     const NetworkExporter *_initCheck;
     bool fIsInitialized;
     double scale;
+    uint32_t longestName = 0;
 };
 
 
