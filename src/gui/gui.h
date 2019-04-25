@@ -71,6 +71,10 @@ public:
      * to close the window
      */
     void closeEvent (QCloseEvent *event) override;
+    /*
+     * ask for a filename
+     */
+    std::string askString();
 
 
 private:
