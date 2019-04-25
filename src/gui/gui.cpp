@@ -100,3 +100,14 @@ void Window::closeEvent (QCloseEvent *event)
 {
     crState = quit;
 }
+
+std::string Window::askString() {
+    bool ok;
+    QString text = QInputDialog::getText(this, tr("QInputDialog::getText()"),
+                                         tr("User name:"), QLineEdit::Normal,
+                                         QString("test.txt"), &ok);
+
+    if (ok && !text.isEmpty())
+        return text.toStdString();
+    else return "";
+}

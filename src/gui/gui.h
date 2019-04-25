@@ -30,6 +30,7 @@
 #include <vector>
 #include <cmath>
 
+#include "../DesignByContract.h"
 
 
 class Window: public QMainWindow
@@ -71,6 +72,10 @@ public:
      * to close the window
      */
     void closeEvent (QCloseEvent *event) override;
+    /*
+     * ask for a filename
+     */
+    std::string askString();
 
 
 private:
