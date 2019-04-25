@@ -13,25 +13,25 @@
 #include <QApplication>
 #include "gui/gui.h"
 #include "gtest/gtest.h"
-
 #include "DesignByContract.h"
 
-int main(int argc, char **argv) {
-
-    REQUIRE(argc == 2, "argument count must be 1");
-
+int main(int argc, char **argv)
+{
     QApplication application(argc, argv);
 
     Window window;
-    window.createButtons();
     window.init();
+    window.createButtons();
+
+    std::string filename = window.askString();
 
     NetworkParser parser;
-    if (parser.loadFile(argv[1])) {
+    if (parser.loadFile(argv[1]))
+    {
         Network* network = parser.parseNetwork(parser.getRoot());
         parser.clear();
 
-        network->startSimulation(false, true);
+        network->startSimulation(window, false, false);
         delete network;
     }
 

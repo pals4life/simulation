@@ -118,7 +118,10 @@ std::pair<bool, double> IVehicle::checkTrafficLights(std::pair<const TrafficLigh
 std::pair<bool, double> IVehicle::checkBusStop(std::pair<const BusStop*, double> nextBusStop) const
 {
     if(nextBusStop.first == NULL or getType() != "bus") return std::pair<bool, double>(false, 0);
-    if(fPosition + fVelocity == pairPosition<BusStop>(nextBusStop)) nextBusStop.first->setStationed(this);
+    if(fPosition + fVelocity >= pairPosition<BusStop>(nextBusStop))
+    {
+        nextBusStop.first->setStationed(this);
+    }
 
     double dist = nextBusStop.first->getPosition() + nextBusStop.second - fPosition;
 

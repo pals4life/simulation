@@ -39,27 +39,19 @@ int Network::getTicksPassed() const
     return fTicksPassed;
 }
 
-void Network::startSimulation(bool print, bool gui)
+void Network::startSimulation(const Window& window, bool print, bool gui)
 {
     REQUIRE(this->properlyInitialized(), "Network was not initialized when calling startSimulation");
 
     NetworkExporter exporter;
-    Window window;
 
     if(print) exporter.initialize(this, "test");
-    if(gui  )
-    {
-        window.init();
-        window.createButtons();
-    }
-
-    std::string filename = window.askString();
 
     while(fTicksPassed < fgkMaxTicks)
     {
         if(!gui or checkWindow(window)) update();
         if(print) exporter.addSection(fTicksPassed);
-        if(gui) window.processEvents();
+        if(gui) Window::processEvents();
     }
     if(print) exporter.finish();
 }
