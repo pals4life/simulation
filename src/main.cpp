@@ -23,7 +23,7 @@ int main(int argc, char **argv)
     window.init();
     window.createButtons();
 
-//    std::string filename = window.askString();
+    std::string filename = window.askString();
 
     NetworkParser parser;
     if (parser.loadFile(argv[1]))
