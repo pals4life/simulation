@@ -49,12 +49,13 @@ int main(int argc, char **argv) {
             {
                 Window::delay(500);
             }
+            Window::delay(500);
         }
 
         delete network;
     }
 
-    application.quit();
+    application.exit();
 
     return QApplication::exec();
 }

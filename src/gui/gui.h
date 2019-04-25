@@ -82,8 +82,6 @@ private slots:
     void onPlay();
     void onPause();
     void onNext();
-    void onPrevious();
-
 };
 
 
