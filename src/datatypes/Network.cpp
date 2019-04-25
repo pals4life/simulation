@@ -45,7 +45,7 @@ void Network::startSimulation(int amountOfTicks, bool print)
     REQUIRE(amountOfTicks >= 0, "Amount of ticks must be a positive integer");
 
     NetworkExporter exporter;
-    if(print) exporter.initialize(this, "test");
+    if(print) exporter.initialize(this, "Simple", "Impression");
 
     while(fTicksPassed < amountOfTicks)
     {
