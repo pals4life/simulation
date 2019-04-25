@@ -26,6 +26,9 @@ IVehicle::IVehicle(const std::string& license, double position, double velocity)
 
     fPrevAcceleration = std::deque<double>(5, 0);
 
+    fTrafficLightAccel = std::pair<bool, double>(false, 0);
+    fBusStopAccel = std::pair<bool, double>(false, 0);
+
     ENSURE(this->properlyInitialized(), "Vehicle constructor must end in properlyInitialized state");
 }
 
@@ -48,11 +51,12 @@ void IVehicle::move(const uint32_t lane, const uint32_t index, Road* road)
     double kAcceleration = getFollowingAcceleration(nextVehicle);                                   // calculate the following speed
 
     const std::pair<double, double> kMinMax = getMinMaxAcceleration(road->getSpeedLimit(oldPosition));// calculate the min and max acceleration possible
-    const std::pair<bool  , double> kLight  = checkTrafficLights(road->getTrafficLight(oldPosition)); // calculate the slowdown if needed
-    const std::pair<bool  , double> kBus    = checkBusStop(road->getBusStop(oldPosition));            // calculate the slowdown if needed
 
-    if(kLight.first) kAcceleration = std::min(kLight.second, kAcceleration);                // we need to take the minimum of these values
-    if(kBus.first  ) kAcceleration = std::min(kBus.second  , kAcceleration);                // to ensure we slow down enough
+    checkTrafficLights(road->getTrafficLight(oldPosition)); // calculate the slowdown if needed
+    checkBusStop(road->getBusStop(oldPosition));            // calculate the slowdown if needed
+
+    if(fTrafficLightAccel.first) kAcceleration = std::min(fTrafficLightAccel.second, kAcceleration); // we need to take the minimum of these values
+    if(fBusStopAccel.first     ) kAcceleration = std::min(fBusStopAccel.second     , kAcceleration); // to ensure we slow down enough
 
     fAcceleration = clamp(kAcceleration, kMinMax.first, kMinMax.second);                    // clamp the values
     fMoved = true;
@@ -60,8 +64,8 @@ void IVehicle::move(const uint32_t lane, const uint32_t index, Road* road)
     fPrevAcceleration.push_front(fAcceleration);
     fPrevAcceleration.pop_back();
 
-    if(road->laneExists(lane+1)) checkLaneChange(kLight.first, lane, index, road, true );   // overtake if possible
-    if(road->laneExists(lane-1)) checkLaneChange(kLight.first, lane, index, road, false);   // go back if possible
+    if(road->laneExists(lane+1)) checkLaneChange(fTrafficLightAccel.first, lane, index, road, true );   // overtake if possible
+    if(road->laneExists(lane-1)) checkLaneChange(fTrafficLightAccel.first, lane, index, road, false);   // go back if possible
 
     ENSURE(getVelocity() >= 0, "Velocity cannot be negative");
     ENSURE((getAcceleration() >= getMinAcceleration()) && (getAcceleration() <= getMaxAcceleration()), "Acceleration is too high / low");
@@ -92,41 +96,49 @@ std::pair<double, double> IVehicle::getMinMaxAcceleration(double speedlimit) con
     return std::pair<double, double>(clampedMin, clampedMax);
 }
 
-std::pair<bool, double> IVehicle::checkTrafficLights(std::pair<const TrafficLight*, double> nextTrafficLight) const
+void IVehicle::checkTrafficLights(std::pair<const TrafficLight*, double> nextTrafficLight) const
 {
-    if(nextTrafficLight.first == NULL) return std::pair<bool, double>(false, 0);
-    if(fPosition + fVelocity > pairPosition<TrafficLight>(nextTrafficLight) and nextTrafficLight.first->getColor() == TrafficLight::kRed) std::cerr<< "someone ran through a kRed light\n";
-
-    double ideal = 0.75 * fVelocity;
-    double dist = nextTrafficLight.first->getPosition() + nextTrafficLight.second - fPosition;
-
-    if(dist < 2 * ideal)
+    if(nextTrafficLight.first == NULL)
     {
-        nextTrafficLight.first->setInRange(this);
-        if(nextTrafficLight.first->getColor() != TrafficLight::kGreen)
+        fTrafficLightAccel.first = false;
+        return;
+    }
+    if(fTrafficLightAccel.first)
+    {
+        if(nextTrafficLight.first->getColor() == TrafficLight::kGreen)
         {
-            return std::pair<bool, double>(true, -fVelocity*fVelocity / dist);
+            fTrafficLightAccel.first = false;
+            return;
         }
-        else return std::pair<bool, double>(false, 0);
     }
     else
     {
-        return std::pair<bool, double>(false, 0);
+        fTrafficLightAccel = calculateStop(pairPosition<TrafficLight>(nextTrafficLight));
+        if(fTrafficLightAccel.first) nextTrafficLight.first->setInRange(this);
     }
 }
 
-std::pair<bool, double> IVehicle::checkBusStop(std::pair<const BusStop*, double> nextBusStop) const
+void IVehicle::checkBusStop(std::pair<const BusStop*, double> nextBusStop) const
 {
-    if(nextBusStop.first == NULL or getType() != "bus") return std::pair<bool, double>(false, 0);
-    if(fPosition + fVelocity >= pairPosition<BusStop>(nextBusStop))
+    if(nextBusStop.first == NULL or getType() != "bus") return;
+
+    if(nextBusStop.first == NULL)
     {
-        nextBusStop.first->setStationed(this);
+        fTrafficLightAccel.first = false;
+        return;
     }
-
-    double dist = nextBusStop.first->getPosition() + nextBusStop.second - fPosition;
-
-    if(dist < 100) return std::pair<bool, double>(true, -fVelocity*fVelocity / dist);
-    else return std::pair<bool, double>(false, 0);
+    if(fTrafficLightAccel.first)
+    {
+        if(std::abs(pairPosition<BusStop>(nextBusStop)) - fPosition < 1)
+        {
+            nextBusStop.first->setStationed(this);
+            return;
+        }
+    }
+    else
+    {
+        fTrafficLightAccel = calculateStop(pairPosition<BusStop>(nextBusStop));
+    }
 }
 
 void IVehicle::checkLaneChange(const bool trafficLight, const uint32_t lane, const uint32_t index, Road* const road, const bool left)
@@ -146,6 +158,15 @@ void IVehicle::checkLaneChange(const bool trafficLight, const uint32_t lane, con
 
     // 6. Er is geen voertuig op de nieuwe rijstrook in een straal van de ideale volgafstand (dus zowel voor als achter het voertuig).
     road->changeLaneIfPossible(this, lane, index, left);
+}
+
+std::pair<bool, double> IVehicle::calculateStop(double nextPos) const
+{
+    const double ideal = 0.75 * fVelocity;
+    const double dist = nextPos - fPosition;
+
+    if(dist < 2 * ideal) return std::pair<bool, double>(true, -fVelocity*fVelocity/dist);
+    else return std::pair<bool, double>(false, 0);
 }
 
 //--------------------------------------------------------------------------------------------------//

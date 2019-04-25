@@ -93,13 +93,16 @@ private:
 
     std::pair<double, double> getMinMaxAcceleration(double speedlimit) const;
 
-    std::pair<bool, double> checkTrafficLights(std::pair<const TrafficLight*, double> nextTrafficLight) const;
+    void checkTrafficLights(std::pair<const TrafficLight*, double> nextTrafficLight) const;
 
-    std::pair<bool, double> checkBusStop(std::pair<const BusStop*, double> nextBusStop) const;
+    void checkBusStop(std::pair<const BusStop*, double> nextBusStop) const;
 
     void checkLaneChange(bool trafficLight, uint32_t lane, uint32_t index, Road* road, bool left);
 
 protected:
+
+    std::pair<bool, double> calculateStop(double nextPos) const;
+
     IVehicle* _initCheck;
 
     std::string fLicensePlate;
@@ -110,6 +113,9 @@ protected:
     double fAcceleration;
 
     std::deque<double> fPrevAcceleration;
+
+    mutable std::pair<bool, double> fTrafficLightAccel;
+    mutable std::pair<bool, double> fBusStopAccel;
 
     static const double fgkMinVehicleDist;
     static const double fgkEpsilonThreshold;

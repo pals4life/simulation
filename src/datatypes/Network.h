@@ -36,7 +36,7 @@ public:
      * REQUIRE(this->properlyInitialized(), "Network was not initialized when calling startSimulation");
      * REQUIRE(amountOfTicks >= 0, "Amount of ticks must be a positive integer");
      */
-    void startSimulation(const Window& window, bool print = false, bool gui = false);
+    void startSimulation(const Window* window, bool print = false, bool gui = false);
 
     /**
      * REQUIRE(this->properlyInitialized(), "Network was not initialized when calling startSimulation");
@@ -46,7 +46,7 @@ public:
     /**
      * REQUIRE(this->properlyInitialized(), "Network was not initialized when calling startSimulation");
      */
-    bool checkWindow(const Window& window) const;
+    bool checkWindow(Window::state state) const;
 
 private:
     int fTicksPassed; // amount of ticks passed

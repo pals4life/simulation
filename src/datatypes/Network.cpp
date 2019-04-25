@@ -39,7 +39,7 @@ int Network::getTicksPassed() const
     return fTicksPassed;
 }
 
-void Network::startSimulation(const Window& window, bool print, bool gui)
+void Network::startSimulation(const Window* window, bool print, bool gui)
 {
     REQUIRE(this->properlyInitialized(), "Network was not initialized when calling startSimulation");
 
@@ -48,7 +48,7 @@ void Network::startSimulation(const Window& window, bool print, bool gui)
 
     while(fTicksPassed < fgkMaxTicks)
     {
-        if(!gui or checkWindow(window))
+        if(!gui or checkWindow(window->getState()))
         {
             if(update()) break;
         }
@@ -79,9 +79,9 @@ bool Network::update()
     return simulationDone;
 }
 
-bool Network::checkWindow(const Window& window) const
+bool Network::checkWindow(Window::state state) const
 {
-    switch(window.getState())
+    switch(state)
     {
         case Window::play:
             return true;

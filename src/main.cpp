@@ -7,7 +7,6 @@
 // @description : The main function to the code
 //============================================================================
 
-
 #include "parsers/NetworkParser.h"
 #include <iostream>
 #include <QApplication>
@@ -15,20 +14,26 @@
 #include "gtest/gtest.h"
 #include "DesignByContract.h"
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     QApplication application(argc, argv);
 
-    Window window;
-    window.init();
-    window.createButtons();
-
     bool gui = false;
 
+    Window* window = nullptr;
     std::string filename;
 
-    if (gui) filename = window.askString();
-    else filename = argv[1];
+    if(gui)
+    {
+        window = new Window;
+        window->init();
+        window->createButtons();
+        filename = window->askString();
+    }
+    else
+    {
+        filename = argv[1];
+    }
 
     NetworkParser parser;
     if (parser.loadFile(filename))
