@@ -56,6 +56,10 @@ public:
      */
     static void delay(uint32_t ms);
     /*
+     *
+     */
+    static void processEvents();
+    /*
      * creates the UI-buttons
      */
     void createButtons();
@@ -66,11 +70,8 @@ public:
     /*
      * to close the window
      */
-    void closeEvent (QCloseEvent *event);
-    /*
-     *
-     */
-    void processEvents();
+    void closeEvent (QCloseEvent *event) override;
+
 
 private:
 
