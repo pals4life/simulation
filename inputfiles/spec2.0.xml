@@ -9,7 +9,7 @@
     </VOERTUIG>
 
     <VOERTUIG>
-        <type>AUTO</type>
+        <type>BUS</type>
         <nummerplaat>651BUF</nummerplaat>
         <baan>E19</baan>
         <positie>0</positie>
@@ -38,7 +38,7 @@
     <VERKEERSTEKEN>
         <type>BUSHALTE</type>
         <baan>E19</baan>
-        <positie>20</positie>
+        <positie>1000</positie>
     </VERKEERSTEKEN>
 
     <VERKEERSTEKEN>

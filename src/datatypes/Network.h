@@ -11,7 +11,9 @@
 
 #include <vector>
 #include <fstream>
+
 #include "Road.h"
+#include "../gui/gui.h"
 
 class Network {
 
@@ -34,24 +36,26 @@ public:
      * REQUIRE(this->properlyInitialized(), "Network was not initialized when calling startSimulation");
      * REQUIRE(amountOfTicks >= 0, "Amount of ticks must be a positive integer");
      */
-    void startSimulation(int amountOfTicks = fgkMaxTicks, bool print = false);
+    void startSimulation(bool print = false, bool gui = false);
 
+    /**
+     * REQUIRE(this->properlyInitialized(), "Network was not initialized when calling startSimulation");
+     */
+    bool update();
 
+    /**
+     * REQUIRE(this->properlyInitialized(), "Network was not initialized when calling startSimulation");
+     */
+    bool checkWindow(const Window& window) const;
 
 private:
     int fTicksPassed; // amount of ticks passed
 
     std::vector<Road*> fRoads;
 
-    /**
-     * REQUIRE(this->properlyInitialized(), "Network was not initialized when calling printNetwork");
-     */
-    void printNetwork();
-
     static const int fgkMaxTicks;
 
     Network* _initCheck;
-
 };
 
 

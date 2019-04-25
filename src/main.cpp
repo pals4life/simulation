@@ -31,31 +31,10 @@ int main(int argc, char **argv) {
         Network* network = parser.parseNetwork(parser.getRoot());
         parser.clear();
 
-        while(window.getState() != Window::quit)
-        {
-            while(window.getState() == Window::play)
-            {
-                Window::delay(500);
-            }
-            while(window.getState() == Window::pause)
-            {
-                Window::delay(10);
-            }
-            if(window.getState() == Window::next)
-            {
-                Window::delay(500);
-            }
-            else if(window.getState() == Window::previous)
-            {
-                Window::delay(500);
-            }
-            Window::delay(500);
-        }
-
+        network->startSimulation(false, true);
         delete network;
     }
 
-    application.exit();
-
+    QApplication::exit();
     return QApplication::exec();
 }
