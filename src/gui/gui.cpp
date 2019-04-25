@@ -106,7 +106,8 @@ std::string Window::askString() {
     QString text = QInputDialog::getText(this, tr("QInputDialog::getText()"),
                                          tr("User name:"), QLineEdit::Normal,
                                          QString("test.txt"), &ok);
+
     if (ok && !text.isEmpty())
         return text.toStdString();
-    else return "something went wrong";
+    else return "";
 }
