@@ -48,6 +48,8 @@ public:
      */
     bool checkWindow(Window::state state) const;
 
+    const std::vector<Road *> &getRoads() const;
+
 private:
     int fTicksPassed; // amount of ticks passed
 

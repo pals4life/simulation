@@ -22,15 +22,16 @@
 #include <QHBoxLayout>
 #include <QSpacerItem>
 #include <QCloseEvent>
+#include <QObject>
+#include <QLabel>
 
-
-#include <random>
 #include <iostream>
-#include <assert.h>
 #include <vector>
 #include <cmath>
+#include <map>
 
 #include "../DesignByContract.h"
+#include "../datatypes/Road.h"
 
 
 class Window: public QMainWindow
@@ -39,7 +40,7 @@ class Window: public QMainWindow
     Q_OBJECT
 
 public:
-    enum state {play, pause, next, previous, quit};
+    enum state {inactive, play, pause, next, previous, quit};
     /*
     * Constructor
     */
@@ -76,22 +77,32 @@ public:
      * ask for a filename
      */
     std::string askString();
-
-
+    /*
+     * creates a pushbutton for every road
+     */
+    void createRoadButtons(const std::vector<Road*> &roads);
+    /*
+     * inits the window as a road window
+     */
+    void initAsRoadWindow(Road* road);
 private:
 
     bool properlyInitialized = false;
-    mutable state crState = pause;
+    mutable state crState = inactive;
 
     QWidget *root = new QWidget(this);
     QGridLayout *layout = new QGridLayout;
 
     std::vector<QWidget*> widgetsToDelete;
 
+    std::map<QObject*, Road*> fRoadButtons;
+
 private slots:
     void onPlay();
     void onPause();
     void onNext();
+    void onRoadButton();
+    void onExit();
 };
 
 

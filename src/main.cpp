@@ -41,6 +41,8 @@ int main(int argc, char** argv)
         Network* network = parser.parseNetwork(parser.getRoot());
         parser.clear();
 
+        window->createRoadButtons(network->getRoads());
+
         network->startSimulation(window, true, gui);
         delete network;
     }

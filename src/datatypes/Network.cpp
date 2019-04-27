@@ -107,3 +107,7 @@ bool Network::checkWindow(Window::state state) const
     }
 
 }
+
+const std::vector<Road *> &Network::getRoads() const {
+    return fRoads;
+}
