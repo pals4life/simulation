@@ -25,14 +25,20 @@ void Window::init() {
     root->setLayout(layout);
     widgetsToDelete.emplace_back(root);
 
+    QLabel* title = new QLabel("Project Software Engineering - BA1 Informatica - Thomas Dooms, Ward Gauderis, Mano Marichal - University of Antwerp");
+    layout->addWidget(title, 0,0,1,3);
+
     properlyInitialized = true;
 }
 
 void Window::initAsRoadWindow(Road *road)
 {
+    fRoad = road;
+
     this->setWindowTitle(road->getName().c_str());
     this->setCentralWidget(root);
     this->show();
+
     root->setLayout(layout);
     root->show();
     widgetsToDelete.emplace_back(root);
@@ -40,14 +46,22 @@ void Window::initAsRoadWindow(Road *road)
     QLabel* name = new QLabel(("Name: " + road->getName()).c_str());
     layout->addWidget(name, 0,0,1,1);
 
-    QLabel* speedlimit = new QLabel(("Speedlimit: " + std::to_string(road->getSpeedLimit(0))).c_str());
+    QLabel* speedlimit = new QLabel(("Speedlimit: " + std::to_string(road->getSpeedLimit())).c_str());
     layout->addWidget(speedlimit, 1,0,1,1);
 
     QPushButton *editSpdLimit = new QPushButton("Edit");
     layout->addWidget(editSpdLimit, 1, 1, 1, 1);
+    connect(editSpdLimit, SIGNAL(pressed()), this, SLOT(onEditSpeedLimit()));
+
+
+    QLabel* length = new QLabel(("Length: " + std::to_string(road->getRoadLength())).c_str());
+    layout->addWidget(length, 2,0,1,1);
+
+    QLabel* next = new QLabel(("Next Road: " + road->getNextRoad()->getName()).c_str());
+    layout->addWidget(next, 3,0,1,1);
 
     QPushButton *exit = new QPushButton("Save changes and exit");
-    layout->addWidget(exit, 2, 0, 2, 2);
+    layout->addWidget(exit, 4, 0, 1, 2);
     connect(exit, SIGNAL(pressed()), this, SLOT(onExit()));
 
     properlyInitialized = true;
@@ -91,9 +105,9 @@ void Window::createButtons()
     pause->setFixedHeight(size);
     skipOne->setFixedHeight(size);
 
-    layout-> addWidget(play, 0, 0 ,1, 1);
-    layout-> addWidget(pause, 0, 1 ,1, 1);
-    layout-> addWidget(skipOne, 0, 2 ,1, 1);
+    layout-> addWidget(play, 1, 0 ,1, 1);
+    layout-> addWidget(pause, 1, 1 ,1, 1);
+    layout-> addWidget(skipOne, 1, 2 ,1, 1);
 
     connect(play, SIGNAL(pressed()), this, SLOT(onPlay()));
     connect(pause, SIGNAL(pressed()), this, SLOT(onPause()));
@@ -131,6 +145,14 @@ std::string Window::askString()
     else return "";
 }
 
+double Window::askDouble() {
+    bool ok;
+    double val = QInputDialog::getDouble(this, tr(""),
+                                       tr("New value:"), 120, 0, 10000, 1, &ok);
+    if (ok) return val;
+    else return -1;
+}
+
 void Window::createRoadButtons(const std::vector<Road *> &roads)
 {
     for (unsigned int i=0;i<roads.size();i++)
@@ -139,7 +161,7 @@ void Window::createRoadButtons(const std::vector<Road *> &roads)
         temp->show();
         connect(temp, SIGNAL(pressed()), this, SLOT(onRoadButton()));
 
-        layout->addWidget(temp, i+1, 0, 3, 3);
+        layout->addWidget(temp, i+2, 0, 1, 3);
         fRoadButtons[temp] = roads[i];
         widgetsToDelete.emplace_back(temp);
     }
@@ -161,6 +183,10 @@ void Window::onNext()
 {
     crState = next;
 }
+void Window::onExit()
+{
+    crState = quit;
+}
 void Window::onRoadButton()
 {
     QObject* obj = sender();
@@ -169,7 +195,12 @@ void Window::onRoadButton()
     window.initAsRoadWindow(fRoadButtons[obj]);
     while (window.crState != quit) Window::delay(500);
 }
-void Window::onExit()
+
+void Window::onEditSpeedLimit()
 {
-    crState = quit;
+    double val = askDouble();
+    if (val != -1)
+    {
+        std::cout << "setter for speedlimits does not exist yet: " << val << std::endl;
+    }
 }

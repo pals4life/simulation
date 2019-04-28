@@ -74,9 +74,10 @@ public:
      */
     void closeEvent (QCloseEvent *event) override;
     /*
-     * ask for a filename
+     * ask for a string
      */
     std::string askString();
+    double askDouble();
     /*
      * creates a pushbutton for every road
      */
@@ -93,6 +94,8 @@ private:
     QWidget *root = new QWidget(this);
     QGridLayout *layout = new QGridLayout;
 
+    Road *fRoad = NULL;
+
     std::vector<QWidget*> widgetsToDelete;
 
     std::map<QObject*, Road*> fRoadButtons;
@@ -103,6 +106,7 @@ private slots:
     void onNext();
     void onRoadButton();
     void onExit();
+    void onEditSpeedLimit();
 };
 
 
