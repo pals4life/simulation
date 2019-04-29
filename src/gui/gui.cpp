@@ -76,20 +76,20 @@ std::string Window::askString()
     bool ok;
     QString text = QInputDialog::getText(this, tr("enter your filename"),
                                          tr("filename"), QLineEdit::Normal,
-                                         QString("inputfiles/spec1.0.xml"), &ok);
+                                         QString("inputfiles/spec2.0.xml"), &ok);
 
     if (ok && !text.isEmpty())
         return text.toStdString();
     else return "";
 }
 
-double Window::askDouble()
+double Window::askDouble(double min, double max, double step, double example)
 {
     REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling askDouble");
 
     bool ok;
     double val = QInputDialog::getDouble(this, tr(""),
-                                       tr("New value:"), 120, 0, 10000, 1, &ok);
+                                       tr("New value:"), example, min, max, step, &ok);
     if (ok)
     {
         return val;
@@ -186,6 +186,8 @@ void RoadWindow::init()
 {
     REQUIRE(fRoad != NULL, "roadwindow has no road");
 
+    int lastRow = 0;
+
     this->setWindowTitle(fRoad->getName().c_str());
     this->setCentralWidget(fRoot);
     this->show();
@@ -217,10 +219,42 @@ void RoadWindow::init()
     QLabel* nextinf = new QLabel(("Next Road: " + next).c_str());
     fLayout->addWidget(nextinf, 3,0,1,1);
 
+    // TRAFFIC LIGHTS
+    QLabel* tLights = new QLabel("Traffic lights:");
+    fLayout->addWidget(tLights, 4,0,1,1);
+
+    lastRow = 4;
+
+    for (unsigned int i=0;i<fRoad->getTrafficLights().size();i++)
+    {
+        QLabel* tLightPos = new QLabel(("Position: " + std::to_string(fRoad->getTrafficLights()[i]->getPosition())).c_str());
+        QLabel* tLightColor = new QLabel(("Current color: " + std::to_string(fRoad->getTrafficLights()[i]->getColor())).c_str());
+
+        QPushButton *editTLightColor = new QPushButton("Edit");
+        connect(editTLightColor, SIGNAL(pressed()), this, SLOT(onEditTLightColor()));
+
+        QPushButton *editTLightPos = new QPushButton("Edit");
+        connect(editTLightPos, SIGNAL(pressed()), this, SLOT(onEditTLightPos()));
+
+        fTrafficLights[editTLightColor] = fRoad->getTrafficLights()[i];
+        fTrafficLights[editTLightPos] = fRoad->getTrafficLights()[i];
+
+
+        lastRow++;
+        fLayout->addWidget(tLightColor, lastRow, 0, 1, 1);
+        fLayout->addWidget(editTLightColor, lastRow, 1, 1, 1);
+        lastRow++;
+        fLayout->addWidget(tLightPos, lastRow, 0, 1, 1);
+        fLayout->addWidget(editTLightPos, lastRow, 1, 1, 1);
+
+        lastRow++;
+        fLayout->setRowStretch(lastRow, 1);
+    }
+
     QPushButton *exit = new QPushButton("Save changes and exit");
-    fLayout->addWidget(exit, 4, 0, 1, 2);
+    fLayout->addWidget(exit, lastRow + 1, 0, 1, 2);
     connect(exit, SIGNAL(pressed()), this, SLOT(onExit()));
-    
+
     properlyInitialized = true;
 
     ENSURE(this->checkProperlyInitialized(),  "RoadWindow.init() must end in properlyInitialized state");
@@ -233,10 +267,33 @@ void RoadWindow::setRoad(Road *road)
 
 void RoadWindow::onEditSpeedLimit()
 {
-    double val = askDouble();
+    double val = askDouble(0, 1000, 1, 120);
     if (val != -1)
     {
         std::cout << "setter for speedlimits does not exist yet: " << val << std::endl;
+    }
+}
+
+void RoadWindow::onEditTLightColor()
+{
+
+    double val = askDouble(1, 3, 1, 1);
+
+    if (val != -1)
+    {
+        // QObject *obj = sender();
+        // fTrafficLights[obj].setPosition(val);
+    }
+}
+
+void RoadWindow::onEditTLightPos()
+{
+    double val = askDouble(0, fRoad->getRoadLength(), 1, 0);
+
+    if (val != -1)
+    {
+        // QObject *obj = sender();
+        // fTrafficLights[obj].setColor(val);
     }
 }
 

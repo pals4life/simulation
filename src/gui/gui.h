@@ -32,6 +32,7 @@
 
 #include "../DesignByContract.h"
 #include "../datatypes/Road.h"
+#include "../datatypes/TrafficSigns.h"
 
 
 class Window: public QMainWindow
@@ -79,7 +80,7 @@ public:
     /**
      * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling askDouble");
      */
-    double askDouble();
+    double askDouble(double min, double max, double step, double example);
     /**
      * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling createRoadButtons");
      */
@@ -138,11 +139,20 @@ public:
 
 private:
     Road *fRoad = NULL;
+    std::map<QObject*, const TrafficLight*> fTrafficLights;
 
 private slots:
     /**
      *
      */
     void onEditSpeedLimit();
+    /**
+     *
+     */
+    void onEditTLightPos();
+    /**
+     *
+     */
+    void onEditTLightColor();
 };
 #endif //GOL_GUI_H
