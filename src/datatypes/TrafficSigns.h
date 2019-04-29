@@ -57,6 +57,7 @@ public:
 
     void update() const;
     void setStationed(const IVehicle* vehicle) const;
+    const IVehicle* getStationed() const;
     double getPosition() const;
 
 private:
@@ -81,9 +82,11 @@ public:
     double getPosition() const;
     double getSpeedlimit() const;
 
+    void setSpeedLimit(double speedlimit) const;
+
 private:
     double fPosition;
-    double fSpeedlimit;
+    mutable double fSpeedlimit;
 
     Zone* _initCheck;
 };

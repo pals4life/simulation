@@ -19,6 +19,7 @@ int main(int argc, char** argv)
     QApplication application(argc, argv);
 
     const bool gui = true;
+    const bool output = true;
 
     Window* window = nullptr;
     std::string filename;
@@ -43,11 +44,10 @@ int main(int argc, char** argv)
 
         if (gui) window->createRoadButtons(network->getRoads());
 
-        network->startSimulation(window, true, gui);
+        network->startSimulation(window, output, gui);
         delete network;
     }
 
     QApplication::exit();
-    exit(0);
     return QApplication::exec();
 }

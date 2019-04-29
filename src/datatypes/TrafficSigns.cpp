@@ -146,6 +146,10 @@ void BusStop::setStationed(const IVehicle* vehicle) const
 
     fStationed = vehicle;
 }
+const IVehicle* BusStop::getStationed() const
+{
+    return fStationed;
+}
 double BusStop::getPosition() const
 {
     REQUIRE(properlyInitialized(), "BusStop was not properly initialized when calling getPosition");
@@ -173,5 +177,9 @@ double Zone::getSpeedlimit() const
 double Zone::getPosition() const
 {
     return fPosition;
+}
+void Zone::setSpeedLimit(double speedlimit) const
+{
+    fSpeedlimit = speedlimit;
 }
 
