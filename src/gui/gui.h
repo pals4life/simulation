@@ -76,7 +76,7 @@ public:
     /**
      * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling askString");
      */
-    std::string askString();
+    std::string askString(std::string example);
     /**
      * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling askDouble");
      */
@@ -138,8 +138,11 @@ public:
     void createVehicleButtons();
 
 private:
+    int fLastRow;
     Road *fRoad = NULL;
     std::map<QObject*, const TrafficLight*> fTrafficLights;
+    int updateTrafficLights(int row);
+    void replaceInGrid(int row, int colum, QWidget* widget);
 
 private slots:
     /**
