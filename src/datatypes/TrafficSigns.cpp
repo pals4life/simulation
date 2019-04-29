@@ -87,6 +87,10 @@ TrafficLight::EColor TrafficLight::getColor() const
     REQUIRE(properlyInitialized(), "TrafficLight was not properly initialized when calling getColor");
     return kGreen;
 }
+void TrafficLight::setColor(EColor color) const
+{
+    fColor = color;
+}
 void TrafficLight::setInRange(const IVehicle* const kVehicle) const
 {
     REQUIRE(properlyInitialized(), "TrafficLight was not properly initialized when calling setInRange");
