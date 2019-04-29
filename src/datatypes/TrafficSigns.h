@@ -29,6 +29,7 @@ public:
 
     void update() const;
     EColor getColor() const;
+    void setColor(EColor color) const;
     void setInRange(const IVehicle* kVehicle) const;
     double getPosition() const;
 
