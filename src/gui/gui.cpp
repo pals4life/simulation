@@ -228,24 +228,35 @@ void RoadWindow::init()
     for (unsigned int i=0;i<fRoad->getTrafficLights().size();i++)
     {
         QLabel* tLightPos = new QLabel(("Position: " + std::to_string(fRoad->getTrafficLights()[i]->getPosition())).c_str());
-        QLabel* tLightColor = new QLabel(("Current color: " + std::to_string(fRoad->getTrafficLights()[i]->getColor())).c_str());
+
+        std::string color;
+
+        switch(fRoad->getTrafficLights()[i]->getColor())
+        {
+            case TrafficLight::kRed:
+                color = "Red";
+                break;
+            case TrafficLight::kOrange:
+                color = "Orange";
+                break;
+            case TrafficLight::kGreen:
+                color = "Green";
+                break;
+
+        }
+
+        QLabel* tLightColor = new QLabel(("Current color: " + color).c_str());
 
         QPushButton *editTLightColor = new QPushButton("Edit");
         connect(editTLightColor, SIGNAL(pressed()), this, SLOT(onEditTLightColor()));
 
-        QPushButton *editTLightPos = new QPushButton("Edit");
-        connect(editTLightPos, SIGNAL(pressed()), this, SLOT(onEditTLightPos()));
-
         fTrafficLights[editTLightColor] = fRoad->getTrafficLights()[i];
-        fTrafficLights[editTLightPos] = fRoad->getTrafficLights()[i];
-
 
         lastRow++;
         fLayout->addWidget(tLightColor, lastRow, 0, 1, 1);
         fLayout->addWidget(editTLightColor, lastRow, 1, 1, 1);
         lastRow++;
         fLayout->addWidget(tLightPos, lastRow, 0, 1, 1);
-        fLayout->addWidget(editTLightPos, lastRow, 1, 1, 1);
 
         lastRow++;
         fLayout->setRowStretch(lastRow, 1);
@@ -276,24 +287,12 @@ void RoadWindow::onEditSpeedLimit()
 
 void RoadWindow::onEditTLightColor()
 {
-
     double val = askDouble(1, 3, 1, 1);
 
     if (val != -1)
     {
         // QObject *obj = sender();
         // fTrafficLights[obj].setPosition(val);
-    }
-}
-
-void RoadWindow::onEditTLightPos()
-{
-    double val = askDouble(0, fRoad->getRoadLength(), 1, 0);
-
-    if (val != -1)
-    {
-        // QObject *obj = sender();
-        // fTrafficLights[obj].setColor(val);
     }
 }
 

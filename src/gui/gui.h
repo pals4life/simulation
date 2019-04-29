@@ -149,10 +149,6 @@ private slots:
     /**
      *
      */
-    void onEditTLightPos();
-    /**
-     *
-     */
     void onEditTLightColor();
 };
 #endif //GOL_GUI_H
