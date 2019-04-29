@@ -253,9 +253,9 @@ void RoadWindow::onEditTLightColor()
 
     QObject *obj = sender();
 
-    if (val.size() != 0)
+    if (val == "green" or val == "red" or val == "orange")
     {
-        switch(val[0])
+        switch (val[0])
         {
             case 'g':
                 fTrafficLights[obj]->setColor(TrafficLight::kGreen);
@@ -274,6 +274,7 @@ void RoadWindow::onEditTLightColor()
 
         updateTrafficLights(fLastRow);
     }
+
 }
 
 int RoadWindow::updateTrafficLights(int row)
@@ -331,10 +332,13 @@ int RoadWindow::updateTrafficLights(int row)
 
 void RoadWindow::replaceInGrid(int row, int colum, QWidget* widget)
 {
-    QLayoutItem *itemToRemove = fLayout->itemAtPosition(row, colum);
+    QLayoutItem *item = fLayout->itemAtPosition(row, colum);
 
-    fLayout->removeItem(itemToRemove);
-    delete itemToRemove;
+    if (item != NULL)
+    {
+        item->widget()->hide();
+        fLayout->removeWidget(item->widget());
+    }
 
     fLayout->addWidget(widget, row, colum, 1, 1);
 }
