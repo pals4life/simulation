@@ -1,5 +1,5 @@
 //============================================================================
-// @name        :
+// @name        : gui.h
 // @author      : Mano Marichal
 // @date        :
 // @version     :
@@ -41,45 +41,47 @@ class Window: public QMainWindow
 
 public:
     enum state {inactive, play, pause, next, previous, quit};
-    /*
-    * Constructor
-    */
     explicit Window(QWidget* parent = nullptr);
-    /*
-     * init function
+    /**
+     * ENSURE(this->properlyInitialized(), "Window.init() constructor must end in properlyInitialized state");
      */
     virtual void init();
-    /*
-    * Used to check if the grid is properly initialized and can be used
-    */
-    bool checkProperlyInitialized();
-    /*
-     * Used for delays in loops
+    /**
+     *
+     * @return
+     */
+    bool checkProperlyInitialized() const;
+    /**
+     *
+     * @param ms: the lenght of the delay in ms
      */
     static void delay(uint32_t ms);
-    /*
+    /**
      *
      */
     static void processEvents();
-    /*
-     * creates the UI-buttons
+    /**
+     * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling createButtons");
      */
     void createButtons();
-    /*
-     * Getters and Setters
+    /**
+     * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling getState");
      */
     state getState() const;
-    /*
-     * to close the window
+    /**
+     * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling closeEvent");
      */
     void closeEvent (QCloseEvent *event) override;
-    /*
-     * ask for a string
+    /**
+     * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling askString");
      */
     std::string askString();
+    /**
+     * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling askDouble");
+     */
     double askDouble();
-    /*
-     * creates a pushbutton for every road
+    /**
+     * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling createRoadButtons");
      */
     void createRoadButtons(const std::vector<Road*> &roads);
 
@@ -91,32 +93,55 @@ protected:
     QWidget *root = new QWidget(this);
     QGridLayout *layout = new QGridLayout;
 
-    std::vector<QWidget*> widgetsToDelete;
-
 private:
     std::map<QObject*, Road*> fRoadButtons;
 
 private slots:
+    /**
+     * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onPlay");
+     */
     void onPlay();
+    /**
+     * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onPause");
+     */
     void onPause();
+    /**
+     * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onNext");
+     */
     void onNext();
+    /**
+     * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onRoadButton");
+     */
     void onRoadButton();
+    /**
+     * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onExit");
+     */
     void onExit();
 };
-
 
 class RoadWindow: public Window
 {
     Q_OBJECT
 
 public:
+    /**
+     * REQUIRE(fRoad != NULL, "roadwindow has no road");
+     * ENSURE(this->checkProperlyInitialized(),  "RoadWindow.init() must end in properlyInitialized state");
+     */
     void init() override;
+    /**
+     * Sets the road for the Roadwindow object
+     * @param road: pointer to the road
+     */
     void setRoad(Road* road);
 
 private:
     Road *fRoad = NULL;
 
 private slots:
+    /**
+     *
+     */
     void onEditSpeedLimit();
 };
 #endif //GOL_GUI_H

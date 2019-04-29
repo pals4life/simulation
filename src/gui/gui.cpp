@@ -1,5 +1,5 @@
 //============================================================================
-// @name        : 
+// @name        : gui.cpp
 // @author      : Mano Marichal
 // @date        : 
 // @version     : 
@@ -17,18 +17,19 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
 
 }
 
-void Window::init() {
-
+void Window::init()
+{
     this->setWindowTitle("Simulation");
     this->setCentralWidget(root);
     this->show();
     root->setLayout(layout);
-    widgetsToDelete.emplace_back(root);
 
     QLabel* title = new QLabel("Project Software Engineering - BA1 Informatica - Thomas Dooms, Ward Gauderis, Mano Marichal - University of Antwerp");
     layout->addWidget(title, 0,0,1,3);
 
     properlyInitialized = true;
+
+    ENSURE(this->checkProperlyInitialized(), "Window.init() must end in properlyInitialized state");
 }
 
 void Window::delay(uint32_t ms)
@@ -41,19 +42,9 @@ void Window::delay(uint32_t ms)
     }
 }
 
-void Window::processEvents()
-{
-    QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-}
-
-
-bool Window::checkProperlyInitialized()
-{
-    return properlyInitialized;
-}
-
 void Window::createButtons()
 {
+    REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling CreateButtons");
 
     QPushButton* play = new QPushButton("Play", this);
     QPushButton* pause = new QPushButton("Pause", this);
@@ -76,27 +67,12 @@ void Window::createButtons()
     connect(play, SIGNAL(pressed()), this, SLOT(onPlay()));
     connect(pause, SIGNAL(pressed()), this, SLOT(onPause()));
     connect(skipOne, SIGNAL(pressed()), this, SLOT(onNext()));
-
-
-    widgetsToDelete.emplace_back(play);
-    widgetsToDelete.emplace_back(pause);
-    widgetsToDelete.emplace_back(skipOne);
-}
-
-Window::state Window::getState() const
-{
-    state temp = crState;
-    if(crState == next) crState = pause;
-    return temp;
-}
-
-void Window::closeEvent (QCloseEvent *event)
-{
-    crState = quit;
 }
 
 std::string Window::askString()
 {
+    REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling askString");
+
     bool ok;
     QString text = QInputDialog::getText(this, tr("enter your filename"),
                                          tr("filename"), QLineEdit::Normal,
@@ -107,16 +83,27 @@ std::string Window::askString()
     else return "";
 }
 
-double Window::askDouble() {
+double Window::askDouble()
+{
+    REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling askDouble");
+
     bool ok;
     double val = QInputDialog::getDouble(this, tr(""),
                                        tr("New value:"), 120, 0, 10000, 1, &ok);
-    if (ok) return val;
-    else return -1;
+    if (ok)
+    {
+        return val;
+    }
+    else
+    {
+        return -1;
+    }
 }
 
 void Window::createRoadButtons(const std::vector<Road *> &roads)
 {
+    REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling CreateButtons");
+
     for (unsigned int i=0;i<roads.size();i++)
     {
         QPushButton* temp = new QPushButton( roads[i]->getName().c_str(), this);
@@ -125,32 +112,67 @@ void Window::createRoadButtons(const std::vector<Road *> &roads)
 
         layout->addWidget(temp, i+2, 0, 1, 3);
         fRoadButtons[temp] = roads[i];
-        widgetsToDelete.emplace_back(temp);
     }
+}
+
+Window::state Window::getState() const
+{
+    REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling CreateButtons");
+
+    state temp = crState;
+    if(crState == next) crState = pause;
+    return temp;
+}
+
+void Window::closeEvent (QCloseEvent *event)
+{
+    REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling CreateButtons");
+
+    crState = quit;
+}
+
+bool Window::checkProperlyInitialized() const
+{
+    return properlyInitialized;
+}
+
+void Window::processEvents()
+{
+    QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }
 
 // private slot functions
 
 void Window::onPlay()
 {
+    REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onPlay");
+
     crState = play;
 }
 
 void Window::onPause()
 {
+    REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onPause");
+
     crState = pause;
 }
 
 void Window::onNext()
 {
+    REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onNext");
+
     crState = next;
 }
 void Window::onExit()
 {
+    REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onExit");
+
     crState = quit;
 }
 void Window::onRoadButton()
 {
+    REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onRoadButton");
+
     QObject* obj = sender();
 
     RoadWindow window;
@@ -170,7 +192,6 @@ void RoadWindow::init()
 
     root->setLayout(layout);
     root->show();
-    widgetsToDelete.emplace_back(root);
 
     QLabel* name = new QLabel(("Name: " + fRoad->getName()).c_str());
     layout->addWidget(name, 0,0,1,1);
@@ -187,8 +208,12 @@ void RoadWindow::init()
     layout->addWidget(length, 2,0,1,1);
 
     std::string next;
-    if (fRoad->getNextRoad() == NULL) next = "this road has no next road";
+    if (fRoad->getNextRoad() == NULL)
+    {
+        next = "this road has no next road";
+    }
     else next = fRoad->getNextRoad()->getName();
+
     QLabel* nextinf = new QLabel(("Next Road: " + next).c_str());
     layout->addWidget(nextinf, 3,0,1,1);
 
@@ -197,6 +222,8 @@ void RoadWindow::init()
     connect(exit, SIGNAL(pressed()), this, SLOT(onExit()));
 
     properlyInitialized = true;
+
+    ENSURE(this->checkProperlyInitialized(),  "RoadWindow.init() must end in properlyInitialized state");
 }
 
 void RoadWindow::setRoad(Road *road)
