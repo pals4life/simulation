@@ -31,42 +31,6 @@ void Window::init() {
     properlyInitialized = true;
 }
 
-void Window::initAsRoadWindow(Road *road)
-{
-    fRoad = road;
-
-    this->setWindowTitle(road->getName().c_str());
-    this->setCentralWidget(root);
-    this->show();
-
-    root->setLayout(layout);
-    root->show();
-    widgetsToDelete.emplace_back(root);
-
-    QLabel* name = new QLabel(("Name: " + road->getName()).c_str());
-    layout->addWidget(name, 0,0,1,1);
-
-    QLabel* speedlimit = new QLabel(("Speedlimit: " + std::to_string(road->getSpeedLimit())).c_str());
-    layout->addWidget(speedlimit, 1,0,1,1);
-
-    QPushButton *editSpdLimit = new QPushButton("Edit");
-    layout->addWidget(editSpdLimit, 1, 1, 1, 1);
-    connect(editSpdLimit, SIGNAL(pressed()), this, SLOT(onEditSpeedLimit()));
-
-
-    QLabel* length = new QLabel(("Length: " + std::to_string(road->getRoadLength())).c_str());
-    layout->addWidget(length, 2,0,1,1);
-
-    QLabel* next = new QLabel(("Next Road: " + road->getNextRoad()->getName()).c_str());
-    layout->addWidget(next, 3,0,1,1);
-
-    QPushButton *exit = new QPushButton("Save changes and exit");
-    layout->addWidget(exit, 4, 0, 1, 2);
-    connect(exit, SIGNAL(pressed()), this, SLOT(onExit()));
-
-    properlyInitialized = true;
-}
-
 void Window::delay(uint32_t ms)
 {
     QTime stopTime = QTime::currentTime().addMSecs(ms);
@@ -117,8 +81,6 @@ void Window::createButtons()
     widgetsToDelete.emplace_back(play);
     widgetsToDelete.emplace_back(pause);
     widgetsToDelete.emplace_back(skipOne);
-
-
 }
 
 Window::state Window::getState() const
@@ -191,12 +153,58 @@ void Window::onRoadButton()
 {
     QObject* obj = sender();
 
-    Window window;
-    window.initAsRoadWindow(fRoadButtons[obj]);
+    RoadWindow window;
+    window.setRoad(fRoadButtons[obj]);
+    window.init();
     while (window.crState != quit) Window::delay(500);
 }
 
-void Window::onEditSpeedLimit()
+//---------------------------------------ROAD WINDOW CLASS-----------------------------------------------------
+void RoadWindow::init()
+{
+    REQUIRE(fRoad != NULL, "roadwindow has no road");
+
+    this->setWindowTitle(fRoad->getName().c_str());
+    this->setCentralWidget(root);
+    this->show();
+
+    root->setLayout(layout);
+    root->show();
+    widgetsToDelete.emplace_back(root);
+
+    QLabel* name = new QLabel(("Name: " + fRoad->getName()).c_str());
+    layout->addWidget(name, 0,0,1,1);
+
+    QLabel* speedlimit = new QLabel(("Speedlimit: " + std::to_string(fRoad->getSpeedLimit())).c_str());
+    layout->addWidget(speedlimit, 1,0,1,1);
+
+    QPushButton *editSpdLimit = new QPushButton("Edit");
+    layout->addWidget(editSpdLimit, 1, 1, 1, 1);
+    connect(editSpdLimit, SIGNAL(pressed()), this, SLOT(onEditSpeedLimit()));
+
+
+    QLabel* length = new QLabel(("Length: " + std::to_string(fRoad->getRoadLength())).c_str());
+    layout->addWidget(length, 2,0,1,1);
+
+    std::string next;
+    if (fRoad->getNextRoad() == NULL) next = "this road has no next road";
+    else next = fRoad->getNextRoad()->getName();
+    QLabel* nextinf = new QLabel(("Next Road: " + next).c_str());
+    layout->addWidget(nextinf, 3,0,1,1);
+
+    QPushButton *exit = new QPushButton("Save changes and exit");
+    layout->addWidget(exit, 4, 0, 1, 2);
+    connect(exit, SIGNAL(pressed()), this, SLOT(onExit()));
+
+    properlyInitialized = true;
+}
+
+void RoadWindow::setRoad(Road *road)
+{
+    fRoad = road;
+}
+
+void RoadWindow::onEditSpeedLimit()
 {
     double val = askDouble();
     if (val != -1)

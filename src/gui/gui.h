@@ -48,7 +48,7 @@ public:
     /*
      * init function
      */
-    void init();
+    virtual void init();
     /*
     * Used to check if the grid is properly initialized and can be used
     */
@@ -82,11 +82,8 @@ public:
      * creates a pushbutton for every road
      */
     void createRoadButtons(const std::vector<Road*> &roads);
-    /*
-     * inits the window as a road window
-     */
-    void initAsRoadWindow(Road* road);
-private:
+
+protected:
 
     bool properlyInitialized = false;
     mutable state crState = inactive;
@@ -94,10 +91,9 @@ private:
     QWidget *root = new QWidget(this);
     QGridLayout *layout = new QGridLayout;
 
-    Road *fRoad = NULL;
-
     std::vector<QWidget*> widgetsToDelete;
 
+private:
     std::map<QObject*, Road*> fRoadButtons;
 
 private slots:
@@ -106,9 +102,21 @@ private slots:
     void onNext();
     void onRoadButton();
     void onExit();
-    void onEditSpeedLimit();
 };
 
 
+class RoadWindow: public Window
+{
+    Q_OBJECT
 
+public:
+    void init() override;
+    void setRoad(Road* road);
+
+private:
+    Road *fRoad = NULL;
+
+private slots:
+    void onEditSpeedLimit();
+};
 #endif //GOL_GUI_H
