@@ -90,8 +90,8 @@ protected:
     bool properlyInitialized = false;
     mutable state crState = inactive;
 
-    QWidget *root = new QWidget(this);
-    QGridLayout *layout = new QGridLayout;
+    QWidget *fRoot = new QWidget(this);
+    QGridLayout *fLayout = new QGridLayout;
 
 private:
     std::map<QObject*, Road*> fRoadButtons;
@@ -134,6 +134,7 @@ public:
      * @param road: pointer to the road
      */
     void setRoad(Road* road);
+    void createVehicleButtons();
 
 private:
     Road *fRoad = NULL;

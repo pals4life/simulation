@@ -20,12 +20,12 @@ Window::Window(QWidget *parent) : QMainWindow(parent)
 void Window::init()
 {
     this->setWindowTitle("Simulation");
-    this->setCentralWidget(root);
+    this->setCentralWidget(fRoot);
     this->show();
-    root->setLayout(layout);
+    fRoot->setLayout(fLayout);
 
     QLabel* title = new QLabel("Project Software Engineering - BA1 Informatica - Thomas Dooms, Ward Gauderis, Mano Marichal - University of Antwerp");
-    layout->addWidget(title, 0,0,1,3);
+    fLayout->addWidget(title, 0,0,1,3);
 
     properlyInitialized = true;
 
@@ -60,9 +60,9 @@ void Window::createButtons()
     pause->setFixedHeight(size);
     skipOne->setFixedHeight(size);
 
-    layout-> addWidget(play, 1, 0 ,1, 1);
-    layout-> addWidget(pause, 1, 1 ,1, 1);
-    layout-> addWidget(skipOne, 1, 2 ,1, 1);
+    fLayout-> addWidget(play, 1, 0 ,1, 1);
+    fLayout-> addWidget(pause, 1, 1 ,1, 1);
+    fLayout-> addWidget(skipOne, 1, 2 ,1, 1);
 
     connect(play, SIGNAL(pressed()), this, SLOT(onPlay()));
     connect(pause, SIGNAL(pressed()), this, SLOT(onPause()));
@@ -110,7 +110,7 @@ void Window::createRoadButtons(const std::vector<Road *> &roads)
         temp->show();
         connect(temp, SIGNAL(pressed()), this, SLOT(onRoadButton()));
 
-        layout->addWidget(temp, i+2, 0, 1, 3);
+        fLayout->addWidget(temp, i+2, 0, 1, 3);
         fRoadButtons[temp] = roads[i];
     }
 }
@@ -187,25 +187,25 @@ void RoadWindow::init()
     REQUIRE(fRoad != NULL, "roadwindow has no road");
 
     this->setWindowTitle(fRoad->getName().c_str());
-    this->setCentralWidget(root);
+    this->setCentralWidget(fRoot);
     this->show();
 
-    root->setLayout(layout);
-    root->show();
+    fRoot->setLayout(fLayout);
+    fRoot->show();
 
     QLabel* name = new QLabel(("Name: " + fRoad->getName()).c_str());
-    layout->addWidget(name, 0,0,1,1);
+    fLayout->addWidget(name, 0,0,1,1);
 
     QLabel* speedlimit = new QLabel(("Speedlimit: " + std::to_string(fRoad->getSpeedLimit())).c_str());
-    layout->addWidget(speedlimit, 1,0,1,1);
+    fLayout->addWidget(speedlimit, 1,0,1,1);
 
     QPushButton *editSpdLimit = new QPushButton("Edit");
-    layout->addWidget(editSpdLimit, 1, 1, 1, 1);
+    fLayout->addWidget(editSpdLimit, 1, 1, 1, 1);
     connect(editSpdLimit, SIGNAL(pressed()), this, SLOT(onEditSpeedLimit()));
 
 
     QLabel* length = new QLabel(("Length: " + std::to_string(fRoad->getRoadLength())).c_str());
-    layout->addWidget(length, 2,0,1,1);
+    fLayout->addWidget(length, 2,0,1,1);
 
     std::string next;
     if (fRoad->getNextRoad() == NULL)
@@ -215,12 +215,12 @@ void RoadWindow::init()
     else next = fRoad->getNextRoad()->getName();
 
     QLabel* nextinf = new QLabel(("Next Road: " + next).c_str());
-    layout->addWidget(nextinf, 3,0,1,1);
+    fLayout->addWidget(nextinf, 3,0,1,1);
 
     QPushButton *exit = new QPushButton("Save changes and exit");
-    layout->addWidget(exit, 4, 0, 1, 2);
+    fLayout->addWidget(exit, 4, 0, 1, 2);
     connect(exit, SIGNAL(pressed()), this, SLOT(onExit()));
-
+    
     properlyInitialized = true;
 
     ENSURE(this->checkProperlyInitialized(),  "RoadWindow.init() must end in properlyInitialized state");
@@ -238,4 +238,10 @@ void RoadWindow::onEditSpeedLimit()
     {
         std::cout << "setter for speedlimits does not exist yet: " << val << std::endl;
     }
+}
+
+void RoadWindow::createVehicleButtons() 
+{
+    REQUIRE(this->checkProperlyInitialized(), "RoadWindow was not properly initialized when calling createVehicleButtons");
+
 }
