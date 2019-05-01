@@ -36,8 +36,6 @@ TEST_F(RoadParserTester, ParseRoad) {
         TiXmlElement *elem = parser.getRoot()->FirstChildElement();
         parser.parseRoad(elem);
         elem = elem->NextSiblingElement();
-        ASSERT_EXIT((parser.parseRoad(elem), exit(0)), ::testing::KilledBySignal(SIGSEGV), ".*");
-        elem = elem->NextSiblingElement();
         testing::internal::CaptureStderr();
         do {
             EXPECT_EQ(NULL, parser.parseRoad(elem));

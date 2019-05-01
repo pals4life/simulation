@@ -36,8 +36,6 @@ TEST_F(VehicleParserTester, ParseVehicle) {
         TiXmlElement *elem = parser.getRoot()->FirstChildElement();
         parser.parseVehicle(elem);
         elem = elem->NextSiblingElement();
-        ASSERT_EXIT((parser.parseVehicle(elem), exit(0)), ::testing::KilledBySignal(SIGSEGV), ".*");
-        elem = elem->NextSiblingElement();
         testing::internal::CaptureStderr();
         do {
             EXPECT_EQ(NULL, parser.parseVehicle(elem));

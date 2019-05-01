@@ -35,8 +35,10 @@ const std::string VAbstractParser::readElement(TiXmlElement *const element, cons
 	TiXmlElement *elem = element->FirstChildElement(kTag.c_str());
 	if (elem) {
 		TiXmlNode *node = elem->FirstChild();
-		TiXmlText *text = node->ToText();
-		return text->Value();
+        if (node) {
+            TiXmlText *text = node->ToText();
+            return text->Value();
+        }
 	}
 	return "";
 }

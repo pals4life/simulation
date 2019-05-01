@@ -21,19 +21,19 @@ protected:
     virtual void TearDown() {}
 };
 
-TEST_F(NetworkExporterTester, init) {
+TEST_F(NetworkExporterTester, Init) {
     EXPECT_DEATH(NetworkExporter::init(NULL, "test", "test"), "Failed to export network: no network");
     EXPECT_EQ(false, NetworkExporter::properlyInitialized());
     int res = system("rm outputfiles/test.txt >/dev/null 2>&1");
     EXPECT_EQ(0, res % 256);
 }
 
-TEST_F(NetworkExporterTester, finish) {
+TEST_F(NetworkExporterTester, Finish) {
     EXPECT_DEATH(NetworkExporter::finish(), "NetworkExporter was not initialized when calling finish");
     EXPECT_EQ(false, NetworkExporter::properlyInitialized());
 }
 
-TEST_F(NetworkExporterTester, addSection) {
+TEST_F(NetworkExporterTester, AddSection) {
     EXPECT_DEATH(NetworkExporter::addSection(NULL, 0), "NetworkExporter was not initialized when calling addSection");
     Network test({});
     testing::internal::CaptureStdout();
@@ -46,13 +46,13 @@ TEST_F(NetworkExporterTester, addSection) {
     EXPECT_EQ(0, res % 256);
 }
 
-TEST_F(NetworkExporterTester, whitespace) {
+TEST_F(NetworkExporterTester, Whitespace) {
     EXPECT_EQ("     ", NetworkExporter::whitespace(5));
     EXPECT_EQ("", NetworkExporter::whitespace(-1));
     EXPECT_EQ("", NetworkExporter::whitespace(0));
 }
 
-TEST_F(NetworkExporterTester, printLane) {
+TEST_F(NetworkExporterTester, PrintLane) {
     EXPECT_DEATH(NetworkExporter::printLane({}, 0, 0), "NetworkExporter was not initialized when calling printLane");
     Network test({});
     testing::internal::CaptureStdout();
@@ -74,7 +74,7 @@ TEST_F(NetworkExporterTester, printLane) {
     EXPECT_EQ(0, res % 256);
 }
 
-TEST_F(NetworkExporterTester, tee) {
+TEST_F(NetworkExporterTester, Tee) {
     EXPECT_DEATH(NetworkExporter::tee<std::string>("test", false),
                  "NetworkExporter was not initialized when calling tee");
     Network test({});

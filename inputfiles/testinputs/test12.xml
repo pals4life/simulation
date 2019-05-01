@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VERKEERSTEKENS>
+    <VERKEERSTEKEN>
+        <type>BUSHALTE</type>
+        <baan>E19</baan>
+        <positie>500</positie>
+    </VERKEERSTEKEN>
+
+    <VERKEERSTEKEN>
+        <type>VERKEERSLICHT</type>
+        <baan>E19</baan>
+        <positie></positie>
+    </VERKEERSTEKEN>
+
+    <VERKEERSTEKEN>
+        <type>ZONE</type>
+        <baan>E19</baan>
+        <positie>vijftien</positie>
+        <snelheidslimiet>50</snelheidslimiet>
+    </VERKEERSTEKEN>
+
+    <VERKEERSTEKEN>
+        <type>ZONE</type>
+        <baan>E19</baan>
+        <positie>500</positie>
+        <snelheidslimiet>-10</snelheidslimiet>
+    </VERKEERSTEKEN>
+
+    <VERKEERSTEKEN>
+        <type>ZONE</type>
+        <baan>E19</baan>
+        <positie>500</positie>
+    </VERKEERSTEKEN>
+
+    <VERKEERSTEKEN>
+        <type>STOPBORD</type>
+        <baan>E19</baan>
+        <positie>20</positie>
+        <snelheidslimiet>50</snelheidslimiet>
+    </VERKEERSTEKEN>
+
+</VERKEERSTEKENS>
