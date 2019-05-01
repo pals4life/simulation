@@ -279,7 +279,7 @@ std::pair<const IVehicle*, double> Road::getNextVehicle(const uint32_t kLane, co
     if(kIndex == 0)
     {
         const Road* iter = fNextRoad;
-        double offset = 0;
+        double offset = fRoadLength;
         while(iter != NULL)
         {
             if(iter->getNumLanes() <= kLane) break;

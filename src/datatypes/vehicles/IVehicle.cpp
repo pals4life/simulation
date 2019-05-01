@@ -84,7 +84,7 @@ void IVehicle::move(const uint32_t lane, const uint32_t index, Road* road)
 
     ENSURE(getVelocity() >= 0, "Velocity cannot be negative");
     ENSURE((getAcceleration() >= getMinAcceleration()) && (getAcceleration() <= getMaxAcceleration()), "Acceleration is too high / low");
-//    ENSURE(nextVehicle.first == NULL or pairPosition<IVehicle>(nextVehicle) - getPosition() > getMinVehicleDist(), "distance between vehicles must be greater than minVehicleDist");
+    ENSURE(nextVehicle.first == NULL or pairPosition<IVehicle>(nextVehicle) - getPosition() > getMinVehicleDist(), "distance between vehicles must be greater than minVehicleDist");
     ENSURE(fPrevAcceleration.size() == 5, "Previous acceleration must contain 5 elements");
 }
 
