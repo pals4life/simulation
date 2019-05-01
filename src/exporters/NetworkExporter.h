@@ -39,6 +39,9 @@ public:
     static void finish();
 
 private:
+    template<class T>
+    static void tee(const T&string);
+
     static std::string whitespace(int amount);
 
     static void printLane(const std::vector<std::vector<char>> &lane, uint32_t max, uint32_t laneNum);
@@ -49,6 +52,5 @@ private:
     static double scale;
     static uint32_t longestName;
 };
-
 
 #endif //SIMULATION_NETWORKEXPORTER_H
