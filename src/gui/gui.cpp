@@ -195,7 +195,7 @@ std::string Window::doubleToPrecision(double d, int precision)
     }
 
     std::string as_int = std::to_string(int(d * x + 0.5));
-    std::string as_double = as_int.substr(0, as_int.size() - precision) + "," + as_int.substr(as_int.size() - precision, 2);
+    std::string as_double = as_int.substr(0, as_int.size() - precision) + "," + as_int.substr(as_int.size() - precision, precision);
 
     return as_double;
 }
