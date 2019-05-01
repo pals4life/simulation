@@ -24,6 +24,8 @@ protected:
 TEST_F(NetworkExporterTester, init) {
     EXPECT_DEATH(NetworkExporter::init(NULL, "test", "test"), "Failed to export network: no network");
     EXPECT_EQ(false, NetworkExporter::properlyInitialized());
+    int res = system("rm outputfiles/test.txt >/dev/null 2>&1");
+    EXPECT_EQ(0, res % 256);
 }
 
 TEST_F(NetworkExporterTester, finish) {
@@ -34,9 +36,14 @@ TEST_F(NetworkExporterTester, finish) {
 TEST_F(NetworkExporterTester, addSection) {
     EXPECT_DEATH(NetworkExporter::addSection(NULL, 0), "NetworkExporter was not initialized when calling addSection");
     Network test({});
+    testing::internal::CaptureStdout();
     NetworkExporter::init(&test, "test", "test");
+    EXPECT_EQ("\n-------------------------------------------------\nOne character is 0.000000 meters",
+              testing::internal::GetCapturedStdout());
     EXPECT_DEATH(NetworkExporter::addSection(NULL, 0), "Failed to add section: no network");
     EXPECT_EQ(true, NetworkExporter::properlyInitialized());
+    int res = system("rm outputfiles/test.txt >/dev/null 2>&1");
+    EXPECT_EQ(0, res % 256);
 }
 
 TEST_F(NetworkExporterTester, whitespace) {
@@ -48,7 +55,10 @@ TEST_F(NetworkExporterTester, whitespace) {
 TEST_F(NetworkExporterTester, printLane) {
     EXPECT_DEATH(NetworkExporter::printLane({}, 0, 0), "NetworkExporter was not initialized when calling printLane");
     Network test({});
+    testing::internal::CaptureStdout();
     NetworkExporter::init(&test, "test", "test");
+    EXPECT_EQ("\n-------------------------------------------------\nOne character is 0.000000 meters",
+              testing::internal::GetCapturedStdout());
     testing::internal::CaptureStdout();
     NetworkExporter::printLane({}, 0, 0);
     EXPECT_EQ("", testing::internal::GetCapturedStdout());
@@ -58,15 +68,23 @@ TEST_F(NetworkExporterTester, printLane) {
     lane[0].push_back('A');
     lane[0].push_back('B');
     lane[1].push_back('C');
-    NetworkExporter::printLane(lane , 2, 0);
+    NetworkExporter::printLane(lane, 2, 0);
     EXPECT_EQ("1 AC==================\n     B                   \n", testing::internal::GetCapturedStdout());
+    int res = system("rm outputfiles/test.txt >/dev/null 2>&1");
+    EXPECT_EQ(0, res % 256);
 }
 
 TEST_F(NetworkExporterTester, tee) {
-    EXPECT_DEATH(NetworkExporter::tee<std::string>("test", false), "NetworkExporter was not initialized when calling tee");
+    EXPECT_DEATH(NetworkExporter::tee<std::string>("test", false),
+                 "NetworkExporter was not initialized when calling tee");
     Network test({});
+    testing::internal::CaptureStdout();
     NetworkExporter::init(&test, "test", "test");
+    EXPECT_EQ("\n-------------------------------------------------\nOne character is 0.000000 meters",
+              testing::internal::GetCapturedStdout());
     testing::internal::CaptureStdout();
     NetworkExporter::tee<std::string>("test", false);
     EXPECT_EQ("test", testing::internal::GetCapturedStdout());
+    int res = system("rm outputfiles/test.txt >/dev/null 2>&1");
+    EXPECT_EQ(0, res % 256);
 }

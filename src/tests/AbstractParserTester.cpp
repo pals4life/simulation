@@ -43,14 +43,22 @@ TEST_F(AbstractParserTester, GetRoot) {
 TEST_F(AbstractParserTester, ReadElement) {
     VAbstractParser parser;
     EXPECT_DEATH(parser.readElement(NULL, "FakeElement"), "Failed to read element: no element");
-    parser.loadFile("inputfiles/testinputs/test1.xml");
-    EXPECT_STREQ(parser.readElement(parser.getRoot(), "FakeElement").c_str(), "");
-    EXPECT_DEATH(parser.readElement(parser.getRoot(), ""), "Failed to read element: no tag");
+    testing::internal::CaptureStderr();
+    bool loaded = parser.loadFile("inputfiles/testinputs/test1.xml");
+    EXPECT_EQ(true, loaded);
+    testing::internal::GetCapturedStderr();
+    if (loaded) {
+        EXPECT_STREQ(parser.readElement(parser.getRoot(), "FakeElement").c_str(), "");
+        EXPECT_DEATH(parser.readElement(parser.getRoot(), ""), "Failed to read element: no tag");
+    }
 }
 
 TEST_F(AbstractParserTester, Clear) {
     VAbstractParser parser;
-    parser.loadFile("inputfiles/testinputs/test1.xml");
+    testing::internal::CaptureStderr();
+    bool loaded = parser.loadFile("inputfiles/testinputs/test1.xml");
+    EXPECT_EQ(true, loaded);
+    testing::internal::GetCapturedStderr();
     parser.clear();
     EXPECT_DEATH(parser.getRoot(), "Failed to get root: no root element");
 }

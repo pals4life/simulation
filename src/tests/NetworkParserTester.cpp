@@ -24,26 +24,35 @@ protected:
 
 TEST_F(NetworkParserTester, ParseNetwork) {
     NetworkParser parser;
-    parser.loadFile("inputfiles/testinputs/test1.xml");
-    EXPECT_DEATH(parser.parseNetwork(NULL), "Failed to parse network: no element");
-    Network *network = parser.parseNetwork(parser.getRoot());
-    network->startSimulation(NULL, false, false);
-    EXPECT_EQ(233, network->getTicksPassed());
     testing::internal::CaptureStderr();
-    if(parser.loadFile("inputfiles/testinputs/test11.xml")) {
-        parser.parseNetwork(parser.getRoot());
+    bool loaded = parser.loadFile("inputfiles/testinputs/test1.xml");
+    testing::internal::GetCapturedStderr();
+    EXPECT_EQ(true, loaded);
+    if (loaded) {
+        EXPECT_DEATH(parser.parseNetwork(NULL), "Failed to parse network: no element");
+        Network *network = parser.parseNetwork(parser.getRoot());
+        network->startSimulation(NULL, false, false);
+        EXPECT_EQ(233, network->getTicksPassed());
     }
-    parser.clear();
-    std::string output = testing::internal::GetCapturedStderr();
-    EXPECT_STREQ(
-            "Inconsistent traffic situation: road E20 does not exist\n"
-            "Failed to recognize element FIETS: skipping element\n"
-            "Inconsistent traffic situation: car 651BUFis not on road E19\n"
-            "Inconsistent traffic situation: car 651BUF is less than 5m away from car 1THK180 on road E19\n"
-            "Inconsistent traffic situation: car 651BUF is less than 5m away from car 651BIF on roads E19 and E313\n"
-            "Inconsistent traffic situation: car 1THK180 is less than 5m away from car 651BIF on roads E19 and E313\n"
-            "Inconsistent traffic situation: road E20 does not exist\n",
-            output.c_str());
+    testing::internal::CaptureStderr();
+    loaded = parser.loadFile("inputfiles/testinputs/test11.xml");
+    testing::internal::GetCapturedStderr();
+    EXPECT_EQ(true, loaded);
+    if (loaded) {
+        testing::internal::CaptureStderr();
+        parser.parseNetwork(parser.getRoot());
+        parser.clear();
+        std::string output = testing::internal::GetCapturedStderr();
+        EXPECT_STREQ(
+                "Inconsistent traffic situation: road E20 does not exist\n"
+                "Failed to recognize element FIETS: skipping element\n"
+                "Inconsistent traffic situation: car 651BUFis not on road E19\n"
+                "Inconsistent traffic situation: car 651BUF is less than 5m away from car 1THK180 on road E19\n"
+                "Inconsistent traffic situation: car 651BUF is less than 5m away from car 651BIF on roads E19 and E313\n"
+                "Inconsistent traffic situation: car 1THK180 is less than 5m away from car 651BIF on roads E19 and E313\n"
+                "Inconsistent traffic situation: road E20 does not exist\n",
+                output.c_str());
+    }
 }
 
 TEST_F(NetworkParserTester, GetNetwork) {
