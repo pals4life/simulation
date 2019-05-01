@@ -32,6 +32,8 @@ NetworkExporter::init(const Network *kNetwork, const std::string &kSimplePath, c
     fgImpression.open(("outputfiles/" + kImpressionPath + ".txt").c_str());
     ENSURE(fgImpression.is_open(), "Failed to load File for impression output");
 
+    _initCheck = true;
+
     double maxLength = 0;
     for (uint32_t i = 0; i < kNetwork->fRoads.size(); i++) {
         Road *road = kNetwork->fRoads[i];
@@ -58,7 +60,6 @@ NetworkExporter::init(const Network *kNetwork, const std::string &kSimplePath, c
     fgScale = maxLength / 120;
     tee("\n-------------------------------------------------\nOne character is " + std::to_string(fgScale) + " meters",
         false);
-    _initCheck = true;
 }
 
 void NetworkExporter::finish() {

@@ -37,9 +37,6 @@ public:
      */
     static void finish();
 
-    static bool properlyInitialized();
-
-private:
     /**
      *  REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling tee");
      */
@@ -53,6 +50,10 @@ private:
      */
     static void printLane(const std::vector<std::vector<char>> &lane, uint32_t max, uint32_t laneNum);
 
+
+    static bool properlyInitialized();
+
+private:
     static std::ofstream fgSimple;
     static std::ofstream fgImpression;
 
