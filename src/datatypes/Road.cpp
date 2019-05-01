@@ -17,8 +17,9 @@ Road::Road(const std::string& kName, Road* const kNext, const double kLength, co
 {
     REQUIRE(kLength > 0    , "Failed to construct road: length must be greater than 0"   );
     REQUIRE(!kName.empty() , "Failed to construct road: name can not be empty"           );
-    REQUIRE(kLanes > 0     , "Failed to construct road: must at least have 1 lane"       );
+    REQUIRE(kLanes < 100 and kLanes > 0, "Failed to construct road: must at least have 1 lane or less than 100");
     REQUIRE(!kZones.empty(), "Failed to construct road: must have at least 1 speed zone" );
+    REQUIRE(kZones[0]->getPosition() == 0, "Must have a zone at position 0"              );
 
     fName = kName;
     fNextRoad = kNext;
@@ -118,6 +119,16 @@ void Road::changeLaneIfPossible(IVehicle* vehicle, const uint32_t kLane, const u
         newLane.push_front(vehicle);
         fLanes[kLane].erase(fLanes[kLane].begin() + kIndex);
     }
+}
+
+bool Road::isEmpty() const
+{
+    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling isEmpty");
+    for(uint32_t i = 0; i < fLanes.size(); i++)
+    {
+        if(!fLanes[i].empty()) return false;
+    }
+    return true;
 }
 
 const Road* Road::getNextRoad() const
@@ -344,16 +355,6 @@ void Road::dequeue(const uint32_t kLane)
         fNextRoad->enqueue(fLanes[kLane].front(), kLane);                                       // enqueue in next road if there is one
     }
     fLanes[kLane].pop_front();                                                                 // remove from the queue
-}
-
-bool Road::isEmpty() const
-{
-    REQUIRE(this->properlyInitialized(), "Road was not initialized when calling isEmpty");
-    for(uint32_t i = 0; i < fLanes.size(); i++)
-    {
-        if(!fLanes[i].empty()) return false;
-    }
-    return true;
 }
 
 
