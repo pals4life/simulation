@@ -54,10 +54,10 @@ void Network::startSimulation(const Window* window, bool print, bool gui)
         if(not gui or checkWindow(window->getState()))
         {
             if(update()) break;
-        }
 
-        if(print) NetworkExporter::addSection(this, fTicksPassed);
-        if(gui  ) Window::processEvents();
+            if(print) NetworkExporter::addSection(this, fTicksPassed);
+            if(gui  ) Window::processEvents();
+        }
     }
 
     if(print)

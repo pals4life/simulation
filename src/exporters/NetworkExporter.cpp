@@ -47,8 +47,6 @@ void NetworkExporter::init(const Network* kNetwork, const std::string &kSimplePa
     }
     scale = maxLength / 120;
     fImpression << "\n-------------------------------------------------\nOne character is " << scale << " meters";
-
-    addSection(kNetwork, 0);
 }
 
 void NetworkExporter::finish()
