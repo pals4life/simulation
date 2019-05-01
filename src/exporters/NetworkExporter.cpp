@@ -21,8 +21,8 @@ uint32_t NetworkExporter::fgLongestName = 0;
 bool NetworkExporter::_initcheck = false;
 
 
-void NetworkExporter::init(const Network* kNetwork, const std::string &kSimplePath, const std::string &kImpressionPath)
-{
+void
+NetworkExporter::init(const Network *kNetwork, const std::string &kSimplePath, const std::string &kImpressionPath) {
     int res = system("mkdir outputfiles >/dev/null 2>&1");
     ENSURE(res == 0 or res == 256, "Could not make directory");
     fgSimple.open(("outputfiles/" + kSimplePath + ".txt").c_str());
@@ -32,62 +32,65 @@ void NetworkExporter::init(const Network* kNetwork, const std::string &kSimplePa
     ENSURE(fgImpression.is_open(), "Output file is not open");
 
     double maxLength = 0;
-    for(uint32_t i = 0; i < kNetwork->fRoads.size(); i++)
-    {
-        const Road* road = kNetwork->fRoads[i];
+    for (uint32_t i = 0; i < kNetwork->fRoads.size(); i++) {
+        Road *road = kNetwork->fRoads[i];
 
-        fgSimple << "Baan : " + road->getName() + '\n';
-        fgSimple << "  -> snelheidslimiet: "  << road->getSpeedLimit() * 3.6 << '\n';
-        fgSimple << "  -> lengte         : "  << road->getRoadLength()       << '\n';
-
-        tee("Baan : " + road->getName() + '\n');
-        tee("  -> snelheidslimiet: " + std::to_string(road->getSpeedLimit() * 3.6) + '\n');
-        tee("  -> lengte         : " + std::to_string(road->getRoadLength()) + '\n');
+        tee("Baan : " + road->getName() + '\n', true);
+        tee("  -> Snelheidslimiet: " + std::to_string(int(std::round(road->getSpeedLimit() * 3.6))) + "km/u\n", true);
+        tee("  -> Lengte         : " + std::to_string(int(std::round(road->getRoadLength()))) + "m\n", true);
+        for (const auto &zone: road->getZones()) {
+            tee("  -> zone           : Begin: " + std::to_string(int(std::round(zone->getPosition()))) +
+                "m Snelheidslimiet: " + std::to_string(int(std::round(zone->getSpeedlimit() * 3.6))) + "km/u\n", true);
+        }
+        for (const auto &busStop: road->getBusStops()) {
+            tee("  -> Bushalte       : Positie: " + std::to_string(int(std::round(busStop->getPosition()))) + "m\n",
+                true);
+        }
+        for (const auto &trafficLight: road->getTrafficLights()) {
+            tee("  -> Verkeerslicht  : Positie: " + std::to_string(int(std::round(trafficLight->getPosition()))) +
+                "m\n", true);
+        }
 
         if (road->getRoadLength() > maxLength) maxLength = road->getRoadLength();
         if (road->getName().size() > fgLongestName) fgLongestName = road->getName().size();
     }
     fgScale = maxLength / 120;
-    tee("\n-------------------------------------------------\nOne character is " + std::to_string(fgScale) + " meters");
+    tee("\n-------------------------------------------------\nOne character is " + std::to_string(fgScale) + " meters",
+        false);
 }
 
-void NetworkExporter::finish()
-{
+void NetworkExporter::finish() {
     fgSimple << std::flush;
     fgSimple.close();
 }
 
-void NetworkExporter::addSection(const Network* kNetwork, uint32_t number)
-{
+void NetworkExporter::addSection(const Network *kNetwork, uint32_t number) {
     fgSimple << "\n-------------------------------------------------\n";
-    if(number != 1) fgSimple << "State of the network after " << number << " ticks have passed:\n\n";
+    if (number != 1) fgSimple << "State of the network after " << number << " ticks have passed:\n\n";
     else fgSimple << "State of the network after " << number << " tick has passed:\n\n";
-    for(uint32_t i = 0; i < kNetwork->fRoads.size(); i++)
-    {
-        const Road* road = kNetwork->fRoads[i];
-        for(uint32_t j = 0; j < road->getNumLanes(); j++)
-        {
-            for(uint32_t k = 0; k < (*road)[j].size(); k++)
-            {
-                const IVehicle* vehicle = (*road)[j][k];
-                fgSimple << "Voertuig: " + vehicle->getType() +'('+ vehicle->getLicensePlate() + ")\n";
-                fgSimple << "  -> Baan    : " << road->getName()            << '\n';
-                fgSimple << "  -> Positie : " << vehicle->getPosition()     << '\n';
-                fgSimple << "  -> Snelheid: " << vehicle->getVelocity()*3.6 << '\n';
+    for (uint32_t i = 0; i < kNetwork->fRoads.size(); i++) {
+        const Road *road = kNetwork->fRoads[i];
+        for (uint32_t j = 0; j < road->getNumLanes(); j++) {
+            for (uint32_t k = 0; k < (*road)[j].size(); k++) {
+                const IVehicle *vehicle = (*road)[j][k];
+                fgSimple << "Voertuig: " + vehicle->getType() + '(' + vehicle->getLicensePlate() + ")\n";
+                fgSimple << "  -> Baan    : " << road->getName() << '\n';
+                fgSimple << "  -> Positie : " << vehicle->getPosition() << '\n';
+                fgSimple << "  -> Snelheid: " << vehicle->getVelocity() * 3.6 << '\n';
             }
         }
     }
 
-    tee("\n-------------------------------------------------\n");
-    if (number != 1) tee("State of the network after " + std::to_string(number) + " ticks have passed:\n\n");
-    else tee("State of the network after " + std::to_string(number) + " tick has passed:\n\n");
+    tee("\n-------------------------------------------------\n", false);
+    if (number != 1) tee("State of the network after " + std::to_string(number) + " ticks have passed:\n\n", false);
+    else tee("State of the network after " + std::to_string(number) + " tick has passed:\n\n", false);
     for (uint32_t i = 0; i < kNetwork->fRoads.size(); i++) {
         const Road *road = kNetwork->fRoads[i];
-        tee(road->getName() + whitespace(fgLongestName - road->getName().size()) + " | ");
+        tee(road->getName() + whitespace(fgLongestName - road->getName().size()) + " | ", false);
         for (uint32_t j = 0; j < road->getNumLanes(); j++) {
             std::vector<std::vector<char> > lane;
             uint32_t max = 0;
-            lane.resize(static_cast<uint32_t >(floor(road->getRoadLength()/fgScale)+1));
+            lane.resize(static_cast<uint32_t >(floor(road->getRoadLength() / fgScale) + 1));
             for (uint32_t k = 0; k < (*road)[j].size(); k++) {
                 const IVehicle *vehicle = (*road)[j][k];
                 uint32_t pos = static_cast<uint32_t >(floor(vehicle->getPosition() / fgScale));
@@ -103,30 +106,30 @@ void NetworkExporter::addSection(const Network* kNetwork, uint32_t number)
     }
 }
 
-std::string NetworkExporter::whitespace(const int amount)
-{
+std::string NetworkExporter::whitespace(const int amount) {
     std::string white;
     for (int i = 0; i < amount; ++i) {
-        white+=" ";
+        white += " ";
     }
     return white;
 }
 
-void NetworkExporter::printLane(const std::vector<std::vector<char>> &lane, const uint32_t max, const uint32_t laneNum)
-{
+void
+NetworkExporter::printLane(const std::vector<std::vector<char>> &lane, const uint32_t max, const uint32_t laneNum) {
     for (uint32_t l = 0; l < max; ++l) {
-        if (laneNum != 0) tee(whitespace(fgLongestName + 3));
-        if (l == 0) tee(std::to_string(laneNum + 1) + " ");
-        else tee(whitespace(fgLongestName + 4 + std::to_string(laneNum + 1).size()));
+        if (laneNum != 0) tee(whitespace(fgLongestName + 3), false);
+        if (l == 0) tee(std::to_string(laneNum + 1) + " ", false);
+        else tee(whitespace(fgLongestName + 4 + std::to_string(laneNum + 1).size()), false);
         for (uint32_t k = 0; k < lane.size(); ++k) {
-            tee((l < lane[k].size() ? lane[k][l] : (l == 0 ? '=' : ' ')));
+            tee((l < lane[k].size() ? lane[k][l] : (l == 0 ? '=' : ' ')), false);
         }
-        tee('\n');
+        tee('\n', false);
     }
 }
 
 template<class T>
-void NetworkExporter::tee(const T&string) {
+void NetworkExporter::tee(const T &string, bool init) {
     fgImpression << string;
     std::cout << string;
+    if (init) fgSimple << string;
 }

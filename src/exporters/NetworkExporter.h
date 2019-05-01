@@ -40,7 +40,7 @@ public:
 
 private:
     template<class T>
-    static void tee(const T&string);
+    static void tee(const T&string, bool init);
 
     static std::string whitespace(int amount);
 
