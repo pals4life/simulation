@@ -29,7 +29,7 @@ int main(int argc, char** argv)
         window = new Window;
         window->init();
         window->createButtons();
-        filename = window->askString();
+        filename = window->askString("inputfiles/spec2.0.xml");
     }
     else
     {

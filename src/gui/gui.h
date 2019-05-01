@@ -24,6 +24,7 @@
 #include <QCloseEvent>
 #include <QObject>
 #include <QLabel>
+#include <QFrame>
 
 #include <iostream>
 #include <vector>
@@ -41,7 +42,7 @@ class Window: public QMainWindow
     Q_OBJECT
 
 public:
-    enum state {inactive, play, pause, next, previous, quit};
+    enum state {inactive, play, pause, next, previous, quit, busy};
     explicit Window(QWidget* parent = nullptr);
     /**
      * ENSURE(this->properlyInitialized(), "Window.init() constructor must end in properlyInitialized state");
@@ -76,7 +77,7 @@ public:
     /**
      * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling askString");
      */
-    std::string askString();
+    std::string askString(std::string example);
     /**
      * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling askDouble");
      */
@@ -89,7 +90,7 @@ public:
 protected:
 
     bool properlyInitialized = false;
-    mutable state crState = inactive;
+    mutable state fCrState = inactive;
 
     QWidget *fRoot = new QWidget(this);
     QGridLayout *fLayout = new QGridLayout;
@@ -138,18 +139,20 @@ public:
     void createVehicleButtons();
 
 private:
+    int fLastRow;
+    int fLastZoneRow;
     Road *fRoad = NULL;
     std::map<QObject*, const TrafficLight*> fTrafficLights;
+    std::map<QObject*, const Zone*> fZones;
+    int updateTrafficLights(int row);
+    void replaceInGrid(int row, int colum, QWidget* widget);
+    int updateZones(int row);
 
 private slots:
     /**
      *
      */
     void onEditSpeedLimit();
-    /**
-     *
-     */
-    void onEditTLightPos();
     /**
      *
      */

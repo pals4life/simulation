@@ -85,7 +85,7 @@ void TrafficLight::update() const
 TrafficLight::EColor TrafficLight::getColor() const
 {
     REQUIRE(properlyInitialized(), "TrafficLight was not properly initialized when calling getColor");
-    return kGreen;
+    return fColor;
 }
 void TrafficLight::setColor(EColor color) const
 {

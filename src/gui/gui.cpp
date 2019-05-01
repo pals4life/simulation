@@ -69,14 +69,14 @@ void Window::createButtons()
     connect(skipOne, SIGNAL(pressed()), this, SLOT(onNext()));
 }
 
-std::string Window::askString()
+std::string Window::askString(std::string example)
 {
     REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling askString");
 
     bool ok;
     QString text = QInputDialog::getText(this, tr("enter your filename"),
                                          tr("filename"), QLineEdit::Normal,
-                                         QString("inputfiles/spec2.0.xml"), &ok);
+                                         QString(example.c_str()), &ok);
 
     if (ok && !text.isEmpty())
         return text.toStdString();
@@ -119,16 +119,16 @@ Window::state Window::getState() const
 {
     REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling CreateButtons");
 
-    state temp = crState;
-    if(crState == next) crState = pause;
+    state temp = fCrState;
+    if(fCrState == next) fCrState = pause;
     return temp;
 }
 
 void Window::closeEvent (QCloseEvent *event)
 {
     REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling CreateButtons");
-
-    crState = quit;
+    if (fCrState == busy) return;
+    fCrState = quit;
 }
 
 bool Window::checkProperlyInitialized() const
@@ -146,39 +146,43 @@ void Window::processEvents()
 void Window::onPlay()
 {
     REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onPlay");
-
-    crState = play;
+    if (fCrState == busy) return;
+    fCrState = play;
 }
 
 void Window::onPause()
 {
     REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onPause");
-
-    crState = pause;
+    if (fCrState == busy) return;
+    fCrState = pause;
 }
 
 void Window::onNext()
 {
     REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onNext");
-
-    crState = next;
+    if (fCrState == busy) return;
+    fCrState = next;
 }
 void Window::onExit()
 {
     REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onExit");
-
-    crState = quit;
+    if (fCrState == busy) return;
+    fCrState = quit;
 }
 void Window::onRoadButton()
 {
     REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onRoadButton");
+
+    if (fCrState == busy) return;
+    fCrState = busy;
 
     QObject* obj = sender();
 
     RoadWindow window;
     window.setRoad(fRoadButtons[obj]);
     window.init();
-    while (window.crState != quit) Window::delay(500);
+    while (window.fCrState != quit) Window::delay(500);
+    fCrState = inactive;
 }
 
 //---------------------------------------ROAD WINDOW CLASS-----------------------------------------------------
@@ -186,7 +190,7 @@ void RoadWindow::init()
 {
     REQUIRE(fRoad != NULL, "roadwindow has no road");
 
-    int lastRow = 0;
+    fLastRow = 0;
 
     this->setWindowTitle(fRoad->getName().c_str());
     this->setCentralWidget(fRoot);
@@ -198,16 +202,8 @@ void RoadWindow::init()
     QLabel* name = new QLabel(("Name: " + fRoad->getName()).c_str());
     fLayout->addWidget(name, 0,0,1,1);
 
-    QLabel* speedlimit = new QLabel(("Speedlimit: " + std::to_string(fRoad->getSpeedLimit())).c_str());
-    fLayout->addWidget(speedlimit, 1,0,1,1);
-
-    QPushButton *editSpdLimit = new QPushButton("Edit");
-    fLayout->addWidget(editSpdLimit, 1, 1, 1, 1);
-    connect(editSpdLimit, SIGNAL(pressed()), this, SLOT(onEditSpeedLimit()));
-
-
     QLabel* length = new QLabel(("Length: " + std::to_string(fRoad->getRoadLength())).c_str());
-    fLayout->addWidget(length, 2,0,1,1);
+    fLayout->addWidget(length, 1,0,1,1);
 
     std::string next;
     if (fRoad->getNextRoad() == NULL)
@@ -217,42 +213,27 @@ void RoadWindow::init()
     else next = fRoad->getNextRoad()->getName();
 
     QLabel* nextinf = new QLabel(("Next Road: " + next).c_str());
-    fLayout->addWidget(nextinf, 3,0,1,1);
+    fLayout->addWidget(nextinf, 2,0,1,1);
 
-    // TRAFFIC LIGHTS
-    QLabel* tLights = new QLabel("Traffic lights:");
-    fLayout->addWidget(tLights, 4,0,1,1);
+    QFrame* hLine = new QFrame();
+    hLine->setFrameShape(QFrame::HLine);
 
-    lastRow = 4;
+    fLayout->addWidget(hLine, 3, 0, 1, 2);
 
-    for (unsigned int i=0;i<fRoad->getTrafficLights().size();i++)
-    {
-        QLabel* tLightPos = new QLabel(("Position: " + std::to_string(fRoad->getTrafficLights()[i]->getPosition())).c_str());
-        QLabel* tLightColor = new QLabel(("Current color: " + std::to_string(fRoad->getTrafficLights()[i]->getColor())).c_str());
+    fLastRow = 4;
 
-        QPushButton *editTLightColor = new QPushButton("Edit");
-        connect(editTLightColor, SIGNAL(pressed()), this, SLOT(onEditTLightColor()));
+    int row = updateTrafficLights(fLastRow);
 
-        QPushButton *editTLightPos = new QPushButton("Edit");
-        connect(editTLightPos, SIGNAL(pressed()), this, SLOT(onEditTLightPos()));
+    row++;
+    QFrame* hLine2 = new QFrame();
+    hLine2->setFrameShape(QFrame::HLine);
+    fLayout->addWidget(hLine2, row, 0, 1, 2);
 
-        fTrafficLights[editTLightColor] = fRoad->getTrafficLights()[i];
-        fTrafficLights[editTLightPos] = fRoad->getTrafficLights()[i];
-
-
-        lastRow++;
-        fLayout->addWidget(tLightColor, lastRow, 0, 1, 1);
-        fLayout->addWidget(editTLightColor, lastRow, 1, 1, 1);
-        lastRow++;
-        fLayout->addWidget(tLightPos, lastRow, 0, 1, 1);
-        fLayout->addWidget(editTLightPos, lastRow, 1, 1, 1);
-
-        lastRow++;
-        fLayout->setRowStretch(lastRow, 1);
-    }
+    fLastZoneRow = row;
+    row = updateZones(row);
 
     QPushButton *exit = new QPushButton("Save changes and exit");
-    fLayout->addWidget(exit, lastRow + 1, 0, 1, 2);
+    fLayout->addWidget(exit, row+1, 0, 1, 2);
     connect(exit, SIGNAL(pressed()), this, SLOT(onExit()));
 
     properlyInitialized = true;
@@ -265,38 +246,151 @@ void RoadWindow::setRoad(Road *road)
     fRoad = road;
 }
 
+void RoadWindow::onEditTLightColor()
+{
+    std::string val = askString("orange/red/green");
+
+    QObject *obj = sender();
+
+    if (val == "green" or val == "red" or val == "orange")
+    {
+        switch (val[0])
+        {
+            case 'g':
+                fTrafficLights[obj]->setColor(TrafficLight::kGreen);
+                break;
+            case 'o':
+                fTrafficLights[obj]->setColor(TrafficLight::kOrange);
+                break;
+            case 'r':
+                fTrafficLights[obj]->setColor(TrafficLight::kRed);
+                break;
+            default:
+                break;
+
+        }
+
+        updateTrafficLights(fLastRow);
+    }
+
+}
+
+int RoadWindow::updateTrafficLights(int row)
+{
+    if (fRoad->getTrafficLights().size() == 0)
+    {
+        return row;
+    }
+
+    // TRAFFIC LIGHTS
+    QLabel* tLights = new QLabel("Traffic lights:");
+    row++;
+    replaceInGrid(row, 0, tLights);
+
+
+    for (unsigned int i=0;i<fRoad->getTrafficLights().size();i++)
+    {
+        QLabel* tLightPos = new QLabel(("Position: " + std::to_string(fRoad->getTrafficLights()[i]->getPosition())).c_str());
+        row++;
+        replaceInGrid(row, 0, tLightPos);
+
+        std::string color;
+
+        switch(fRoad->getTrafficLights()[i]->getColor())
+        {
+            case TrafficLight::kRed:
+                color = "Red";
+                break;
+            case TrafficLight::kOrange:
+                color = "Orange";
+                break;
+            case TrafficLight::kGreen:
+                color = "Green";
+                break;
+
+        }
+
+        QLabel* tLightColor = new QLabel(("Current color: " + color).c_str());
+        row++;
+        replaceInGrid(row, 0, tLightColor);
+
+        QPushButton *editTLightColor = new QPushButton("Edit");
+        connect(editTLightColor, SIGNAL(pressed()), this, SLOT(onEditTLightColor()));
+        replaceInGrid(row, 1, editTLightColor);
+
+        fTrafficLights[editTLightColor] = fRoad->getTrafficLights()[i];
+
+        row++;
+        fLayout->setRowStretch(row, 1);
+    }
+    return row;
+}
+
+int RoadWindow::updateZones(int row)
+{
+    QLabel* zones = new QLabel("Zones:");
+    row++;
+    replaceInGrid(row, 0, zones);
+
+    for (unsigned int i=0;i<fRoad->getZones().size();i++)
+    {
+        double lenght;
+        if (i != fRoad->getZones().size() - 1)
+        {
+            lenght = fRoad->getZones()[i+1]->getPosition() - fRoad->getZones()[i]->getPosition();
+        }
+        else lenght = fRoad->getRoadLength() - fRoad->getZones()[i]->getPosition();
+
+        double prevLenght;
+        if (i != 0)
+        {
+            prevLenght = fRoad->getZones()[i]->getPosition() - fRoad->getZones()[i-1]->getPosition();
+        }
+        else prevLenght = fRoad->getZones()[i]->getPosition();
+
+        QLabel* zoneLength = new QLabel(("Position: " + std::to_string(prevLenght) + " - " + std::to_string(lenght)).c_str());
+        row++;
+        replaceInGrid(row, 0, zoneLength);
+
+        QLabel* zoneSpeed = new QLabel(("Speedlimit: " + std::to_string(fRoad->getZones()[i]->getSpeedlimit())).c_str());
+        row++;
+        replaceInGrid(row, 0, zoneSpeed);
+
+        QPushButton *editSpeed = new QPushButton("Edit");
+        connect(editSpeed, SIGNAL(pressed()), this, SLOT(onEditSpeedLimit()));
+        replaceInGrid(row, 1, editSpeed);
+
+        fZones[editSpeed] = fRoad->getZones()[i];
+
+        row++;
+        fLayout->setRowStretch(row, 1);
+    }
+    return row;
+}
+
 void RoadWindow::onEditSpeedLimit()
 {
     double val = askDouble(0, 1000, 1, 120);
     if (val != -1)
     {
-        std::cout << "setter for speedlimits does not exist yet: " << val << std::endl;
+        QObject* obj = sender();
+        fZones[obj]->setSpeedLimit(val);
+        updateZones(fLastZoneRow);
     }
 }
 
-void RoadWindow::onEditTLightColor()
+void RoadWindow::replaceInGrid(int row, int colum, QWidget* widget)
 {
+    QLayoutItem *item = fLayout->itemAtPosition(row, colum);
 
-    double val = askDouble(1, 3, 1, 1);
-
-    if (val != -1)
+    if (item != NULL)
     {
-        // QObject *obj = sender();
-        // fTrafficLights[obj].setPosition(val);
+        item->widget()->hide();
+        fLayout->removeWidget(item->widget());
     }
+
+    fLayout->addWidget(widget, row, colum, 1, 1);
 }
-
-void RoadWindow::onEditTLightPos()
-{
-    double val = askDouble(0, fRoad->getRoadLength(), 1, 0);
-
-    if (val != -1)
-    {
-        // QObject *obj = sender();
-        // fTrafficLights[obj].setColor(val);
-    }
-}
-
 void RoadWindow::createVehicleButtons() 
 {
     REQUIRE(this->checkProperlyInitialized(), "RoadWindow was not properly initialized when calling createVehicleButtons");
