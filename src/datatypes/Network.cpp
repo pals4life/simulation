@@ -90,15 +90,15 @@ bool Network::update()
     return simulationDone;
 }
 
-bool Network::checkWindow(Window::state state) const
+bool Network::checkWindow(Window::EState state) const
 {
     switch(state)
     {
-        case Window::play:
+        case Window::kPlay:
             return true;
-        case Window::next:
+        case Window::kNext:
             return true;
-        case Window::pause:
+        case Window::kPause:
             Window::delay(500);
             return false;
         default:

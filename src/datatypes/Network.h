@@ -46,7 +46,7 @@ public:
     /**
      * REQUIRE(this->properlyInitialized(), "Network was not initialized when calling startSimulation");
      */
-    bool checkWindow(Window::state state) const;
+    bool checkWindow(Window::EState state) const;
 
     const std::vector<Road *> &getRoads() const;
 
