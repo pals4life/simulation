@@ -95,6 +95,8 @@ protected:
     QWidget *fRoot = new QWidget(this);
     QGridLayout *fLayout = new QGridLayout;
 
+    std::string doubleToPrecision(double d, int precision);
+
 private:
     std::map<QObject*, Road*> fRoadButtons;
 

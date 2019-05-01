@@ -185,6 +185,21 @@ void Window::onRoadButton()
     fCrState = inactive;
 }
 
+std::string Window::doubleToPrecision(double d, int precision)
+{
+    int x = 1;
+
+    for (int k=0;k<precision;k++)
+    {
+        x *= 10;
+    }
+
+    std::string as_int = std::to_string(int(d * x + 0.5));
+    std::string as_double = as_int.substr(0, as_int.size() - precision) + "," + as_int.substr(as_int.size() - precision, 2);
+
+    return as_double;
+}
+
 //---------------------------------------ROAD WINDOW CLASS-----------------------------------------------------
 void RoadWindow::init()
 {
@@ -202,7 +217,7 @@ void RoadWindow::init()
     QLabel* name = new QLabel(("Name: " + fRoad->getName()).c_str());
     fLayout->addWidget(name, 0,0,1,1);
 
-    QLabel* length = new QLabel(("Length: " + std::to_string(fRoad->getRoadLength())).c_str());
+    QLabel* length = new QLabel(("Length: " + std::to_string(int(fRoad->getRoadLength() + 0.5)) + "m").c_str());
     fLayout->addWidget(length, 1,0,1,1);
 
     std::string next;
@@ -290,7 +305,7 @@ int RoadWindow::updateTrafficLights(int row)
 
     for (unsigned int i=0;i<fRoad->getTrafficLights().size();i++)
     {
-        QLabel* tLightPos = new QLabel(("Position: " + std::to_string(fRoad->getTrafficLights()[i]->getPosition())).c_str());
+        QLabel* tLightPos = new QLabel(("Position: " + std::to_string(int(fRoad->getTrafficLights()[i]->getPosition() + 0.5))).c_str());
         row++;
         replaceInGrid(row, 0, tLightPos);
 
@@ -348,11 +363,11 @@ int RoadWindow::updateZones(int row)
         }
         else prevLenght = fRoad->getZones()[i]->getPosition();
 
-        QLabel* zoneLength = new QLabel((std::to_string(prevLenght) + "m - " + std::to_string(lenght) + "m:").c_str());
+        QLabel* zoneLength = new QLabel((std::to_string(int(prevLenght + 0.5)) + "m - " + std::to_string(int(lenght + 0.5)) + "m:").c_str());
         row++;
         replaceInGrid(row, 0, zoneLength);
 
-        QLabel* zoneSpeed = new QLabel(("Speedlimit: " + std::to_string(fRoad->getZones()[i]->getSpeedlimit()) + " m/s").c_str());
+        QLabel* zoneSpeed = new QLabel(("Speedlimit: " + doubleToPrecision(fRoad->getZones()[i]->getSpeedlimit(), 2) + " m/s").c_str());
         row++;
         replaceInGrid(row, 0, zoneSpeed);
 
