@@ -40,8 +40,13 @@ public:
     /**
      *  REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling tee");
      */
-    template<class T>
-    static void tee(const T &string, bool init);
+    template<typename T>
+    static void tee(const T &string, bool init) {
+        REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling tee");
+        fgImpression << string;
+        std::cout << string;
+        if (init) fgSimple << string;
+    }
 
     static std::string whitespace(int amount);
 

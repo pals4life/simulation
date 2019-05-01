@@ -41,15 +41,18 @@ NetworkExporter::init(const Network *kNetwork, const std::string &kSimplePath, c
         tee("Baan : " + road->getName() + '\n', true);
         tee("  -> Snelheidslimiet: " + std::to_string(int(std::round(road->getSpeedLimit() * 3.6))) + "km/u\n", true);
         tee("  -> Lengte         : " + std::to_string(int(std::round(road->getRoadLength()))) + "m\n", true);
-        for (const auto &zone: road->getZones()) {
+        for (uint32_t j = 0; j < road->getZones().size(); j++) {
+            const Zone *zone = road->getZones()[j];
             tee("  -> zone           : Begin: " + std::to_string(int(std::round(zone->getPosition()))) +
                 "m Snelheidslimiet: " + std::to_string(int(std::round(zone->getSpeedlimit() * 3.6))) + "km/u\n", true);
         }
-        for (const auto &busStop: road->getBusStops()) {
+        for (uint32_t j = 0; j < road->getBusStops().size(); j++) {
+            const BusStop *busStop = road->getBusStops()[j];
             tee("  -> Bushalte       : Positie: " + std::to_string(int(std::round(busStop->getPosition()))) + "m\n",
                 true);
         }
-        for (const auto &trafficLight: road->getTrafficLights()) {
+        for (uint32_t j = 0; j < road->getTrafficLights().size(); j++) {
+            const TrafficLight *trafficLight = road->getTrafficLights()[j];
             tee("  -> Verkeerslicht  : Positie: " + std::to_string(int(std::round(trafficLight->getPosition()))) +
                 "m\n", true);
         }
@@ -135,14 +138,6 @@ NetworkExporter::printLane(const std::vector<std::vector<char>> &lane, const uin
         }
         tee('\n', false);
     }
-}
-
-template<class T>
-void NetworkExporter::tee(const T &string, bool init) {
-    REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling tee");
-    fgImpression << string;
-    std::cout << string;
-    if (init) fgSimple << string;
 }
 
 bool NetworkExporter::properlyInitialized() {
