@@ -1,10 +1,10 @@
 //============================================================================
 // @name        : NetworkExporter.cpp
-// @author      : Thomas Dooms
+// @author      : Thomas Dooms, Ward Gauderis
 // @date        : 3/26/19
-// @version     : 
+// @version     : 2.0
 // @copyright   : BA1 Informatica - Thomas Dooms - University of Antwerp
-// @description : 
+// @description : Exports network to ofstreams
 //============================================================================
 
 #include "NetworkExporter.h"
@@ -22,13 +22,15 @@ bool NetworkExporter::_initCheck = false;
 
 void
 NetworkExporter::init(const Network *kNetwork, const std::string &kSimplePath, const std::string &kImpressionPath) {
+    REQUIRE(kNetwork, "Failed to export network: no network");
     int res = system("mkdir outputfiles >/dev/null 2>&1");
-    ENSURE(res == 0 or res == 256, "Could not make directory");
+    ENSURE(res == 0 or res == 256, "Failed to create output directory");
+
     fgSimple.open(("outputfiles/" + kSimplePath + ".txt").c_str());
-    ENSURE(fgSimple.is_open(), "Output file is not open");
+    ENSURE(fgSimple.is_open(), "Failed to load file for simple output");
 
     fgImpression.open(("outputfiles/" + kImpressionPath + ".txt").c_str());
-    ENSURE(fgImpression.is_open(), "Output file is not open");
+    ENSURE(fgImpression.is_open(), "Failed to load File for impression output");
 
     double maxLength = 0;
     for (uint32_t i = 0; i < kNetwork->fRoads.size(); i++) {
@@ -60,13 +62,17 @@ NetworkExporter::init(const Network *kNetwork, const std::string &kSimplePath, c
 }
 
 void NetworkExporter::finish() {
+    REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling finish");
     fgImpression << std::flush;
     fgSimple << std::flush;
     fgImpression.close();
     fgSimple.close();
+    _initCheck = false;
 }
 
 void NetworkExporter::addSection(const Network *kNetwork, uint32_t number) {
+    REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling addSection");
+    REQUIRE(kNetwork, "Failed to add section: no network");
     fgSimple << "\n-------------------------------------------------\n";
     if (number != 1) fgSimple << "State of the network after " << number << " ticks have passed:\n\n";
     else fgSimple << "State of the network after " << number << " tick has passed:\n\n";
@@ -118,6 +124,7 @@ std::string NetworkExporter::whitespace(const int amount) {
 
 void
 NetworkExporter::printLane(const std::vector<std::vector<char>> &lane, const uint32_t max, const uint32_t laneNum) {
+    REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling printLane");
     for (uint32_t l = 0; l < max; ++l) {
         if (laneNum != 0) tee(whitespace(fgLongestName + 3), false);
         if (l == 0) tee(std::to_string(laneNum + 1) + " ", false);
@@ -131,11 +138,12 @@ NetworkExporter::printLane(const std::vector<std::vector<char>> &lane, const uin
 
 template<class T>
 void NetworkExporter::tee(const T &string, bool init) {
+    REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling tee");
     fgImpression << string;
     std::cout << string;
     if (init) fgSimple << string;
 }
 
-bool NetworkExporter::properlyInitialized() const {
+bool NetworkExporter::properlyInitialized() {
     return _initCheck;
 }
