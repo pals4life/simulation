@@ -38,6 +38,8 @@ public:
      */
     static void finish();
 
+    bool properlyInitialized() const;
+
 private:
     template<class T>
     static void tee(const T&string, bool init);
@@ -52,7 +54,7 @@ private:
     static double fgScale;
     static uint32_t fgLongestName;
 
-    static bool _initcheck;
+    static bool _initCheck;
 };
 
 #endif //SIMULATION_NETWORKEXPORTER_H

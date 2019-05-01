@@ -18,8 +18,7 @@ std::ofstream NetworkExporter::fgImpression;
 double NetworkExporter::fgScale = 0;
 uint32_t NetworkExporter::fgLongestName = 0;
 
-bool NetworkExporter::_initcheck = false;
-
+bool NetworkExporter::_initCheck = false;
 
 void
 NetworkExporter::init(const Network *kNetwork, const std::string &kSimplePath, const std::string &kImpressionPath) {
@@ -57,10 +56,13 @@ NetworkExporter::init(const Network *kNetwork, const std::string &kSimplePath, c
     fgScale = maxLength / 120;
     tee("\n-------------------------------------------------\nOne character is " + std::to_string(fgScale) + " meters",
         false);
+    _initCheck = true;
 }
 
 void NetworkExporter::finish() {
+    fgImpression << std::flush;
     fgSimple << std::flush;
+    fgImpression.close();
     fgSimple.close();
 }
 
@@ -132,4 +134,8 @@ void NetworkExporter::tee(const T &string, bool init) {
     fgImpression << string;
     std::cout << string;
     if (init) fgSimple << string;
+}
+
+bool NetworkExporter::properlyInitialized() const {
+    return _initCheck;
 }
