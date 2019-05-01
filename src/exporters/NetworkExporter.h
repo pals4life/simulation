@@ -46,11 +46,13 @@ private:
 
     static void printLane(const std::vector<std::vector<char>> &lane, uint32_t max, uint32_t laneNum);
 
-    static std::ofstream fSimple;
-    static std::ofstream fImpression;
+    static std::ofstream fgSimple;
+    static std::ofstream fgImpression;
 
-    static double scale;
-    static uint32_t longestName;
+    static double fgScale;
+    static uint32_t fgLongestName;
+
+    static bool _initcheck;
 };
 
 #endif //SIMULATION_NETWORKEXPORTER_H

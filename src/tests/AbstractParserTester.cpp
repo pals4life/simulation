@@ -15,21 +15,24 @@ protected:
     friend class VAbstractParser;
 
     virtual void SetUp() {}
+
     virtual void TearDown() {}
 
 };
 
 TEST_F(AbstractParserTester, LoadFile) {
     VAbstractParser parser;
-    EXPECT_DEATH(parser.loadFile(""), "Failed to load file: no filename");
-    EXPECT_DEATH(parser.loadFile("FakeFile"), "Assertion `Failed to open file' failed.");
-    EXPECT_DEATH(parser.loadFile("inputfiles/testinputs/test4.xml"), "Assertion `Error reading end tag.' failed.");
-    EXPECT_DEATH(parser.loadFile("inputfiles/testinputs/test5.xml"), "Assertion `Error reading end tag.' failed.");
-    EXPECT_DEATH(parser.loadFile("inputfiles/testinputs/test6.xml"), "Assertion `Error reading end tag.' failed.");
-    EXPECT_DEATH(parser.loadFile("inputfiles/testinputs/test7.xml"), "Assertion `Error reading end tag.' failed.");
-    EXPECT_DEATH(parser.loadFile("inputfiles/testinputs/test8.xml"), "Assertion `Error reading end tag.' failed.");
-    EXPECT_DEATH(parser.loadFile("inputfiles/testinputs/test9.xml"), "Assertion `Error reading end tag.' failed.");
-    EXPECT_DEATH(parser.loadFile("inputfiles/testinputs/test10.xml"), "Assertion `Error reading end tag.' failed.");
+    testing::internal::CaptureStderr();
+    EXPECT_EQ(false, parser.loadFile(""));
+    EXPECT_EQ(false, parser.loadFile("FakeFile"));
+    EXPECT_EQ(false, parser.loadFile("inputfiles/testinputs/test4.xml"));
+    EXPECT_EQ(false, parser.loadFile("inputfiles/testinputs/test5.xml"));
+    EXPECT_EQ(false, parser.loadFile("inputfiles/testinputs/test6.xml"));
+    EXPECT_EQ(false, parser.loadFile("inputfiles/testinputs/test7.xml"));
+    EXPECT_EQ(false, parser.loadFile("inputfiles/testinputs/test8.xml"));
+    EXPECT_EQ(false, parser.loadFile("inputfiles/testinputs/test9.xml"));
+    EXPECT_EQ(false, parser.loadFile("inputfiles/testinputs/test10.xml"));
+    testing::internal::GetCapturedStderr();
 }
 
 TEST_F(AbstractParserTester, GetRoot) {

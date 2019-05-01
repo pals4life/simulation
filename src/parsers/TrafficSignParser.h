@@ -12,8 +12,8 @@
 #include "../datatypes/TrafficSigns.h"
 #include "VAbstractParser.h"
 
-enum TrafficSigns {
-    trafficLight, busStop, zone, error
+enum ETrafficSigns {
+    kTrafficLight, kBusStop, kZone, kError
 };
 
 class TrafficSignParser : public VAbstractParser {
@@ -29,7 +29,7 @@ public:
      *  REQUIRE(element, "Failed to parse traffic sign: no element");
      *  ENSURE(fZone || fBusStop || fTrafficLight, "Failed to parse traffic sign: no traffic sign");
      */
-    TrafficSigns parseTrafficSign(TiXmlElement *element);
+    ETrafficSigns parseTrafficSign(TiXmlElement *element);
 
     /**
      *  REQUIRE(this->properlyInitialized(), "TrafficSignParser was not initialized when calling getgetTrafficLightRoad");

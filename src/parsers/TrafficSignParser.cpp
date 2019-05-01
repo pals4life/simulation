@@ -35,7 +35,7 @@ Zone *TrafficSignParser::getZone() const {
     return fZone;
 }
 
-TrafficSigns TrafficSignParser::parseTrafficSign(TiXmlElement *element) {
+ETrafficSigns TrafficSignParser::parseTrafficSign(TiXmlElement *element) {
     REQUIRE(this->properlyInitialized(), "TrafficSignParser was not initialized when calling parseTrafficSign");
     REQUIRE(element, "Failed to parse traffic sign: no element");
     const std::string kType = readElement(element, "type");
@@ -44,7 +44,7 @@ TrafficSigns TrafficSignParser::parseTrafficSign(TiXmlElement *element) {
     while (it1 != kPos.end() && std::isdigit(*it1)) ++it1;
     if (!(!kPos.empty() && it1 == kPos.end())) {
         std::cerr << "Failed to parse traffic sign: position is no positive integer" << std::endl;
-        return error;
+        return kError;
     }
     const double kPosition = std::atof(kPos.c_str());
     if (kType == "ZONE") {
@@ -53,23 +53,23 @@ TrafficSigns TrafficSignParser::parseTrafficSign(TiXmlElement *element) {
         while (it2 != kMax.end() && std::isdigit(*it2)) ++it2;
         if (!(!kMax.empty() && it2 == kMax.end())) {
             std::cerr << "Failed to parse zone: max speed is no positive integer" << std::endl;
-            return error;
+            return kError;
         }
         const double kMaxSpeed = std::atof(kMax.c_str()) / 3.6;;
         fZone = new Zone(kPosition, kMaxSpeed);
         ENSURE(fZone, "Failed to parse traffic sign: no traffic sign");
-        return zone;
+        return kZone;
     } else if (kType == "BUSHALTE") {
         fBusStop = new BusStop(kPosition);
-        ENSURE(busStop, "Failed to parse traffic sign: no traffic sign");
-        return busStop;
+        ENSURE(kBusStop, "Failed to parse traffic sign: no traffic sign");
+        return kBusStop;
     } else if (kType == "VERKEERSLICHT") {
         fTrafficLight = new TrafficLight(kPosition);
         ENSURE(fTrafficLight, "Failed to parse traffic sign: no traffic sign");
-        return trafficLight;
+        return kTrafficLight;
     } else {
         std::cerr << "Failed to parse traffic sign of type " + kType + ": skipping element" << std::endl;
-        return error;
+        return kError;
     }
 }
 

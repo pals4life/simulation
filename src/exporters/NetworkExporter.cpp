@@ -12,54 +12,56 @@
 #include <stdlib.h>
 #include <math.h>
 
-std::ofstream NetworkExporter::fSimple;
-std::ofstream NetworkExporter::fImpression;
+std::ofstream NetworkExporter::fgSimple;
+std::ofstream NetworkExporter::fgImpression;
 
-double NetworkExporter::scale = 0;
-uint32_t NetworkExporter::longestName = 0;
+double NetworkExporter::fgScale = 0;
+uint32_t NetworkExporter::fgLongestName = 0;
+
+bool NetworkExporter::_initcheck = false;
 
 
 void NetworkExporter::init(const Network* kNetwork, const std::string &kSimplePath, const std::string &kImpressionPath)
 {
     int res = system("mkdir outputfiles >/dev/null 2>&1");
-    ENSURE(res == 0 or res == 256, "could not make directory");
-    fSimple.open(("outputfiles/" + kSimplePath + ".txt").c_str());
-    ENSURE(fSimple.is_open(), "output file is not open");
+    ENSURE(res == 0 or res == 256, "Could not make directory");
+    fgSimple.open(("outputfiles/" + kSimplePath + ".txt").c_str());
+    ENSURE(fgSimple.is_open(), "Output file is not open");
 
-    fImpression.open(("outputfiles/" + kImpressionPath + ".txt").c_str());
-    ENSURE(fImpression.is_open(), "output file is not open");
+    fgImpression.open(("outputfiles/" + kImpressionPath + ".txt").c_str());
+    ENSURE(fgImpression.is_open(), "Output file is not open");
 
     double maxLength = 0;
     for(uint32_t i = 0; i < kNetwork->fRoads.size(); i++)
     {
         const Road* road = kNetwork->fRoads[i];
 
-        fSimple << "Baan : " + road->getName() + '\n';
-        fSimple << "  -> snelheidslimiet: "  << road->getSpeedLimit() * 3.6 << '\n';
-        fSimple << "  -> lengte         : "  << road->getRoadLength()       << '\n';
+        fgSimple << "Baan : " + road->getName() + '\n';
+        fgSimple << "  -> snelheidslimiet: "  << road->getSpeedLimit() * 3.6 << '\n';
+        fgSimple << "  -> lengte         : "  << road->getRoadLength()       << '\n';
 
         tee("Baan : " + road->getName() + '\n');
         tee("  -> snelheidslimiet: " + std::to_string(road->getSpeedLimit() * 3.6) + '\n');
         tee("  -> lengte         : " + std::to_string(road->getRoadLength()) + '\n');
 
         if (road->getRoadLength() > maxLength) maxLength = road->getRoadLength();
-        if (road->getName().size() > longestName) longestName = road->getName().size();
+        if (road->getName().size() > fgLongestName) fgLongestName = road->getName().size();
     }
-    scale = maxLength / 120;
-    tee("\n-------------------------------------------------\nOne character is " + std::to_string(scale) + " meters");
+    fgScale = maxLength / 120;
+    tee("\n-------------------------------------------------\nOne character is " + std::to_string(fgScale) + " meters");
 }
 
 void NetworkExporter::finish()
 {
-    fSimple << std::flush;
-    fSimple.close();
+    fgSimple << std::flush;
+    fgSimple.close();
 }
 
 void NetworkExporter::addSection(const Network* kNetwork, uint32_t number)
 {
-    fSimple << "\n-------------------------------------------------\n";
-    if(number != 1) fSimple << "State of the network after " << number << " ticks have passed:\n\n";
-    else fSimple << "State of the network after " << number << " tick has passed:\n\n";
+    fgSimple << "\n-------------------------------------------------\n";
+    if(number != 1) fgSimple << "State of the network after " << number << " ticks have passed:\n\n";
+    else fgSimple << "State of the network after " << number << " tick has passed:\n\n";
     for(uint32_t i = 0; i < kNetwork->fRoads.size(); i++)
     {
         const Road* road = kNetwork->fRoads[i];
@@ -68,10 +70,10 @@ void NetworkExporter::addSection(const Network* kNetwork, uint32_t number)
             for(uint32_t k = 0; k < (*road)[j].size(); k++)
             {
                 const IVehicle* vehicle = (*road)[j][k];
-                fSimple << "Voertuig: " + vehicle->getType() +'('+ vehicle->getLicensePlate() + ")\n";
-                fSimple << "  -> Baan    : " << road->getName()            << '\n';
-                fSimple << "  -> Positie : " << vehicle->getPosition()     << '\n';
-                fSimple << "  -> Snelheid: " << vehicle->getVelocity()*3.6 << '\n';
+                fgSimple << "Voertuig: " + vehicle->getType() +'('+ vehicle->getLicensePlate() + ")\n";
+                fgSimple << "  -> Baan    : " << road->getName()            << '\n';
+                fgSimple << "  -> Positie : " << vehicle->getPosition()     << '\n';
+                fgSimple << "  -> Snelheid: " << vehicle->getVelocity()*3.6 << '\n';
             }
         }
     }
@@ -81,14 +83,14 @@ void NetworkExporter::addSection(const Network* kNetwork, uint32_t number)
     else tee("State of the network after " + std::to_string(number) + " tick has passed:\n\n");
     for (uint32_t i = 0; i < kNetwork->fRoads.size(); i++) {
         const Road *road = kNetwork->fRoads[i];
-        tee(road->getName() + whitespace(longestName - road->getName().size()) + " | ");
+        tee(road->getName() + whitespace(fgLongestName - road->getName().size()) + " | ");
         for (uint32_t j = 0; j < road->getNumLanes(); j++) {
             std::vector<std::vector<char> > lane;
             uint32_t max = 0;
-            lane.resize(static_cast<uint32_t >(floor(road->getRoadLength()/scale)+1));
+            lane.resize(static_cast<uint32_t >(floor(road->getRoadLength()/fgScale)+1));
             for (uint32_t k = 0; k < (*road)[j].size(); k++) {
                 const IVehicle *vehicle = (*road)[j][k];
-                uint32_t pos = static_cast<uint32_t >(floor(vehicle->getPosition() / scale));
+                uint32_t pos = static_cast<uint32_t >(floor(vehicle->getPosition() / fgScale));
                 lane[pos].push_back(toupper(vehicle->getType()[0]));
                 if (lane[pos].size() > max) max = lane[pos].size();
             }
@@ -113,9 +115,9 @@ std::string NetworkExporter::whitespace(const int amount)
 void NetworkExporter::printLane(const std::vector<std::vector<char>> &lane, const uint32_t max, const uint32_t laneNum)
 {
     for (uint32_t l = 0; l < max; ++l) {
-        if (laneNum != 0) tee(whitespace(longestName + 3));
+        if (laneNum != 0) tee(whitespace(fgLongestName + 3));
         if (l == 0) tee(std::to_string(laneNum + 1) + " ");
-        else tee(whitespace(longestName + 4 + std::to_string(laneNum + 1).size()));
+        else tee(whitespace(fgLongestName + 4 + std::to_string(laneNum + 1).size()));
         for (uint32_t k = 0; k < lane.size(); ++k) {
             tee((l < lane[k].size() ? lane[k][l] : (l == 0 ? '=' : ' ')));
         }
@@ -125,6 +127,6 @@ void NetworkExporter::printLane(const std::vector<std::vector<char>> &lane, cons
 
 template<class T>
 void NetworkExporter::tee(const T&string) {
-    fImpression << string;
+    fgImpression << string;
     std::cout << string;
 }
