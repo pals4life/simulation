@@ -22,10 +22,11 @@ class Road
 
 public:
 	/**
-     * REQUIRE(length > 0, "Failed to construct road: lenght must be greater than 0");
-     * REQUIRE(!name.empty(), "Failed to construct road: name can not be empty");
-     * REQUIRE(lanes > 0, "Failed to construct road: must at least have 1 lane");
+     * REQUIRE(length > 0, "Failed to construct road: lenght must be greater than 0"       );
+     * REQUIRE(!name.empty(), "Failed to construct road: name can not be empty"            );
+     * REQUIRE(lanes > 0, "Failed to construct road: must at least have 1 lane or less than 100");
      * REQUIRE(!zones.empty(), "Failed to construct road: must have at least 1 speed zone" );
+     * REQUIRE(kZones[0]->getPosition() == 0, "Must have a zone at position 0"             );
      *
      * ENSURE(this->properlyInitialized(), "Vehicle constructor must end in properlyInitialized state");
      */
@@ -68,6 +69,11 @@ public:
     void changeLaneIfPossible(IVehicle* vehicle, uint32_t kLane, uint32_t kIndex, bool kLeft);
 
     //--------------------------------------------------------------------------------------------------//
+
+    /**
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling isEmpty");
+     */
+    bool isEmpty() const;
 
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextRoad");
@@ -197,11 +203,6 @@ private:
      * REQUIRE(lane < this->getNumLanes() and lane >= 0, "Cannot dequeue vehicle from an non-existant lane");
      */
     void dequeue(uint32_t kLane);
-
-    /**
-     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling isEmpty");
-     */
-    bool isEmpty() const;
 
     //--------------------------------------------------------------------------------------------------//
 

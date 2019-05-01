@@ -1,75 +1,81 @@
-////============================================================================
-//// @name        : RoadTester.cpp
-//// @author      : Mano Marichal
-//// @date        : 3/25/19
-//// @version     :
-//// @copyright   : BA1 Informatica - Mano Marichal - University of Antwerp
-//// @description :
-////============================================================================
-//
-//#include <gtest/gtest.h>
-//#include "../datatypes/Road.h"
-//#include "../datatypes/vehicles/Car.h"
-//
-//class RoadTester : public ::testing::Test
-//{
-//protected:
-//    friend class Road;
-//
-//    virtual void SetUp() {}
-//    virtual void TearDown() {}
-//
-//};
-//
-//TEST_F(RoadTester, RoadInit)
-//{
-//    EXPECT_DEATH(Road road("", NULL, -100, 100), "Assertion `Failed to construct road: length must be greater than 0' failed.");
-//    EXPECT_DEATH(Road road("E13", NULL, -100, 100), "Assertion `Failed to construct road: length must be greater than 0' failed.");
-//    EXPECT_DEATH(Road road("E13", NULL, 100, -100), "Assertion `Failed to construct road: speed limit must be greater than 0' failed.");
-//
-//    Road testRoad("E13", NULL, 100, 100);
-//    ASSERT_TRUE(testRoad.properlyInitialized());
-//}
-//
-//TEST_F(RoadTester, RoadUpdate1)
-//{
-//    Road* testRoad = new Road("E13", NULL, 100, 100);
-//    Car* testCar = new Car("12R3", 30, 30);
-//
-//    testRoad->enqueue(testCar);
-//    testRoad->updateVehicles();
-//    ASSERT_FALSE(testRoad->isEmpty());
-//
-//    delete testRoad;
-//}
-//
-//TEST_F(RoadTester, RoadUpdate2)
-//{
-//    Road* testRoad = new Road("E13", NULL, 100, 100);
-//    Car* testCar = new Car("12R3", 50, 60);
-//
-//    testRoad->enqueue(testCar);
-//    testRoad->updateVehicles();
-//    ASSERT_TRUE(testRoad->isEmpty());
-//
-//    delete testRoad;
-//}
-//
-//TEST_F(RoadTester, RoadUpdate3)
-//{
-//    Road* testRoad = new Road("E13", NULL, 100, 50);
-//    Car* testCar = new Car("12R3", 30, 40);
-//
-//    testRoad->enqueue(testCar);
-//    testRoad->updateVehicles();
-//    testRoad->checkAndReset();
-//    testRoad->updateVehicles();
-//    ASSERT_TRUE(testRoad->isEmpty());
-//
-//    delete testRoad;
-//}
-//
-//
+//============================================================================
+// @name        : RoadTester.cpp
+// @author      : Mano Marichal
+// @date        : 3/25/19
+// @version     :
+// @copyright   : BA1 Informatica - Mano Marichal - University of Antwerp
+// @description :
+//============================================================================
+
+#include <gtest/gtest.h>
+#include "../datatypes/Road.h"
+#include "../datatypes/vehicles/Car.h"
+
+class RoadTester : public ::testing::Test
+{
+protected:
+    friend class Road;
+
+    virtual void SetUp() {}
+    virtual void TearDown() {}
+
+};
+
+TEST_F(RoadTester, RoadInit)
+{
+    const Zone* zone = new Zone(0, 100);
+    std::vector<const Zone*> zones = std::vector<const Zone*>(1, zone);
+    std::vector<const Zone*> empty = std::vector<const Zone*>();
+    std::vector<const BusStop*> stops = std::vector<const BusStop*>();
+    std::vector<const TrafficLight*> lights = std::vector<const TrafficLight*>();
+
+    EXPECT_DEATH(Road road(""   , NULL, 100, 1, zones, stops, lights), "Assertion `Failed to construct road: name can not be empty' failed.");
+    EXPECT_DEATH(Road road("E13", NULL,-100, 1, zones, stops, lights), "Assertion `Failed to construct road: length must be greater than 0' failed.");
+    EXPECT_DEATH(Road road("E13", NULL, 100,-1, zones, stops, lights), "Assertion `Failed to construct road: must at least have 1 lane or less than 100' failed.");
+    EXPECT_DEATH(Road road("E13", NULL, 100, 1, empty, stops, lights), "Assertion `Failed to construct road: must have at least 1 speed zone' failed");
+
+    Road testRoad("E13", NULL, 100, 1, zones, stops, lights);
+    ASSERT_TRUE(testRoad.properlyInitialized());
+}
+
+TEST_F(RoadTester, RoadUpdate1)
+{
+    const Zone* zone = new Zone(0, 100);
+    Road* testRoad = new Road("E13", NULL, 100, 1, std::vector<const Zone*>(1, zone), std::vector<const BusStop*>(), std::vector<const TrafficLight*>());
+    IVehicle* testCar = new Car("12R3", 30, 30);
+
+    testRoad->enqueue(testCar);
+    testRoad->updateVehicles();
+    ASSERT_FALSE(testRoad->isEmpty());
+}
+
+TEST_F(RoadTester, RoadUpdate2)
+{
+    const Zone* zone = new Zone(0, 100);
+    Road* testRoad = new Road("E13", NULL, 100, 1, std::vector<const Zone*>(1, zone), std::vector<const BusStop*>(), std::vector<const TrafficLight*>());
+    IVehicle* testCar = new Car("12R3", 50, 60);
+
+    testRoad->enqueue(testCar);
+    testRoad->updateVehicles();
+    ASSERT_TRUE(testRoad->isEmpty());
+}
+
+TEST_F(RoadTester, RoadUpdate3)
+{
+    const Zone* zone = new Zone(0, 100);
+    Road* testRoad = new Road("E13", NULL, 100, 1, std::vector<const Zone*>(1, zone), std::vector<const BusStop*>(), std::vector<const TrafficLight*>());
+    IVehicle* testCar = new Car("12R3", 50, 60);
+
+    testRoad->enqueue(testCar);
+    testRoad->updateVehicles();
+    testRoad->checkAndReset();
+    testRoad->updateVehicles();
+    ASSERT_TRUE(testRoad->isEmpty());
+
+    delete testRoad;
+}
+
+
 //TEST_F(RoadTester, RoadUpdate4)
 //{
 //    Road* testRoad = new Road("E13", NULL, 100, 50);
