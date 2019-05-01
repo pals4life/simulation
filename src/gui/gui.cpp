@@ -232,7 +232,7 @@ void RoadWindow::init()
     fLastZoneRow = row;
     row = updateZones(row);
 
-    QPushButton *exit = new QPushButton("Save changes and exit");
+    QPushButton *exit = new QPushButton("Exit");
     fLayout->addWidget(exit, row+1, 0, 1, 2);
     connect(exit, SIGNAL(pressed()), this, SLOT(onExit()));
 
@@ -348,11 +348,11 @@ int RoadWindow::updateZones(int row)
         }
         else prevLenght = fRoad->getZones()[i]->getPosition();
 
-        QLabel* zoneLength = new QLabel(("Position: " + std::to_string(prevLenght) + " - " + std::to_string(lenght)).c_str());
+        QLabel* zoneLength = new QLabel((std::to_string(prevLenght) + "m - " + std::to_string(lenght) + "m:").c_str());
         row++;
         replaceInGrid(row, 0, zoneLength);
 
-        QLabel* zoneSpeed = new QLabel(("Speedlimit: " + std::to_string(fRoad->getZones()[i]->getSpeedlimit())).c_str());
+        QLabel* zoneSpeed = new QLabel(("Speedlimit: " + std::to_string(fRoad->getZones()[i]->getSpeedlimit()) + " m/s").c_str());
         row++;
         replaceInGrid(row, 0, zoneSpeed);
 
@@ -370,7 +370,7 @@ int RoadWindow::updateZones(int row)
 
 void RoadWindow::onEditSpeedLimit()
 {
-    double val = askDouble(0, 1000, 1, 120);
+    double val = askDouble(0, 1000, 1, 60);
     if (val != -1)
     {
         QObject* obj = sender();
