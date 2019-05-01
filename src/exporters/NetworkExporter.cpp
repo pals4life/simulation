@@ -77,12 +77,13 @@ void NetworkExporter::addSection(const Network* kNetwork, uint32_t number)
             }
         }
     }
-    fImpression << "\n-------------------------------------------------\n";
-    if (number != 1) fImpression << "State of the network after " << number << " ticks have passed:\n\n";
-    else fImpression << "State of the network after " << number << " tick has passed:\n\n";
+    
+    std::cout << "\n-------------------------------------------------\n";
+    if (number != 1) std::cout << "State of the network after " << number << " ticks have passed:\n\n";
+    else std::cout << "State of the network after " << number << " tick has passed:\n\n";
     for (uint32_t i = 0; i < kNetwork->fRoads.size(); i++) {
         const Road *road = kNetwork->fRoads[i];
-        fImpression << road->getName() << whitespace(longestName - road->getName().size()) << " | ";
+        std::cout << road->getName() << whitespace(longestName - road->getName().size()) << " | ";
         for (uint32_t j = 0; j < road->getNumLanes(); j++) {
             std::vector<std::vector<char> > lane;
             uint32_t max = 0;
@@ -114,12 +115,12 @@ std::string NetworkExporter::whitespace(const int amount)
 void NetworkExporter::printLane(const std::vector<std::vector<char>> &lane, const uint32_t max, const uint32_t laneNum)
 {
     for (uint32_t l = 0; l < max; ++l) {
-        if (laneNum != 0) fImpression << whitespace(longestName + 3);
-        if (l == 0) fImpression << std::to_string(laneNum + 1) + " ";
-        else fImpression << whitespace(longestName + 4 + std::to_string(laneNum + 1).size());
+        if (laneNum != 0) std::cout << whitespace(longestName + 3);
+        if (l == 0) std::cout << std::to_string(laneNum + 1) + " ";
+        else std::cout << whitespace(longestName + 4 + std::to_string(laneNum + 1).size());
         for (uint32_t k = 0; k < lane.size(); ++k) {
-            fImpression << (l < lane[k].size() ? lane[k][l] : (l == 0 ? '=' : ' '));
+            std::cout << (l < lane[k].size() ? lane[k][l] : (l == 0 ? '=' : ' '));
         }
-        fImpression << '\n';
+        std::cout << '\n';
     }
 }
