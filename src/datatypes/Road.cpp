@@ -93,7 +93,7 @@ void Road::changeLaneIfPossible(IVehicle* vehicle, const uint32_t kLane, const u
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling changeLaneIfPossible");
     REQUIRE(laneExists(kLane + (kLeft ? 1 : -1)), "Cannot go to non-existing lane");
-    REQUIRE(kIndex < fLanes[kLane].size() and kIndex >= 0, "Index is out of range");
+    REQUIRE(kIndex < fLanes[kLane].size(), "Index is out of range");
 
     std::deque<IVehicle*>& newLane = fLanes[kLane + (kLeft ? 1 : -1)];
     const double ideal = 0.75 * vehicle->getVelocity();
@@ -172,7 +172,7 @@ uint32_t Road::getNumLanes() const
 bool Road::laneExists(uint32_t kLane) const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling laneExists");
-    return kLane >= 0 and kLane < getNumLanes();
+    return kLane < getNumLanes();
 }
 
 const std::deque<IVehicle*>& Road::operator[](const uint32_t kIndex) const
@@ -287,7 +287,7 @@ std::pair<const IVehicle*, double> Road::getNextVehicle(const uint32_t kLane, co
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getTrafficLight");
     REQUIRE(laneExists(kLane), "Cannot get vehicles on an non-existant kLane");
-    REQUIRE(kIndex < fLanes[kLane].size() and kIndex >= 0, "Index is out of range");
+    REQUIRE(kIndex < fLanes[kLane].size(), "Index is out of range");
 
     if(kIndex == 0)
     {
@@ -330,7 +330,7 @@ void Road::enqueue(IVehicle* const kVehicle, const uint32_t kLane)
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling enqueue");
     REQUIRE(kVehicle->properlyInitialized(), "Vehicle was not initialized when calling enqueue");
-    REQUIRE(kLane < this->getNumLanes() and kLane >= 0, "Cannot enqueue on an non-existant lane");
+    REQUIRE(kLane < this->getNumLanes(), "Cannot enqueue on an non-existant lane");
 
     fLanes[kLane].push_back(kVehicle);                        // we can add the new kVehicle
     if(kVehicle->getPosition() > fRoadLength) dequeue(kLane); // immediately remove it when it has already traversed the whole road in one tick
@@ -340,7 +340,7 @@ void Road::dequeue(const uint32_t kLane)
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling dequeue");
     REQUIRE(!isEmpty(), "Road cannot be empty when calling dequeue");
-    REQUIRE(kLane < this->getNumLanes() and kLane >= 0, "Cannot dequeue vehicle from an non-existant lane");
+    REQUIRE(laneExists(kLane), "Cannot dequeue vehicle from an non-existant lane");
 
     if(fNextRoad == NULL)
     {

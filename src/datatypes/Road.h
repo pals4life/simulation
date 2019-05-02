@@ -64,7 +64,7 @@ public:
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling changeLaneIfPossible");
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling laneExists");
-     * REQUIRE(index < fLanes[lane].size() and index >= 0, "Index is out of range");
+     * REQUIRE(index < fLanes[lane].size(), "Index is out of range");
      */
     void changeLaneIfPossible(IVehicle* vehicle, uint32_t kLane, uint32_t kIndex, bool kLeft);
 
@@ -180,7 +180,7 @@ public:
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextTrafficLight");
      * REQUIRE(laneExists(lane), "Cannot get vehicles on an non-existant lane");
-     * REQUIRE(index < fLanes[lane].size() and index >= 0, "Index is out of range");
+     * REQUIRE(index < fLanes[lane].size(), "Index is out of range");
      */
     std::pair<const IVehicle*, double> getNextVehicle(uint32_t kLane, uint32_t kIndex) const;
 
@@ -193,7 +193,7 @@ private:
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling enqueue");
      * REQUIRE(kVehicle->properlyInitialized(), "Vehicle was not initialized when calling enqueue");
-     * REQUIRE(kLane < this->getNumLanes() and lane >= 0, "Cannot enqueue on an non-existant lane");
+     * REQUIRE(kLane < this->getNumLanes(), "Cannot enqueue on an non-existant lane");
      *
      * ENSURE(getVehicles().front()->getPosition() <= getRoadLength(), "Update failed to place vehicle on next road or delete it.");
      */

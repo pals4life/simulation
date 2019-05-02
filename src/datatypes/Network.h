@@ -39,12 +39,12 @@ public:
     void startSimulation(const Window* window, bool print = false, bool gui = false);
 
     /**
-     * REQUIRE(this->properlyInitialized(), "Network was not initialized when calling startSimulation");
+     * REQUIRE(this->properlyInitialized(), "Network was not initialized when calling update");
      */
     bool update();
 
     /**
-     * REQUIRE(this->properlyInitialized(), "Network was not initialized when calling startSimulation");
+     * REQUIRE(this->properlyInitialized(), "Network was not initialized when calling checkWindow");
      */
     bool checkWindow(Window::state state) const;
 

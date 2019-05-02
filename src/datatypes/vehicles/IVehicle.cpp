@@ -60,29 +60,29 @@ void IVehicle::move(const uint32_t kLane, const uint32_t kIndex, Road* const kRo
     updateStatistics();
     if(fStationed) return;  // stationed means the vehicle must not update
 
-    double oldPosition = fPosition;
-    fPosition += fVelocity;                                                                         // Calculate new positions
-    fVelocity += fAcceleration;                                                                     // Calculate new velocity
+    checkTrafficLights(kRoad->getTrafficLight(fPosition));                                              // calculate the slowdown if needed
+    checkBusStop(kRoad->getBusStop(fPosition));                                                         // calculate the slowdown if needed
+    const double kSpeedlimit = kRoad->getSpeedLimit(fPosition);                                         // calculate the speed limit
 
-    const std::pair<const IVehicle*, double> nextVehicle = kRoad->getNextVehicle(kLane, kIndex);       // get the next vehicle
-    double kAcceleration = getFollowingAcceleration(nextVehicle);                                   // calculate the following speed
+    fPosition += fVelocity;                                                                             // Calculate new positions
+    fVelocity += fAcceleration;                                                                         // Calculate new velocity
 
-    const std::pair<double, double> kMinMax = getMinMaxAcceleration(kRoad->getSpeedLimit(oldPosition));// calculate the min and max acceleration possible
+    const std::pair<const IVehicle*, double> nextVehicle = kRoad->getNextVehicle(kLane, kIndex);        // get the next vehicle
+    double kAcceleration = getFollowingAcceleration(nextVehicle);                                       // calculate the following speed
 
-    checkTrafficLights(kRoad->getTrafficLight(oldPosition));                                          // calculate the slowdown if needed
-    checkBusStop(kRoad->getBusStop(oldPosition));                                                     // calculate the slowdown if needed
+    if(fTrafficLightAccel.first) kAcceleration = std::min(fTrafficLightAccel.second, kAcceleration);    // we need to take the minimum of these values
+    if(fBusStopAccel.first     ) kAcceleration = std::min(fBusStopAccel.second     , kAcceleration);    // to ensure we slow down enough
 
-    if(fTrafficLightAccel.first) kAcceleration = std::min(fTrafficLightAccel.second, kAcceleration); // we need to take the minimum of these values
-    if(fBusStopAccel.first     ) kAcceleration = std::min(fBusStopAccel.second     , kAcceleration); // to ensure we slow down enough
+    const std::pair<double, double> kMinMax = getMinMaxAcceleration(kSpeedlimit);                       // calculate the min and max acceleration possible
 
-    fAcceleration = clamp(kAcceleration, kMinMax.first, kMinMax.second);                            // clamp the values
+    fAcceleration = clamp(kAcceleration, kMinMax.first, kMinMax.second);                                // clamp the values
     fMoved = true;
 
     fPrevAcceleration.push_front(fAcceleration);
     fPrevAcceleration.pop_back();
 
-    if(kRoad->laneExists(kLane+1)) checkLaneChange(fTrafficLightAccel.first, kLane, kIndex, kRoad, true );// overtake if possible
-    if(kRoad->laneExists(kLane-1)) checkLaneChange(fTrafficLightAccel.first, kLane, kIndex, kRoad, false);// go back if possible
+    if(kRoad->laneExists(kLane+1)) checkLaneChange(fTrafficLightAccel.first, kLane, kIndex, kRoad, true , kSpeedlimit);// overtake if possible
+    if(kRoad->laneExists(kLane-1)) checkLaneChange(fTrafficLightAccel.first, kLane, kIndex, kRoad, false, kSpeedlimit);// go back if possible
 
     ENSURE(getVelocity() >= 0, "Velocity cannot be negative");
     ENSURE((getAcceleration() >= getMinAcceleration()) && (getAcceleration() <= getMaxAcceleration()), "Acceleration is too high / low");
@@ -93,7 +93,6 @@ void IVehicle::move(const uint32_t kLane, const uint32_t kIndex, Road* const kRo
 double IVehicle::getFollowingAcceleration(std::pair<const IVehicle*, double> nextVehicle) const
 {
     REQUIRE(properlyInitialized(), "Vehicle was not initialized when calling getFollowingAcceleration");
-    REQUIRE(nextVehicle.first->properlyInitialized(), "nextVehicle not initialized when calling getFollowingAcceleration");
     REQUIRE(nextVehicle.second >= 0, "nextVehicle ill-formed when calling getFollowingAcceleration");
 
     if(nextVehicle.first == NULL) return getMaxAcceleration();                                                  // if there is not car in front, acceleration = max
@@ -122,7 +121,6 @@ std::pair<double, double> IVehicle::getMinMaxAcceleration(double speedlimit) con
 void IVehicle::checkTrafficLights(std::pair<const TrafficLight*, double> nextTrafficLight) const
 {
     REQUIRE(properlyInitialized(), "Vehicle was not initialized when calling checkTrafficLights");
-    REQUIRE(nextTrafficLight.first->properlyInitialized(), "nextTrafficLight not initialized when calling checkTrafficLights");
     REQUIRE(nextTrafficLight.second >= 0, "nextTrafficLight ill-formed when calling checkTrafficLights");
 
     if(nextTrafficLight.first == NULL)
@@ -148,7 +146,6 @@ void IVehicle::checkTrafficLights(std::pair<const TrafficLight*, double> nextTra
 void IVehicle::checkBusStop(std::pair<const BusStop*, double> nextBusStop) const
 {
     REQUIRE(properlyInitialized(), "Vehicle was not initialized when calling checkBusStop");
-    REQUIRE(nextBusStop.first->properlyInitialized(), "nextBusStop not initialized when calling checkBusStop");
     REQUIRE(nextBusStop.second >= 0, "nextBusStop ill-formed when calling checkBusStop");
 
     if(nextBusStop.first == NULL or getType() != "bus") return;
@@ -172,14 +169,13 @@ void IVehicle::checkBusStop(std::pair<const BusStop*, double> nextBusStop) const
     }
 }
 
-void IVehicle::checkLaneChange(const bool trafficLight, const uint32_t lane, const uint32_t index, Road* const road, const bool left)
+void IVehicle::checkLaneChange(const bool trafficLight, const uint32_t lane, const uint32_t index, Road* const road, const bool left, const double kSpeedlimit)
 {
     REQUIRE(properlyInitialized(), "Vehicle was not initialized when calling checkLaneChange");
-    REQUIRE(road->properlyInitialized(), "road not initialized when calling checkLaneChange");
     REQUIRE(road->laneExists(lane), "lane does not exist on road when calling checkLaneChange");
 
     // 5. Het voertuig is van type auto of motorfiets.
-    if(getType() != "auto" or getType() != "motorfiets") return;
+    if(getType() != "auto" and getType() != "motorfiets") return;
 
     // 4. Het voertuig rijdt volgens de regels in Use case 3.1, en is dus niet aan het vertragen voor een verkeersteken.
     if(trafficLight) return;
@@ -189,7 +185,7 @@ void IVehicle::checkLaneChange(const bool trafficLight, const uint32_t lane, con
 
     // 1. Het voertuig rijdt trager dan de snelheidslimiet van de baan of zone,
     // 2. Het voertuig rijdt trager dan zijn maximaal haalbare snelheid.
-    if(left and fVelocity > std::min(road->getSpeedLimit(fPosition), getMaxSpeed())) return;
+    if(left and fVelocity >= std::min(kSpeedlimit, getMaxSpeed()) - fgkEpsilonThreshold) return;
 
     // 6. Er is geen voertuig op de nieuwe rijstrook in een straal van de ideale volgafstand (dus zowel voor als achter het voertuig).
     road->changeLaneIfPossible(this, lane, index, left);

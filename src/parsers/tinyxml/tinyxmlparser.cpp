@@ -105,7 +105,7 @@ void TiXmlBase::ConvertUTF32ToUTF8( unsigned long input, char* output, int* leng
 	output += *length;
 
 	// Scary scary fall throughs.
-	switch (*length) 
+	switch (*length)
 	{
 		case 4:
 			--output; 

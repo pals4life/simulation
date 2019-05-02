@@ -12,13 +12,13 @@
         <type>BUS</type>
         <nummerplaat>651BUF</nummerplaat>
         <baan>E19</baan>
-        <positie>0</positie>
+        <positie>30</positie>
         <snelheid>0</snelheid>
     </VOERTUIG>
 
     <BAAN>
         <naam>E19</naam>
-        <snelheidslimiet>100</snelheidslimiet>
+        <snelheidslimiet>140</snelheidslimiet>
         <lengte>2000</lengte>
         <verbinding>E313</verbinding>
         <rijstroken>2</rijstroken>
@@ -43,15 +43,9 @@
     </VERKEERSTEKEN>
 
     <VERKEERSTEKEN>
-        <type>VERKEERSLICHT</type>
-        <baan>E19</baan>
-        <positie>20</positie>
-    </VERKEERSTEKEN>
-
-    <VERKEERSTEKEN>
         <type>ZONE</type>
         <baan>E19</baan>
         <positie>20</positie>
-        <snelheidslimiet>50</snelheidslimiet>
+        <snelheidslimiet>140</snelheidslimiet>
     </VERKEERSTEKEN>
 </NETWERK>

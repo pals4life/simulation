@@ -114,7 +114,6 @@ public:
 private:
     /*
      * REQUIRE(properlyInitialized(), "Vehicle was not initialized when calling getFollowingAcceleration");
-     * REQUIRE(nextVehicle.first->properlyInitialized(), "nextVehicle not initialized when calling getFollowingAcceleration");
      * REQUIRE(nextVehicle.second >= 0, "nextVehicle ill-formed when calling getFollowingAcceleration");
      */
     double getFollowingAcceleration(std::pair<const IVehicle*, double> nextVehicle) const;
@@ -127,14 +126,12 @@ private:
 
     /*
      * REQUIRE(properlyInitialized(), "Vehicle was not initialized when calling checkTrafficLights");
-     * REQUIRE(nextTrafficLight.first->properlyInitialized(), "nextTrafficLight not initialized when calling checkTrafficLights");
      * REQUIRE(nextTrafficLight.second >= 0, "nextTrafficLight ill-formed when calling checkTrafficLights");
      */
     void checkTrafficLights(std::pair<const TrafficLight*, double> nextTrafficLight) const;
 
     /*
      * REQUIRE(properlyInitialized(), "Vehicle was not initialized when calling checkBusStop");
-     * REQUIRE(nextBusStop.first->properlyInitialized(), "nextBusStop not initialized when calling checkBusStop");
      * REQUIRE(nextBusStop.second >= 0, "nextBusStop ill-formed when calling checkBusStop");
      */
     void checkBusStop(std::pair<const BusStop*, double> nextBusStop) const;
@@ -144,7 +141,7 @@ private:
      * REQUIRE(road->properlyInitialized(), "road not initialized when calling checkLaneChange");
      * REQUIRE(road->laneExists(lane), "lane does not exist on road when calling checkLaneChange");
      */
-    void checkLaneChange(bool trafficLight, uint32_t lane, uint32_t index, Road* road, bool left);
+    void checkLaneChange(bool trafficLight, uint32_t lane, uint32_t index, Road* road, bool left, double kSpeedlimit);
 
     /*
      * REQUIRE(properlyInitialized(), "Vehicle was not initialized when calling calculateStop");

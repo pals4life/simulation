@@ -120,11 +120,11 @@ Window::state Window::getState() const
     REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling CreateButtons");
 
     state temp = fCrState;
-    if(fCrState == next) fCrState = pause;
+    if(fCrState == next) fCrState = inactive;
     return temp;
 }
 
-void Window::closeEvent (QCloseEvent *event)
+void Window::closeEvent ([[maybe_unused]] QCloseEvent *event)
 {
     REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling CreateButtons");
     if (fCrState == busy) return;
@@ -154,7 +154,7 @@ void Window::onPause()
 {
     REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onPause");
     if (fCrState == busy) return;
-    fCrState = pause;
+    fCrState = inactive;
 }
 
 void Window::onNext()

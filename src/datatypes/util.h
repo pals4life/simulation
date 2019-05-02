@@ -34,10 +34,10 @@ bool comparePositions(const T* lhs, const T* rhs)
 
 struct Comparator : public std::unary_function<Road*, bool>
 {
-    explicit Comparator(const std::string& base) : base(base) {}
-    bool operator()(Road* road) { return base == road->getName(); }
+    explicit Comparator(const std::string& base) : fBase(base) {}
+    bool operator()(Road* road) { return fBase == road->getName(); }
 
-    const std::string& base;
+    const std::string& fBase;
 };
 
 template<typename T>

@@ -42,7 +42,7 @@ class Window: public QMainWindow
     Q_OBJECT
 
 public:
-    enum state {inactive, play, pause, next, previous, quit, busy};
+    enum state {inactive, play, next, quit, busy};
     explicit Window(QWidget* parent = nullptr);
     /**
      * ENSURE(this->properlyInitialized(), "Window.init() constructor must end in properlyInitialized state");
