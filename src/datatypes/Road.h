@@ -87,6 +87,8 @@ public:
 
 	/**
 	 * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling setNextRoad");
+	 * REQUIRE(kNextRoad->properlyInitialized(), "kNextRoad was not initialized when calling setNextRoad");
+	 * ENSURE(getNextRoad() == kNextRoad, "new next road not set when calling setNextRoad");
 	 */
 	void setNextRoad(Road* fNextRoad);
 
