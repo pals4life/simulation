@@ -35,8 +35,8 @@ TEST_F(VehicleTester, move1)
     road.enqueue(car);
     car->move(0,0, &road);
 
-    ASSERT_EQ(car->getPosition(), 0);
-    ASSERT_EQ(car->getVelocity(), 0);
+    ASSERT_EQ(car->getPosition(), car->getMaxAcceleration());
+    ASSERT_EQ(car->getVelocity(), car->getMaxAcceleration());
     ASSERT_EQ(car->getAcceleration(), car->getMaxAcceleration());
 }
 
@@ -48,8 +48,8 @@ TEST_F(VehicleTester, move2)
     road.enqueue(car);
     car->move(0, 0, &road);
 
-    ASSERT_EQ(car->getPosition(), 29);
-    ASSERT_EQ(car->getVelocity(), 29);
+    ASSERT_EQ(car->getPosition(), 30);
+    ASSERT_EQ(car->getVelocity(), 30);
     ASSERT_EQ(car->getAcceleration(), 1);
 }
 
@@ -70,13 +70,13 @@ TEST_F(VehicleTester, move3)
 
 TEST_F(VehicleTester, truckMove1)
 {
-    IVehicle* vehicle = new Truck("AAA-123", 0, 29);
+    IVehicle* vehicle = new Truck("AAA-123", 0, 10);
     const Zone* zone = new Zone(0, 30);
     Road road("E19", NULL, 5000, 1, std::vector<const Zone*>(1, zone), std::vector<const BusStop*>(), std::vector<const TrafficLight*>());
     road.enqueue(vehicle);
     vehicle->move(0, 0, &road);
 
-    ASSERT_EQ(vehicle->getPosition(), 259);
-    ASSERT_EQ(vehicle->getVelocity(), 29);
-    ASSERT_EQ(vehicle->getAcceleration(), 1);
+    ASSERT_EQ(vehicle->getPosition(), 10 + vehicle->getMaxAcceleration());
+    ASSERT_EQ(vehicle->getVelocity(), 10 + vehicle->getMaxAcceleration());
+    ASSERT_EQ(vehicle->getAcceleration(), vehicle->getMaxAcceleration());
 }

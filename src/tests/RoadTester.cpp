@@ -174,8 +174,8 @@ TEST_F(RoadTester, RoadUpdate8)
     testRoad->enqueue(testCar1);
 
     testRoad->updateVehicles();
-    ASSERT_EQ(testCar0->getPosition(), 60);
-    ASSERT_EQ(testCar1->getPosition(), 30);
+    ASSERT_EQ(testCar0->getPosition(), 60+testCar0->getMaxAcceleration());
+    ASSERT_EQ(testCar1->getPosition(), 30+testCar1->getMaxAcceleration());
 
     delete testRoad;
 }
@@ -208,7 +208,7 @@ TEST_F(RoadTester, RoadUpdate10)
     testRoad1->enqueue(testCar0);
     testRoad1->updateVehicles();
 
-    ASSERT_EQ(testCar0->getPosition(), 10);
+    ASSERT_EQ(testCar0->getPosition(), 10+testCar0->getMinAcceleration());
     ASSERT_TRUE(testRoad1->isEmpty());
     ASSERT_FALSE(testRoad0->isEmpty());
 
@@ -242,7 +242,7 @@ TEST_F(RoadTester, RoadUpdate11)
 TEST_F(RoadTester, RoadUpdate12)
 {
     const Zone* zone = new Zone(0, 160);
-    Road* testRoad0 = new Road("E13", NULL, 40, 1, std::vector<const Zone*>(1, zone), std::vector<const BusStop*>(), std::vector<const TrafficLight*>());
+    Road* testRoad0 = new Road("E13", NULL, 100, 1, std::vector<const Zone*>(1, zone), std::vector<const BusStop*>(), std::vector<const TrafficLight*>());
 
     const Zone* zone2 = new Zone(0, 160);
     Road* testRoad1 = new Road("E15", testRoad0, 40, 1, std::vector<const Zone*>(1, zone2), std::vector<const BusStop*>(), std::vector<const TrafficLight*>());
@@ -256,8 +256,8 @@ TEST_F(RoadTester, RoadUpdate12)
 
     testRoad1->updateVehicles();
 
-    ASSERT_EQ(testCar0->getPosition(), 50);
-    ASSERT_EQ(testCar1->getPosition(), 20);
+    ASSERT_EQ(testCar0->getPosition(), 50+testCar0->getMinAcceleration());
+    ASSERT_EQ(testCar1->getPosition(), 20+testCar1->getMinAcceleration());
 
     ASSERT_TRUE(testRoad1->isEmpty());
     ASSERT_FALSE(testRoad0->isEmpty());

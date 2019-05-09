@@ -34,7 +34,7 @@ TEST_F(NetworkTester, NetworkSimulation1)
     Network network(roads);
 
     network.startSimulation(NULL);
-    EXPECT_EQ(network.getTicksPassed(), 0);
+    EXPECT_EQ(network.getTicksPassed(), 1);
 }
 
 TEST_F(NetworkTester, NetworkSimulation2)
