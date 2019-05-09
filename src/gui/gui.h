@@ -146,6 +146,7 @@ private:
     Road *fRoad = NULL;
     std::map<QObject*, const TrafficLight*> fTrafficLights;
     std::map<QObject*, const Zone*> fZones;
+
     int updateTrafficLights(int row);
     void replaceInGrid(int row, int colum, QWidget* widget);
     int updateZones(int row);
