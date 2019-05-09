@@ -17,7 +17,7 @@ const uint32_t TrafficLight::fgkMaxDifference = 100;
 
 TrafficLight::TrafficLight(const double kPosition)
 {
-    REQUIRE(kPosition > 0, "kPosition must be greater than 0");
+    REQUIRE(kPosition >= 0, "kPosition must be greater than 0");
 
     fPosition = kPosition;
 
@@ -91,6 +91,7 @@ void TrafficLight::setColor(const EColor color) const
 {
     REQUIRE(properlyInitialized(), "TrafficLight was not properly initialized when calling getColor");
     fColor = color;
+    fTimer = 0;
     ENSURE(getColor() == color, "new color not set when calling setColor");
 }
 
@@ -118,7 +119,7 @@ const uint32_t BusStop::fgkStationTime = 30;
 
 BusStop::BusStop(double kPosition)
 {
-    REQUIRE(kPosition > 0, "kPosition must be greater than 0");
+    REQUIRE(kPosition >= 0, "kPosition must be greater than 0");
     fPosition = kPosition;
 
     fStationed = NULL;

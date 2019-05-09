@@ -92,6 +92,7 @@ bool Network::update()
 
 bool Network::checkWindow(Window::EState state) const
 {
+    REQUIRE(this->properlyInitialized(), "Network was not initialized when calling checkWindow");
     switch(state)
     {
         case Window::kPlay:
@@ -105,9 +106,10 @@ bool Network::checkWindow(Window::EState state) const
             Window::delay(500);
             return false;
     }
-
 }
 
-const std::vector<Road *> &Network::getRoads() const {
+const std::vector<Road *> &Network::getRoads() const
+{
+    REQUIRE(this->properlyInitialized(), "Network was not initialized when calling getRoads");
     return fRoads;
 }

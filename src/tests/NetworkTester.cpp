@@ -20,12 +20,6 @@ protected:
     virtual void TearDown(){}
 };
 
-TEST_F(NetworkTester, NetworkInit1)
-{
-//    Network* network = NULL;
-//    EXPECT_DEATH(network->startSimulation(NULL), "Network was not initialized when calling startSimulation");
-}
-
 TEST_F(NetworkTester, NetworkSimulation1)
 {
     std::vector<Road*> roads;

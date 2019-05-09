@@ -144,8 +144,8 @@ TEST_F(RoadTester, RoadUpdate7)
 {
     const Zone* zone = new Zone(0, 120);
     Road* testRoad = new Road("E13", NULL, 120, 1, std::vector<const Zone*>(1, zone), std::vector<const BusStop*>(), std::vector<const TrafficLight*>());
-    [[maybe_unused]] Road* testRoad2 = new Road("E15", testRoad, 10, 1, std::vector<const Zone*>(1, zone), std::vector<const BusStop*>(), std::vector<const TrafficLight*>());
-    [[maybe_unused]] Road* testRoad3 = new Road("E13", testRoad2, 100, 1, std::vector<const Zone*>(1, zone), std::vector<const BusStop*>(), std::vector<const TrafficLight*>());
+     Road* testRoad2 = new Road("E15", testRoad, 10, 1, std::vector<const Zone*>(1, zone), std::vector<const BusStop*>(), std::vector<const TrafficLight*>());
+     Road* testRoad3 = new Road("E13", testRoad2, 100, 1, std::vector<const Zone*>(1, zone), std::vector<const BusStop*>(), std::vector<const TrafficLight*>());
 
     IVehicle* testCar1 = new Car("AE-12", 40, 120);
 

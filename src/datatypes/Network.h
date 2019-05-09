@@ -32,6 +32,7 @@ public:
      * REQUIRE(this->properlyInitialized(), "Network was not initialized when calling getTicksPassed");
      */
     int getTicksPassed() const;
+
     /**
      * REQUIRE(this->properlyInitialized(), "Network was not initialized when calling startSimulation");
      * REQUIRE(amountOfTicks >= 0, "Amount of ticks must be a positive integer");
@@ -48,7 +49,10 @@ public:
      */
     bool checkWindow(Window::EState state) const;
 
-    const std::vector<Road *> &getRoads() const;
+    /**
+     * REQUIRE(this->properlyInitialized(), "Network was not initialized when calling getRoads");
+     */
+    const std::vector<Road*>& getRoads() const;
 
 private:
     int fTicksPassed; // amount of ticks passed
@@ -57,7 +61,7 @@ private:
 
     static const int fgkMaxTicks;
 
-    Network* _initCheck;
+    const Network* _initCheck;
 };
 
 
