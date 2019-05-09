@@ -37,7 +37,7 @@
     </VERKEERSTEKEN>
 
     <VERKEERSTEKEN>
-        <type>BUSHALTE</type>
+        <type>VERKEERSLICHT</type>
         <baan>E19</baan>
         <positie>1000</positie>
     </VERKEERSTEKEN>
@@ -46,6 +46,13 @@
         <type>ZONE</type>
         <baan>E19</baan>
         <positie>20</positie>
+        <snelheidslimiet>140</snelheidslimiet>
+    </VERKEERSTEKEN>
+
+    <VERKEERSTEKEN>
+        <type>VERKEERSLICHT</type>
+        <baan>E19</baan>
+        <positie>1500</positie>
         <snelheidslimiet>140</snelheidslimiet>
     </VERKEERSTEKEN>
 </NETWERK>

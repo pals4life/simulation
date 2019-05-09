@@ -146,6 +146,8 @@ private:
     /*
      * REQUIRE(properlyInitialized(), "Vehicle was not initialized when calling calculateStop");
      * REQUIRE(nextPos > getPosition(), "cannot stop behind current pos when calling calculate stop");
+     *
+     * ENSURE(result.second > getMinAcceleration(), "Vehicle cannot stop faster than minimum acceleration");
      */
     std::pair<bool, double> calculateStop(double nextPos) const;
 
@@ -168,8 +170,8 @@ protected:
 
     std::deque<double> fPrevAcceleration;
 
-    mutable std::pair<bool, double> fTrafficLightAccel;
-    mutable std::pair<bool, double> fBusStopAccel;
+    mutable std::tuple<bool, double, const TrafficLight*> fTrafficLightAccel;
+    mutable std::tuple<bool, double, const BusStop*> fBusStopAccel;
 
     uint32_t fTimer;
     uint32_t fDriveTimer;
@@ -177,6 +179,7 @@ protected:
     double fMaxVelocity;
 
     static const double fgkMinVehicleDist;
+
     static const double fgkEpsilonThreshold;
 };
 
