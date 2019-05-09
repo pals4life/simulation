@@ -9,6 +9,8 @@
 
 #include <gtest/gtest.h>
 #include "../datatypes/vehicles/Car.h"
+#include "../datatypes/vehicles/Truck.h"
+
 #include "../datatypes/Road.h"
 
 class VehicleTester : public ::testing::Test
@@ -64,4 +66,17 @@ TEST_F(VehicleTester, move3)
     road.enqueue(car1);
 
     EXPECT_DEATH(car1->move(0, 2, &road), "distance between vehicles must be greater than minVehicleDist");
+}
+
+TEST_F(VehicleTester, truckMove1)
+{
+    IVehicle* vehicle = new Truck("AAA-123", 0, 29);
+    const Zone* zone = new Zone(0, 30);
+    Road road("E19", NULL, 5000, 1, std::vector<const Zone*>(1, zone), std::vector<const BusStop*>(), std::vector<const TrafficLight*>());
+    road.enqueue(vehicle);
+    vehicle->move(0, 0, &road);
+
+    ASSERT_EQ(vehicle->getPosition(), 259);
+    ASSERT_EQ(vehicle->getVelocity(), 29);
+    ASSERT_EQ(vehicle->getAcceleration(), 1);
 }
