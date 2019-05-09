@@ -42,7 +42,7 @@ class Window: public QMainWindow
     Q_OBJECT
 
 public:
-    enum state {inactive, play, next, quit, busy};
+    enum EState {kInactive, kPlay, kPause, kNext, kQuit, kBusy};
     explicit Window(QWidget* parent = nullptr);
     /**
      * ENSURE(this->properlyInitialized(), "Window.init() constructor must end in properlyInitialized state");
@@ -69,7 +69,7 @@ public:
     /**
      * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling getState");
      */
-    state getState() const;
+    EState getState() const;
     /**
      * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling closeEvent");
      */
@@ -90,7 +90,7 @@ public:
 protected:
 
     bool properlyInitialized = false;
-    mutable state fCrState = inactive;
+    mutable EState fCrState = kInactive;
 
     QWidget *fRoot = new QWidget(this);
     QGridLayout *fLayout = new QGridLayout;
@@ -146,6 +146,7 @@ private:
     Road *fRoad = NULL;
     std::map<QObject*, const TrafficLight*> fTrafficLights;
     std::map<QObject*, const Zone*> fZones;
+
     int updateTrafficLights(int row);
     void replaceInGrid(int row, int colum, QWidget* widget);
     int updateZones(int row);

@@ -71,7 +71,6 @@ void Network::startSimulation(const Window* window, bool print, bool gui)
 
 bool Network::update()
 {
-    REQUIRE(this->properlyInitialized(), "Network was not initialized when calling update");
     bool simulationDone = true;
 
     for(uint32_t i = 0; i < fRoads.size(); i++)
@@ -91,25 +90,24 @@ bool Network::update()
     return simulationDone;
 }
 
-bool Network::checkWindow(Window::state state) const
+bool Network::checkWindow(Window::EState state) const
 {
-    REQUIRE(this->properlyInitialized(), "Network was not initialized when calling checkWindow");
     switch(state)
     {
-        case Window::play:
+        case Window::kPlay:
             return true;
-        case Window::next:
+        case Window::kNext:
             return true;
-        case Window::quit:
-            exit(0);
-        case Window::inactive:
-            Window::delay(10);
+        case Window::kPause:
+            Window::delay(500);
+            return false;
         default:
+            Window::delay(500);
             return false;
     }
+
 }
 
-const std::vector<Road*>& Network::getRoads() const
-{
+const std::vector<Road *> &Network::getRoads() const {
     return fRoads;
 }

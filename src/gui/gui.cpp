@@ -1,10 +1,10 @@
 //============================================================================
 // @name        : gui.cpp
 // @author      : Mano Marichal
-// @date        : 
-// @version     : 
+// @date        :
+// @version     :
 // @copyright   : BA1 Informatica - Mano Marichal - University of Antwerp
-// @description : 
+// @description :
 //============================================================================
 
 #include <QtCore/QTime>
@@ -29,7 +29,7 @@ void Window::init()
 
     properlyInitialized = true;
 
-    ENSURE(this->checkProperlyInitialized(), "Window.init() must end in properlyInitialized state");
+    ENSURE(this->checkProperlyInitialized(), "Window.init() must end in properlyInitialized eState");
 }
 
 void Window::delay(uint32_t ms)
@@ -38,7 +38,7 @@ void Window::delay(uint32_t ms)
     while (QTime::currentTime() < stopTime)
     {
         QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-        [[maybe_unused]] int res = system("sleep 0.01");
+        [[maybe_unused]]int res = system("sleep 0.01");
     }
 }
 
@@ -47,25 +47,25 @@ void Window::createButtons()
     REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling CreateButtons");
 
     QPushButton* play = new QPushButton("Play", this);
-    QPushButton* pause = new QPushButton("Pause", this);
+    QPushButton* kPause = new QPushButton("Pause", this);
     QPushButton* skipOne = new QPushButton("Next tick", this);
 
     play->show();
-    pause->show();
+    kPause->show();
     skipOne->show();
 
     int size = 70;
 
     play->setFixedHeight(size);
-    pause->setFixedHeight(size);
+    kPause->setFixedHeight(size);
     skipOne->setFixedHeight(size);
 
     fLayout-> addWidget(play, 1, 0 ,1, 1);
-    fLayout-> addWidget(pause, 1, 1 ,1, 1);
+    fLayout-> addWidget(kPause, 1, 1 ,1, 1);
     fLayout-> addWidget(skipOne, 1, 2 ,1, 1);
 
     connect(play, SIGNAL(pressed()), this, SLOT(onPlay()));
-    connect(pause, SIGNAL(pressed()), this, SLOT(onPause()));
+    connect(kPause, SIGNAL(pressed()), this, SLOT(onPause()));
     connect(skipOne, SIGNAL(pressed()), this, SLOT(onNext()));
 }
 
@@ -115,20 +115,20 @@ void Window::createRoadButtons(const std::vector<Road *> &roads)
     }
 }
 
-Window::state Window::getState() const
+Window::EState Window::getState() const
 {
     REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling CreateButtons");
 
-    state temp = fCrState;
-    if(fCrState == next) fCrState = inactive;
+    EState temp = fCrState;
+    if(fCrState == kNext) fCrState = kPause;
     return temp;
 }
 
-void Window::closeEvent ([[maybe_unused]] QCloseEvent *event)
+void Window::closeEvent (QCloseEvent *event)
 {
     REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling CreateButtons");
-    if (fCrState == busy) return;
-    fCrState = quit;
+    if (fCrState == kBusy) return;
+    fCrState = kQuit;
 }
 
 bool Window::checkProperlyInitialized() const
@@ -146,43 +146,43 @@ void Window::processEvents()
 void Window::onPlay()
 {
     REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onPlay");
-    if (fCrState == busy) return;
-    fCrState = play;
+    if (fCrState == kBusy) return;
+    fCrState = kPlay;
 }
 
 void Window::onPause()
 {
     REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onPause");
-    if (fCrState == busy) return;
-    fCrState = inactive;
+    if (fCrState == kBusy) return;
+    fCrState = kPause;
 }
 
 void Window::onNext()
 {
     REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onNext");
-    if (fCrState == busy) return;
-    fCrState = next;
+    if (fCrState == kBusy) return;
+    fCrState = kNext;
 }
 void Window::onExit()
 {
     REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onExit");
-    if (fCrState == busy) return;
-    fCrState = quit;
+    if (fCrState == kBusy) return;
+    fCrState = kQuit;
 }
 void Window::onRoadButton()
 {
     REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onRoadButton");
 
-    if (fCrState == busy) return;
-    fCrState = busy;
+    if (fCrState == kBusy) return;
+    fCrState = kBusy;
 
     QObject* obj = sender();
 
     RoadWindow window;
     window.setRoad(fRoadButtons[obj]);
     window.init();
-    while (window.fCrState != quit) Window::delay(500);
-    fCrState = inactive;
+    while (window.fCrState != kQuit) Window::delay(500);
+    fCrState = kInactive;
 }
 
 std::string Window::doubleToPrecision(double d, int precision)
@@ -220,14 +220,14 @@ void RoadWindow::init()
     QLabel* length = new QLabel(("Length: " + std::to_string(int(fRoad->getRoadLength() + 0.5)) + "m").c_str());
     fLayout->addWidget(length, 1,0,1,1);
 
-    std::string next;
+    std::string kNext;
     if (fRoad->getNextRoad() == NULL)
     {
-        next = "this road has no next road";
+        kNext = "this road has no kNext road";
     }
-    else next = fRoad->getNextRoad()->getName();
+    else kNext = fRoad->getNextRoad()->getName();
 
-    QLabel* nextinf = new QLabel(("Next Road: " + next).c_str());
+    QLabel* nextinf = new QLabel(("Next Road: " + kNext).c_str());
     fLayout->addWidget(nextinf, 2,0,1,1);
 
     QFrame* hLine = new QFrame();
@@ -253,7 +253,7 @@ void RoadWindow::init()
 
     properlyInitialized = true;
 
-    ENSURE(this->checkProperlyInitialized(),  "RoadWindow.init() must end in properlyInitialized state");
+    ENSURE(this->checkProperlyInitialized(),  "RoadWindow.init() must end in properlyInitialized State");
 }
 
 void RoadWindow::setRoad(Road *road)
@@ -406,7 +406,7 @@ void RoadWindow::replaceInGrid(int row, int colum, QWidget* widget)
 
     fLayout->addWidget(widget, row, colum, 1, 1);
 }
-void RoadWindow::createVehicleButtons() 
+void RoadWindow::createVehicleButtons()
 {
     REQUIRE(this->checkProperlyInitialized(), "RoadWindow was not properly initialized when calling createVehicleButtons");
 
