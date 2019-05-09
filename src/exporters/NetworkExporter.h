@@ -1,10 +1,10 @@
 //============================================================================
 // @name        : NetworkExporter.h
-// @author      : Thomas Dooms
+// @author      : Thomas Dooms, Ward Gauderis
 // @date        : 3/26/19
-// @version     : 
+// @version     : 2.0
 // @copyright   : BA1 Informatica - Thomas Dooms - University of Antwerp
-// @description : 
+// @description : Exports network to ofstreams
 //============================================================================
 
 
@@ -19,36 +19,53 @@ class NetworkExporter {
 public:
 
     /**
-     * REQUIRE(this->properlyInitialized(), "NetworkExporter was not constructed when calling printNetwork");
-     * REQUIRE(network->properlyInitialized(), "Network was not initialized when calling printNetwork");
-     *
-     * ENSURE(fOutputFile.is_open(), "output file is not open");
+     *  REQUIRE(kNetwork, "Failed to export network: no network");
+     *  ENSURE(res == 0 or res == 256, "Failed to create output directory");
+     *  ENSURE(fgSimple.is_open(), "Failed to load file for simple output");
+     *  ENSURE(fgImpression.is_open(), "Failed to load File for impression output");
      */
     static void init(const Network *network, const std::string &kSimplePath, const std::string &kImpressionPath);
 
     /**
-     * REQUIRE(this->properlyInitialized(), "NetworkExporter was not constructed when calling finish");
-     * REQUIRE(this->fIsInitialized, "NetworkExporter was not initialized when calling finish");
+     *  REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling addSection");
+     *  REQUIRE(kNetwork, "Failed to add section: no network");
      */
-    static void addSection(const Network* kNetwork, uint32_t number);
+    static void addSection(const Network *kNetwork, uint32_t number);
 
     /**
-     * REQUIRE(this->properlyInitialized(), "NetworkExporter was not constructed when calling addSection");
-     * REQUIRE(this->fIsInitialized, "NetworkExporter was not initialized when calling addSection");
+     *  REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling fin    ish");
      */
     static void finish();
 
-private:
+    /**
+     *  REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling tee");
+     */
+    template<typename T>
+    static void tee(const T &string, bool init) {
+        REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling tee");
+        fgImpression << string;
+        std::cout << string;
+        if (init) fgSimple << string;
+    }
+
     static std::string whitespace(int amount);
 
+    /**
+     *  REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling printLane");
+     */
     static void printLane(const std::vector<std::vector<char>> &lane, uint32_t max, uint32_t laneNum);
 
-    static std::ofstream fSimple;
-    static std::ofstream fImpression;
 
-    static double scale;
-    static uint32_t longestName;
+    static bool properlyInitialized();
+
+private:
+    static std::ofstream fgSimple;
+    static std::ofstream fgImpression;
+
+    static double fgScale;
+    static uint32_t fgLongestName;
+
+    static bool _initCheck;
 };
-
 
 #endif //SIMULATION_NETWORKEXPORTER_H

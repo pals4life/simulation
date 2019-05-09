@@ -58,20 +58,20 @@ Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
                 tempRoads[vp.parseRoad(elem)].push_back(vehicle);
             }
         } else if (kType == "VERKEERSTEKEN") {
-            const TrafficSigns kSign = tp.parseTrafficSign(elem);
-            if (kSign != error) {
+            const ETrafficSigns kSign = tp.parseTrafficSign(elem);
+            if (kSign != kError) {
                 std::vector<Road *>::iterator found = std::find_if(roads.begin(), roads.end(),
                                                                    Comparator(tp.parseRoad(elem)));
                 if (found != roads.end()) {
                     Road *foundRoad = *found;
                     switch (kSign) {
-                        case trafficLight:
+                        case kTrafficLight:
                             foundRoad->addTrafficLight(tp.getTrafficLight());
                             break;
-                        case busStop:
+                        case kBusStop:
                             foundRoad->addBusStop(tp.getBusStop());
                             break;
-                        case zone:
+                        case kZone:
                             foundRoad->addZone(tp.getZone());
                             break;
                         default:

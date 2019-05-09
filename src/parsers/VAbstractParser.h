@@ -18,8 +18,6 @@ public:
 
     /**
      * 	REQUIRE(this->properlyInitialized(), "Parser was not initialized when calling loadfile");
-     *	REQUIRE(!kFilename.empty(), "Failed to load file: no filename");
-     *	ENSURE(fDoc.LoadFile(kFilename.c_str()), fDoc.ErrorDesc());
      *	ENSURE(fRoot, "Failed to load file: no root element");
      */
     bool loadFile(const std::string &kFilename);

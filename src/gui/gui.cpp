@@ -38,7 +38,7 @@ void Window::delay(uint32_t ms)
     while (QTime::currentTime() < stopTime)
     {
         QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-        system("sleep 0.01");
+        [[maybe_unused]]int res = system("sleep 0.01");
     }
 }
 

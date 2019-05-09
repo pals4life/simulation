@@ -27,19 +27,22 @@ TEST_F(RoadParserTester, Init) {
 
 TEST_F(RoadParserTester, ParseRoad) {
     RoadParser parser;
-    parser.loadFile("inputfiles/testinputs/test2.xml");
-    EXPECT_DEATH(parser.parseRoad(NULL), "Failed to parse road: no element");
-    TiXmlElement *elem = parser.getRoot()->FirstChildElement();
-    parser.parseRoad(elem);
-    elem = elem->NextSiblingElement();
-    ASSERT_EXIT((parser.parseRoad(elem), exit(0)), ::testing::KilledBySignal(SIGSEGV), ".*");
-    elem = elem->NextSiblingElement();
     testing::internal::CaptureStderr();
-    do {
-        EXPECT_EQ(NULL, parser.parseRoad(elem));
-        elem = elem->NextSiblingElement();
-    } while (elem != NULL);
+    bool loaded = parser.loadFile("inputfiles/testinputs/test2.xml");
+    EXPECT_EQ(true, loaded);
     testing::internal::GetCapturedStderr();
+    if (loaded) {
+        EXPECT_DEATH(parser.parseRoad(NULL), "Failed to parse road: no element");
+        TiXmlElement *elem = parser.getRoot()->FirstChildElement();
+        parser.parseRoad(elem);
+        elem = elem->NextSiblingElement();
+        testing::internal::CaptureStderr();
+        do {
+            EXPECT_EQ(NULL, parser.parseRoad(elem));
+            elem = elem->NextSiblingElement();
+        } while (elem != NULL);
+        testing::internal::GetCapturedStderr();
+    }
 }
 
 TEST_F(RoadParserTester, GetRoad) {

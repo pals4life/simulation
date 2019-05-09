@@ -87,16 +87,24 @@ TrafficLight::EColor TrafficLight::getColor() const
     REQUIRE(properlyInitialized(), "TrafficLight was not properly initialized when calling getColor");
     return fColor;
 }
-void TrafficLight::setColor(EColor color) const
+void TrafficLight::setColor(const EColor color) const
 {
+    REQUIRE(properlyInitialized(), "TrafficLight was not properly initialized when calling getColor");
     fColor = color;
+    ENSURE(getColor() == color, "new color not set when calling setColor");
+}
+
+const IVehicle* TrafficLight::getInRange() const
+{
+    REQUIRE(properlyInitialized(), "TrafficLight was not properly initialized when calling getInRange");
+    return fkInRange;
 }
 void TrafficLight::setInRange(const IVehicle* const kVehicle) const
 {
     REQUIRE(properlyInitialized(), "TrafficLight was not properly initialized when calling setInRange");
     REQUIRE(kVehicle->properlyInitialized(), "kVehicles must be properly initialized");
-
     fkInRange = kVehicle;
+    ENSURE(getInRange() == kVehicle, "new in range vehicle not set when calling setInRange");
 }
 double TrafficLight::getPosition() const
 {
@@ -111,14 +119,12 @@ const uint32_t BusStop::fgkStationTime = 30;
 BusStop::BusStop(double kPosition)
 {
     REQUIRE(kPosition > 0, "kPosition must be greater than 0");
-
     fPosition = kPosition;
 
     fStationed = NULL;
     fTimer = 0;
 
     _initCheck = this;
-
     ENSURE(properlyInitialized(), "BusStop constructor must end in properly initialized state");
 }
 
@@ -130,7 +136,6 @@ bool BusStop::properlyInitialized() const
 void BusStop::update() const
 {
     REQUIRE(properlyInitialized(), "BusStop was not properly initialized when calling update");
-
     if(fStationed != NULL)
     {
         fStationed->setStationed(true);
@@ -142,18 +147,23 @@ void BusStop::update() const
         fStationed = NULL;
         fTimer = 0;
     }
+    ENSURE(fTimer < fgkStationTime, "Bus stationed for too long");
 }
-void BusStop::setStationed(const IVehicle* vehicle) const
-{
-    REQUIRE(properlyInitialized(), "BusStop was not properly initialized when calling setStationed");
-    REQUIRE(vehicle->properlyInitialized(), "kVehicles must be properly initialized");
 
-    fStationed = vehicle;
-}
 const IVehicle* BusStop::getStationed() const
 {
+    REQUIRE(properlyInitialized(), "BusStop was not properly initialized when calling getStationed");
     return fStationed;
 }
+
+void BusStop::setStationed(const IVehicle* const kVehicle) const
+{
+    REQUIRE(properlyInitialized(), "BusStop was not properly initialized when calling setStationed");
+    REQUIRE(kVehicle->properlyInitialized(), "kVehicles must be properly initialized");
+    fStationed = kVehicle;
+    ENSURE(getStationed() == kVehicle, "new stationed vehicle not set when calling setStationed");
+}
+
 double BusStop::getPosition() const
 {
     REQUIRE(properlyInitialized(), "BusStop was not properly initialized when calling getPosition");
@@ -164,9 +174,12 @@ double BusStop::getPosition() const
 
 Zone::Zone(const double kPosition, const double kSpeedLimit)
 {
+    REQUIRE(kPosition   >= 0, "kPosition must be greater than 0"  );
+    REQUIRE(kSpeedLimit >= 0, "kSpeedLimit must be greater than 0");
     fPosition = kPosition;
     fSpeedlimit = kSpeedLimit;
     _initCheck = this;
+    ENSURE(properlyInitialized(), "Zone constructor must end in properly initialized state");
 }
 
 bool Zone::properlyInitialized() const
@@ -176,14 +189,21 @@ bool Zone::properlyInitialized() const
 
 double Zone::getSpeedlimit() const
 {
+    REQUIRE(properlyInitialized(), "Zone was not properly initialized when calling getSpeedlimit");
     return fSpeedlimit;
 }
+
+void Zone::setSpeedLimit(const double kSpeedlimit) const
+{
+    REQUIRE(properlyInitialized(), "Zone was not properly initialized when calling setSpeedLimit");
+    REQUIRE(kSpeedlimit >= 0, "kSpeedLimit must be greater than 0");
+    fSpeedlimit = kSpeedlimit;
+    ENSURE(getSpeedlimit() == kSpeedlimit, "new speedlimit not set when calling setSpeedLimit");
+}
+
 double Zone::getPosition() const
 {
+    REQUIRE(properlyInitialized(), "Zone was not properly initialized when calling setSpeedLimit");
     return fPosition;
-}
-void Zone::setSpeedLimit(double speedlimit) const
-{
-    fSpeedlimit = speedlimit;
 }
 

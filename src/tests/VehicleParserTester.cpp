@@ -27,19 +27,22 @@ TEST_F(VehicleParserTester, Init) {
 
 TEST_F(VehicleParserTester, ParseVehicle) {
     VehicleParser parser;
-    parser.loadFile("inputfiles/testinputs/test3.xml");
-    EXPECT_DEATH(parser.parseVehicle(NULL), "Failed to parse vehicle: no element");
-    TiXmlElement *elem = parser.getRoot()->FirstChildElement();
-    parser.parseVehicle(elem);
-    elem = elem->NextSiblingElement();
-    ASSERT_EXIT((parser.parseVehicle(elem), exit(0)), ::testing::KilledBySignal(SIGSEGV), ".*");
-    elem = elem->NextSiblingElement();
     testing::internal::CaptureStderr();
-    do {
-        EXPECT_EQ(NULL, parser.parseVehicle(elem));
-        elem = elem->NextSiblingElement();
-    } while (elem != NULL);
+    bool loaded = parser.loadFile("inputfiles/testinputs/test3.xml");
     testing::internal::GetCapturedStderr();
+    EXPECT_EQ(true, loaded);
+    if (loaded) {
+        EXPECT_DEATH(parser.parseVehicle(NULL), "Failed to parse vehicle: no element");
+        TiXmlElement *elem = parser.getRoot()->FirstChildElement();
+        parser.parseVehicle(elem);
+        elem = elem->NextSiblingElement();
+        testing::internal::CaptureStderr();
+        do {
+            EXPECT_EQ(NULL, parser.parseVehicle(elem));
+            elem = elem->NextSiblingElement();
+        } while (elem != NULL);
+        testing::internal::GetCapturedStderr();
+    }
 }
 
 TEST_F(VehicleParserTester, GetVehicle) {
