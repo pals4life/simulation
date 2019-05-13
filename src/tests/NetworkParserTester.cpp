@@ -32,7 +32,7 @@ TEST_F(NetworkParserTester, ParseNetwork) {
         EXPECT_DEATH(parser.parseNetwork(NULL), "Failed to parse network: no element");
         Network *network = parser.parseNetwork(parser.getRoot());
         testing::internal::CaptureStdout();
-        network->startSimulation(NULL, false, false);
+        network->startSimulation(NULL, "simple", "impression", false, false);
         testing::internal::GetCapturedStdout();
         EXPECT_EQ(229, network->getTicksPassed());
     }

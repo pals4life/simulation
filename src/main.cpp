@@ -44,7 +44,7 @@ int main(int argc, char** argv)
 
         if (gui) window->createRoadButtons(network->getRoads());
 
-        network->startSimulation(window, output, gui);
+        network->startSimulation(window, "simple", "impression", output, gui);
         delete network;
     }
 

@@ -40,13 +40,13 @@ int Network::getTicksPassed() const
     return fTicksPassed;
 }
 
-void Network::startSimulation(const Window* window, bool print, bool gui)
+void Network::startSimulation(const Window* window, const std::string& simpleOutput, const std::string& impressionOutput, bool print, bool gui)
 {
     REQUIRE(this->properlyInitialized(), "Network was not initialized when calling startSimulation");
     if(print)
     {
         VehicleExporter::init("statistics");
-        NetworkExporter::init(this, "simple", "impression");
+        NetworkExporter::init(this, simpleOutput, impressionOutput);
     }
 
     while(fTicksPassed < fgkMaxTicks)

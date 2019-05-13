@@ -8,6 +8,7 @@
 //============================================================================
 
 #include "../exporters/NetworkExporter.h"
+#include "../parsers/NetworkParser.h"
 #include <gtest/gtest.h>
 #include <fstream>
 #include <stdlib.h>
@@ -24,8 +25,10 @@ protected:
 TEST_F(NetworkExporterTester, Init) {
     EXPECT_DEATH(NetworkExporter::init(NULL, "test", "test"), "Failed to export network: no network");
     EXPECT_EQ(false, NetworkExporter::properlyInitialized());
-    int res = system("rm outputfiles/test.txt >/dev/null 2>&1");
-    EXPECT_EQ(0, res % 256);
+    NetworkParser parser;
+    parser.loadFile("inputfiles/testinputs/test1.xml");
+//    Network *network = parser.parseNetwork(parser.getRoot());
+//    network->startSimulation(NULL, "simple", "impression", true, false);
 }
 
 TEST_F(NetworkExporterTester, Finish) {
