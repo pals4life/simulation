@@ -1,0 +1,20 @@
+Baan : E19
+  -> Snelheidslimiet: 100km/u
+  -> Lengte         : 2000m
+  -> zone           : Begin: 0m Snelheidslimiet: 100km/u
+Baan : E313
+  -> Snelheidslimiet: 120km/u
+  -> Lengte         : 5000m
+  -> zone           : Begin: 0m Snelheidslimiet: 120km/u
+
+-------------------------------------------------
+State of the network after 0 ticks have passed:
+
+Voertuig: auto(1THK180)
+  -> Baan    : E19
+  -> Positie : 10
+  -> Snelheid: 0
+Voertuig: auto(651BUF)
+  -> Baan    : E19
+  -> Positie : 0
+  -> Snelheid: 0

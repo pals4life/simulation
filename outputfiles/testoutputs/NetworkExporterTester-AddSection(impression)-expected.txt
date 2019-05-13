@@ -1,0 +1,17 @@
+Baan : E19
+  -> Snelheidslimiet: 100km/u
+  -> Lengte         : 2000m
+  -> zone           : Begin: 0m Snelheidslimiet: 100km/u
+Baan : E313
+  -> Snelheidslimiet: 120km/u
+  -> Lengte         : 5000m
+  -> zone           : Begin: 0m Snelheidslimiet: 120km/u
+
+-------------------------------------------------
+One character is 41.666667 meters
+-------------------------------------------------
+State of the network after 0 ticks have passed:
+
+E19  | 1 A================================================
+         A                                                
+E313 | 1 =========================================================================================================================

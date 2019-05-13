@@ -24,10 +24,11 @@ protected:
 };
 
 TEST_F(NetworkExporterTester, Init) {
+    testing::internal::CaptureStdout();
     EXPECT_DEATH(NetworkExporter::init(NULL, "test", "test"), "Failed to export network: no network");
     EXPECT_EQ(false, NetworkExporter::properlyInitialized());
     NetworkParser parser;
-    parser.loadFile("inputfiles/testinputs/test1.xml");
+    EXPECT_TRUE(parser.loadFile("inputfiles/testinputs/test1.xml"));
     Network *network = parser.parseNetwork(parser.getRoot());
     NetworkExporter::init(network, "testoutputs/NetworkExporterTester-Init(simple)",
                           "testoutputs/NetworkExporterTester-Init(impression)");
@@ -42,6 +43,7 @@ TEST_F(NetworkExporterTester, Init) {
                             "outputfiles/testoutputs/NetworkExporterTester-Init(impression)-expected.txt"));
     EXPECT_TRUE(FileCompare("outputfiles/testoutputs/NetworkExporterTester-Init(simple).txt",
                             "outputfiles/testoutputs/NetworkExporterTester-Init(simple)-expected.txt"));
+    testing::internal::GetCapturedStdout();
 }
 
 TEST_F(NetworkExporterTester, Finish) {
@@ -51,15 +53,21 @@ TEST_F(NetworkExporterTester, Finish) {
 
 TEST_F(NetworkExporterTester, AddSection) {
     EXPECT_DEATH(NetworkExporter::addSection(NULL, 0), "NetworkExporter was not initialized when calling addSection");
-    Network test({});
+    NetworkParser parser;
+    EXPECT_TRUE(parser.loadFile("inputfiles/testinputs/test1.xml"));
+    Network *network = parser.parseNetwork(parser.getRoot());
     testing::internal::CaptureStdout();
-    NetworkExporter::init(&test, "test", "test");
-    EXPECT_EQ("\n-------------------------------------------------\nOne character is 0.000000 meters",
-              testing::internal::GetCapturedStdout());
+    NetworkExporter::init(network, "testoutputs/NetworkExporterTester-AddSection(simple)",
+                          "testoutputs/NetworkExporterTester-AddSection(impression)");
     EXPECT_DEATH(NetworkExporter::addSection(NULL, 0), "Failed to add section: no network");
     EXPECT_EQ(true, NetworkExporter::properlyInitialized());
-    int res = system("rm outputfiles/test.txt >/dev/null 2>&1");
-    EXPECT_EQ(0, res % 256);
+    NetworkExporter::addSection(network, 0);
+    NetworkExporter::finish();
+    EXPECT_TRUE(FileCompare("outputfiles/testoutputs/NetworkExporterTester-AddSection(impression).txt",
+                            "outputfiles/testoutputs/NetworkExporterTester-AddSection(impression)-expected.txt"));
+    EXPECT_TRUE(FileCompare("outputfiles/testoutputs/NetworkExporterTester-AddSection(simple).txt",
+                            "outputfiles/testoutputs/NetworkExporterTester-AddSection(simple)-expected.txt"));
+    testing::internal::GetCapturedStdout();
 }
 
 TEST_F(NetworkExporterTester, Whitespace) {
