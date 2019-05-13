@@ -12,6 +12,7 @@
 #include <gtest/gtest.h>
 #include <fstream>
 #include <stdlib.h>
+#include "Utils.h"
 
 class NetworkExporterTester : public ::testing::Test {
 protected:
@@ -27,8 +28,20 @@ TEST_F(NetworkExporterTester, Init) {
     EXPECT_EQ(false, NetworkExporter::properlyInitialized());
     NetworkParser parser;
     parser.loadFile("inputfiles/testinputs/test1.xml");
-//    Network *network = parser.parseNetwork(parser.getRoot());
-//    network->startSimulation(NULL, "simple", "impression", true, false);
+    Network *network = parser.parseNetwork(parser.getRoot());
+    NetworkExporter::init(network, "testoutputs/NetworkExporterTester-Init(simple)",
+                          "testoutputs/NetworkExporterTester-Init(impression)");
+    NetworkExporter::finish();
+    delete network;
+    network = new Network({});
+    NetworkExporter::init(network, "testoutputs/NetworkExporterTester-Init(impression)",
+                          "testoutputs/NetworkExporterTester-Init(impression)");
+    NetworkExporter::finish();
+    delete network;
+    EXPECT_TRUE(FileCompare("outputfiles/testoutputs/NetworkExporterTester-Init(impression).txt",
+                            "outputfiles/testoutputs/NetworkExporterTester-Init(impression)-expected.txt"));
+    EXPECT_TRUE(FileCompare("outputfiles/testoutputs/NetworkExporterTester-Init(simple).txt",
+                            "outputfiles/testoutputs/NetworkExporterTester-Init(simple)-expected.txt"));
 }
 
 TEST_F(NetworkExporterTester, Finish) {

@@ -71,6 +71,8 @@ void NetworkExporter::finish() {
     fgSimple << std::flush;
     fgImpression.close();
     fgSimple.close();
+    fgScale = 0;
+    fgLongestName = 0;
     _initCheck = false;
 }
 
