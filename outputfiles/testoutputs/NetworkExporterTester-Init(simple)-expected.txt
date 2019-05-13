@@ -1,0 +1,8 @@
+Baan : E19
+  -> Snelheidslimiet: 100km/u
+  -> Lengte         : 2000m
+  -> zone           : Begin: 0m Snelheidslimiet: 100km/u
+Baan : E313
+  -> Snelheidslimiet: 120km/u
+  -> Lengte         : 5000m
+  -> zone           : Begin: 0m Snelheidslimiet: 120km/u

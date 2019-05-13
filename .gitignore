@@ -1,4 +1,6 @@
-\cmake-build-debug/
-\.idea/
-\outputfiles/
-\.directory/
+cmake-build-debug/
+.idea/
+outputfiles/*
+.directory/
+outputfiles/testoutputs/*
+!outputfiles/testoutputs/*-expected.txt
