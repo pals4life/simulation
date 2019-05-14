@@ -38,6 +38,7 @@ TEST_F(VehicleParserTester, ParseVehicle) {
         TiXmlElement *elem = parser.getRoot()->FirstChildElement();
         IVehicle *temp = parser.parseVehicle(elem);
         EXPECT_TRUE(temp);
+        delete temp;
         elem = elem->NextSiblingElement();
         testing::internal::CaptureStderr();
         do {

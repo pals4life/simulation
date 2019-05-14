@@ -8,6 +8,8 @@
 //============================================================================
 
 #include <gtest/gtest.h>
+#include <fstream>
+#include "Utils.h"
 #include "../parsers/TrafficSignParser.h"
 
 class TrafficSignParserTester : public ::testing::Test {
@@ -36,14 +38,21 @@ TEST_F(TrafficSignParserTester, ParseTrafficsign) {
     if (loaded) {
         EXPECT_DEATH(parser.parseTrafficSign(NULL), "Failed to parse traffic sign: no element");
         TiXmlElement *elem = parser.getRoot()->FirstChildElement();
-        parser.parseTrafficSign(elem);
+        ETrafficSigns temp = parser.parseTrafficSign(elem);
+        EXPECT_EQ(temp, kBusStop);
+        delete parser.getBusStop();
         elem = elem->NextSiblingElement();
         testing::internal::CaptureStderr();
         do {
             EXPECT_EQ(kError, parser.parseTrafficSign(elem));
             elem = elem->NextSiblingElement();
         } while (elem != NULL);
-        testing::internal::GetCapturedStderr();
+        std::ofstream out("outputfiles/testoutputs/TrafficSignParserTester-ParseTrafficsign.txt");
+        EXPECT_TRUE(out.is_open());
+        out << testing::internal::GetCapturedStderr();
+        out.close();
+        EXPECT_TRUE(FileCompare("outputfiles/testoutputs/TrafficSignParserTester-ParseTrafficsign.txt",
+                                "outputfiles/testoutputs/TrafficSignParserTester-ParseTrafficsign-expected.txt"));
     }
 }
 

@@ -1,0 +1,5 @@
+Failed to parse traffic sign: position is no positive integer
+Failed to parse traffic sign: position is no positive integer
+Failed to parse zone: max speed is no positive integer
+Failed to parse zone: max speed is no positive integer
+Failed to parse traffic sign of type STOPBORD: skipping element

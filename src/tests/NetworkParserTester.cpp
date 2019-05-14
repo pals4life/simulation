@@ -32,10 +32,12 @@ TEST_F(NetworkParserTester, ParseNetwork) {
     if (loaded) {
         EXPECT_DEATH(parser.parseNetwork(NULL), "Failed to parse network: no element");
         Network *network = parser.parseNetwork(parser.getRoot());
+        EXPECT_TRUE(network);
         testing::internal::CaptureStdout();
         network->startSimulation(NULL, "simple", "impression", false, false);
         testing::internal::GetCapturedStdout();
         EXPECT_EQ(229, network->getTicksPassed());
+        delete network;
     }
     testing::internal::CaptureStderr();
     loaded = parser.loadFile("inputfiles/testinputs/test11.xml");
@@ -43,7 +45,8 @@ TEST_F(NetworkParserTester, ParseNetwork) {
     EXPECT_EQ(true, loaded);
     if (loaded) {
         testing::internal::CaptureStderr();
-        parser.parseNetwork(parser.getRoot());
+        Network *temp = parser.parseNetwork(parser.getRoot());
+        delete temp;
         std::ofstream out("outputfiles/testoutputs/NetworkParserTester-ParseNetwork.txt");
         EXPECT_TRUE(out.is_open());
         out << testing::internal::GetCapturedStderr();
