@@ -8,6 +8,8 @@
 //============================================================================
 
 #include <gtest/gtest.h>
+#include "Utils.h"
+#include <fstream>
 #include "../parsers/VAbstractParser.h"
 
 class AbstractParserTester : public ::testing::Test {
@@ -23,16 +25,21 @@ protected:
 TEST_F(AbstractParserTester, LoadFile) {
     VAbstractParser parser;
     testing::internal::CaptureStderr();
-    EXPECT_EQ(false, parser.loadFile(""));
-    EXPECT_EQ(false, parser.loadFile("FakeFile"));
-    EXPECT_EQ(false, parser.loadFile("inputfiles/testinputs/test4.xml"));
-    EXPECT_EQ(false, parser.loadFile("inputfiles/testinputs/test5.xml"));
-    EXPECT_EQ(false, parser.loadFile("inputfiles/testinputs/test6.xml"));
-    EXPECT_EQ(false, parser.loadFile("inputfiles/testinputs/test7.xml"));
-    EXPECT_EQ(false, parser.loadFile("inputfiles/testinputs/test8.xml"));
-    EXPECT_EQ(false, parser.loadFile("inputfiles/testinputs/test9.xml"));
-    EXPECT_EQ(false, parser.loadFile("inputfiles/testinputs/test10.xml"));
-    testing::internal::GetCapturedStderr();
+    EXPECT_FALSE(parser.loadFile(""));
+    EXPECT_FALSE(parser.loadFile("FakeFile"));
+    EXPECT_FALSE(parser.loadFile("inputfiles/testinputs/test4.xml"));
+    EXPECT_FALSE(parser.loadFile("inputfiles/testinputs/test5.xml"));
+    EXPECT_FALSE(parser.loadFile("inputfiles/testinputs/test6.xml"));
+    EXPECT_FALSE(parser.loadFile("inputfiles/testinputs/test7.xml"));
+    EXPECT_FALSE(parser.loadFile("inputfiles/testinputs/test8.xml"));
+    EXPECT_FALSE(parser.loadFile("inputfiles/testinputs/test9.xml"));
+    EXPECT_FALSE(parser.loadFile("inputfiles/testinputs/test10.xml"));
+    std::ofstream out("outputfiles/testoutputs/AbstractParserTester-LoadFile.txt");
+    EXPECT_TRUE(out.is_open());
+    out << testing::internal::GetCapturedStderr();
+    out.close();
+    EXPECT_TRUE(FileCompare("outputfiles/testoutputs/AbstractParserTester-LoadFile.txt",
+                            "outputfiles/testoutputs/AbstractParserTester-LoadFile-expected.txt"));
 }
 
 TEST_F(AbstractParserTester, GetRoot) {

@@ -11,6 +11,7 @@
 
 #include <gtest/gtest.h>
 #include "../parsers/NetworkParser.h"
+#include "Utils.h"
 
 class NetworkParserTester : public ::testing::Test {
 protected:
@@ -43,17 +44,12 @@ TEST_F(NetworkParserTester, ParseNetwork) {
     if (loaded) {
         testing::internal::CaptureStderr();
         parser.parseNetwork(parser.getRoot());
-        parser.clear();
-        std::string output = testing::internal::GetCapturedStderr();
-        EXPECT_STREQ(
-                "Inconsistent traffic situation: road E20 does not exist\n"
-                "Failed to recognize element FIETS: skipping element\n"
-                "Inconsistent traffic situation: car 651BUFis not on road E19\n"
-                "Inconsistent traffic situation: car 651BUF is less than 5m away from car 1THK180 on road E19\n"
-                "Inconsistent traffic situation: car 651BUF is less than 5m away from car 651BIF on roads E19 and E313\n"
-                "Inconsistent traffic situation: car 1THK180 is less than 5m away from car 651BIF on roads E19 and E313\n"
-                "Inconsistent traffic situation: road E20 does not exist\n",
-                output.c_str());
+        std::ofstream out("outputfiles/testoutputs/NetworkParserTester-ParseNetwork.txt");
+        EXPECT_TRUE(out.is_open());
+        out << testing::internal::GetCapturedStderr();
+        out.close();
+        EXPECT_TRUE(FileCompare("outputfiles/testoutputs/NetworkParserTester-ParseNetwork.txt",
+                                "outputfiles/testoutputs/NetworkParserTester-ParseNetwork-expected.txt"));
     }
 }
 
