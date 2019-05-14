@@ -13,10 +13,11 @@
 #include <fstream>
 
 // source: Serge Demeyer - TicTactToe in C++, Ansi-style
-bool FileCompare(const std::string& leftFileName, const std::string& rightFileName) {
+bool FileCompare(const std::string &leftFileName, const std::string &rightFileName) {
     std::ifstream leftFile, rightFile;
     char leftRead, rightRead;
-    bool result;leftFile.open(leftFileName.c_str());
+    bool result;
+    leftFile.open(leftFileName.c_str());
     if (!leftFile.is_open()) {
         return false;
     }
@@ -30,6 +31,9 @@ bool FileCompare(const std::string& leftFileName, const std::string& rightFileNa
         leftFile.get(leftRead);
         rightFile.get(rightRead);
         result = (leftRead == rightRead);
+        if (result == false) {
+            std::cout << "ok";
+        }
     }
     if (result) {
         result = (!leftFile.good()) && (!rightFile.good());
@@ -37,6 +41,13 @@ bool FileCompare(const std::string& leftFileName, const std::string& rightFileNa
     leftFile.close();
     rightFile.close();
     return result;
+}
+
+// source: Serge Demeyer - TicTactToe in C++, Ansi-style
+bool FileIsEmpty(const std::string &filename) {
+    struct stat st{};
+    if (stat(filename.c_str(), &st) != 0) return true;
+    return st.st_size == 0;
 }
 
 #endif //SIMULATION_UTILS_H

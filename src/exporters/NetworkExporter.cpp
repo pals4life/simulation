@@ -61,7 +61,8 @@ NetworkExporter::init(const Network *kNetwork, const std::string &kSimplePath, c
         if (road->getName().size() > fgLongestName) fgLongestName = road->getName().size();
     }
     fgScale = maxLength / 120;
-    tee("\n-------------------------------------------------\nOne character is " + std::to_string(fgScale) + " meters",
+    tee("\n", true);
+    tee("-------------------------------------------------\nOne character is " + std::to_string(fgScale) + " meters\n",
         false);
 }
 
@@ -79,7 +80,7 @@ void NetworkExporter::finish() {
 void NetworkExporter::addSection(const Network *kNetwork, uint32_t number) {
     REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling addSection");
     REQUIRE(kNetwork, "Failed to add section: no network");
-    fgSimple << "\n-------------------------------------------------\n";
+    fgSimple << "-------------------------------------------------\n";
     if (number != 1) fgSimple << "State of the network after " << number << " ticks have passed:\n\n";
     else fgSimple << "State of the network after " << number << " tick has passed:\n\n";
     for (uint32_t i = 0; i < kNetwork->fRoads.size(); i++) {
@@ -94,8 +95,9 @@ void NetworkExporter::addSection(const Network *kNetwork, uint32_t number) {
             }
         }
     }
+    fgSimple << '\n';
 
-    tee("\n-------------------------------------------------\n", false);
+    tee("-------------------------------------------------\n", false);
     if (number != 1) tee("State of the network after " + std::to_string(number) + " ticks have passed:\n\n", false);
     else tee("State of the network after " + std::to_string(number) + " tick has passed:\n\n", false);
     for (uint32_t i = 0; i < kNetwork->fRoads.size(); i++) {
@@ -118,6 +120,7 @@ void NetworkExporter::addSection(const Network *kNetwork, uint32_t number) {
             }
         }
     }
+    tee("\n", false);
 }
 
 std::string NetworkExporter::whitespace(const int amount) {
@@ -132,9 +135,9 @@ void
 NetworkExporter::printLane(const std::vector<std::vector<char>> &lane, const uint32_t max, const uint32_t laneNum) {
     REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling printLane");
     for (uint32_t l = 0; l < max; ++l) {
-        if (laneNum != 0) tee(whitespace(fgLongestName + 3), false);
+        if (!(laneNum == 0 && l == 0)) tee(whitespace(fgLongestName + 3), false);
         if (l == 0) tee(std::to_string(laneNum + 1) + " ", false);
-        else tee(whitespace(fgLongestName + 4 + std::to_string(laneNum + 1).size()), false);
+        else tee(whitespace(1 + std::to_string(laneNum + 1).size()), false);
         for (uint32_t k = 0; k < lane.size(); ++k) {
             tee((l < lane[k].size() ? lane[k][l] : (l == 0 ? '=' : ' ')), false);
         }

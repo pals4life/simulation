@@ -39,11 +39,11 @@ TEST_F(NetworkExporterTester, Init) {
                           "testoutputs/NetworkExporterTester-Init(impression)");
     NetworkExporter::finish();
     delete network;
+    testing::internal::GetCapturedStdout();
     EXPECT_TRUE(FileCompare("outputfiles/testoutputs/NetworkExporterTester-Init(impression).txt",
                             "outputfiles/testoutputs/NetworkExporterTester-Init(impression)-expected.txt"));
     EXPECT_TRUE(FileCompare("outputfiles/testoutputs/NetworkExporterTester-Init(simple).txt",
                             "outputfiles/testoutputs/NetworkExporterTester-Init(simple)-expected.txt"));
-    testing::internal::GetCapturedStdout();
 }
 
 TEST_F(NetworkExporterTester, Finish) {
@@ -63,11 +63,11 @@ TEST_F(NetworkExporterTester, AddSection) {
     EXPECT_EQ(true, NetworkExporter::properlyInitialized());
     NetworkExporter::addSection(network, 0);
     NetworkExporter::finish();
+    testing::internal::GetCapturedStdout();
     EXPECT_TRUE(FileCompare("outputfiles/testoutputs/NetworkExporterTester-AddSection(impression).txt",
                             "outputfiles/testoutputs/NetworkExporterTester-AddSection(impression)-expected.txt"));
     EXPECT_TRUE(FileCompare("outputfiles/testoutputs/NetworkExporterTester-AddSection(simple).txt",
                             "outputfiles/testoutputs/NetworkExporterTester-AddSection(simple)-expected.txt"));
-    testing::internal::GetCapturedStdout();
 }
 
 TEST_F(NetworkExporterTester, Whitespace) {
@@ -80,22 +80,23 @@ TEST_F(NetworkExporterTester, PrintLane) {
     EXPECT_DEATH(NetworkExporter::printLane({}, 0, 0), "NetworkExporter was not initialized when calling printLane");
     Network test({});
     testing::internal::CaptureStdout();
-    NetworkExporter::init(&test, "test", "test");
-    EXPECT_EQ("\n-------------------------------------------------\nOne character is 0.000000 meters",
-              testing::internal::GetCapturedStdout());
-    testing::internal::CaptureStdout();
+    NetworkExporter::init(&test, "testoutputs/NetworkExporterTester-PrintLane(simple)",
+                          "testoutputs/NetworkExporterTester-PrintLane(impression)");
     NetworkExporter::printLane({}, 0, 0);
-    EXPECT_EQ("", testing::internal::GetCapturedStdout());
-    testing::internal::CaptureStdout();
     std::vector<std::vector<char>> lane;
     lane.resize(20);
     lane[0].push_back('A');
     lane[0].push_back('B');
     lane[1].push_back('C');
+    NetworkExporter::tee("\n | ", false);
     NetworkExporter::printLane(lane, 2, 0);
-    EXPECT_EQ("1 AC==================\n     B                   \n", testing::internal::GetCapturedStdout());
-    int res = system("rm outputfiles/test.txt >/dev/null 2>&1");
-    EXPECT_EQ(0, res % 256);
+    NetworkExporter::printLane(lane, 2, 1);
+    NetworkExporter::finish();
+    testing::internal::GetCapturedStdout();
+    EXPECT_TRUE(FileCompare("outputfiles/testoutputs/NetworkExporterTester-PrintLane(impression).txt",
+                            "outputfiles/testoutputs/NetworkExporterTester-PrintLane(impression)-expected.txt"));
+    EXPECT_TRUE(FileCompare("outputfiles/testoutputs/NetworkExporterTester-PrintLane(simple).txt",
+                            "outputfiles/testoutputs/NetworkExporterTester-PrintLane(simple)-expected.txt"));
 }
 
 TEST_F(NetworkExporterTester, Tee) {
@@ -104,7 +105,7 @@ TEST_F(NetworkExporterTester, Tee) {
     Network test({});
     testing::internal::CaptureStdout();
     NetworkExporter::init(&test, "test", "test");
-    EXPECT_EQ("\n-------------------------------------------------\nOne character is 0.000000 meters",
+    EXPECT_EQ("\n-------------------------------------------------\nOne character is 0.000000 meters\n",
               testing::internal::GetCapturedStdout());
     testing::internal::CaptureStdout();
     NetworkExporter::tee<std::string>("test", false);
