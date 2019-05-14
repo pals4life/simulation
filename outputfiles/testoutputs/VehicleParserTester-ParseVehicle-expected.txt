@@ -1,0 +1,5 @@
+Failed to parse vehicle with license plate : license plate cannot be empty
+Failed to parse vehicle with license plate 1THK180: license plate already in use
+Failed to parse vehicle with license plate 4UYI840: position is no positive integer
+Failed to parse vehicle with license plate 6UYI240: speed is no positive integer
+Failed to parse vehicle with license plate 6UYI240: license plate already in use

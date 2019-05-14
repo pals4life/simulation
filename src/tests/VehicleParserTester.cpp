@@ -8,6 +8,8 @@
 //============================================================================
 
 #include <gtest/gtest.h>
+#include <fstream>
+#include "Utils.h"
 #include "../parsers/VehicleParser.h"
 
 class VehicleParserTester : public ::testing::Test {
@@ -34,14 +36,20 @@ TEST_F(VehicleParserTester, ParseVehicle) {
     if (loaded) {
         EXPECT_DEATH(parser.parseVehicle(NULL), "Failed to parse vehicle: no element");
         TiXmlElement *elem = parser.getRoot()->FirstChildElement();
-        parser.parseVehicle(elem);
+        IVehicle *temp = parser.parseVehicle(elem);
+        EXPECT_TRUE(temp);
         elem = elem->NextSiblingElement();
         testing::internal::CaptureStderr();
         do {
             EXPECT_EQ(NULL, parser.parseVehicle(elem));
             elem = elem->NextSiblingElement();
         } while (elem != NULL);
-        testing::internal::GetCapturedStderr();
+        std::ofstream out("outputfiles/testoutputs/VehicleParserTester-ParseVehicle.txt");
+        EXPECT_TRUE(out.is_open());
+        out << testing::internal::GetCapturedStderr();
+        out.close();
+        EXPECT_TRUE(FileCompare("outputfiles/testoutputs/VehicleParserTester-ParseVehicle.txt",
+                                "outputfiles/testoutputs/VehicleParserTester-ParseVehicle-expected.txt"));
     }
 }
 

@@ -1,0 +1,4 @@
+Failed to parse road with name : name cannot be empty
+Failed to parse road with name E19: name already in use
+Failed to parse road with name E20: max speed is no positive integer
+Failed to parse road with name E21: length is no positive integer

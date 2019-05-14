@@ -8,7 +8,9 @@
 //============================================================================
 
 #include <gtest/gtest.h>
+#include <fstream>
 #include "../parsers/RoadParser.h"
+#include "Utils.h"
 
 class RoadParserTester : public ::testing::Test {
 protected:
@@ -34,14 +36,21 @@ TEST_F(RoadParserTester, ParseRoad) {
     if (loaded) {
         EXPECT_DEATH(parser.parseRoad(NULL), "Failed to parse road: no element");
         TiXmlElement *elem = parser.getRoot()->FirstChildElement();
-        parser.parseRoad(elem);
+        Road * temp = parser.parseRoad(elem);
+        EXPECT_TRUE(temp);
+        delete temp;
         elem = elem->NextSiblingElement();
         testing::internal::CaptureStderr();
         do {
             EXPECT_EQ(NULL, parser.parseRoad(elem));
             elem = elem->NextSiblingElement();
         } while (elem != NULL);
-        testing::internal::GetCapturedStderr();
+        std::ofstream out("outputfiles/testoutputs/RoadParserTester-ParseRoad.txt");
+        EXPECT_TRUE(out.is_open());
+        out << testing::internal::GetCapturedStderr();
+        out.close();
+        EXPECT_TRUE(FileCompare("outputfiles/testoutputs/RoadParserTester-ParseRoad.txt",
+                                "outputfiles/testoutputs/RoadParserTester-ParseRoad-expected.txt"));
     }
 }
 
