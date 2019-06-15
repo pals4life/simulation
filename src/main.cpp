@@ -18,7 +18,7 @@ int main(int argc, char** argv)
 {
     QApplication application(argc, argv);
 
-    const auto gui = false;
+    const auto gui = true;
     const bool output = true;
 
     Window* window = nullptr;

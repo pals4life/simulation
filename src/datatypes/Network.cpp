@@ -40,7 +40,7 @@ int Network::getTicksPassed() const
     return fTicksPassed;
 }
 
-void Network::startSimulation(const Window* window, const std::string& simpleOutput, const std::string& impressionOutput, bool print, bool gui)
+void Network::startSimulation(Window* window, const std::string& simpleOutput, const std::string& impressionOutput, bool print, bool gui)
 {
     REQUIRE(this->properlyInitialized(), "Network was not initialized when calling startSimulation");
     if(print)
@@ -49,13 +49,14 @@ void Network::startSimulation(const Window* window, const std::string& simpleOut
         NetworkExporter::init(this, simpleOutput, impressionOutput);
     }
 
+
     while(fTicksPassed < fgkMaxTicks)
     {
         if(not gui or checkWindow(window->getState()))
         {
             if(update()) break;
 
-            if(print) NetworkExporter::addSection(this, fTicksPassed);
+            if(print) window->updateSimpleOutput(NetworkExporter::addSection(this, fTicksPassed));
             if(gui  ) Window::processEvents();
         }
     }
@@ -102,6 +103,8 @@ bool Network::checkWindow(Window::EState state) const
         case Window::kPause:
             Window::delay(500);
             return false;
+        case Window::kQuit:
+            exit(0);
         default:
             Window::delay(500);
             return false;
