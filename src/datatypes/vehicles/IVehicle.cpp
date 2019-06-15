@@ -63,7 +63,7 @@ void IVehicle::move(const uint32_t kLane, const uint32_t kIndex, Road* const kRo
     updateStatistics();
     if(fStationed) return;  // stationed means the vehicle must not update
 
-    std::cout << "velocity: " << fVelocity << " , position: " << fPosition << '\n';
+//    std::cout << "velocity: " << fVelocity << " , position: " << fPosition << '\n';
 
     checkTrafficLights(kRoad->getTrafficLight(fPosition));                                              // calculate the slowdown if needed
     checkBusStop(kRoad->getBusStop(fPosition));                                                         // calculate the slowdown if needed
@@ -215,10 +215,7 @@ std::pair<bool, double> IVehicle::calculateStop(double nextPos) const
     }
     futurePos += futureVel;
 
-
-
-    if(futurePos > nextPos)
-        return std::pair<bool, double>(true, kAccel);
+    if(futurePos > nextPos) return std::pair<bool, double>(true, kAccel);
     else return std::pair<bool, double>(false, 0);
 
 
