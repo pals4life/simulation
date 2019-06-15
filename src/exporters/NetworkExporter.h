@@ -30,10 +30,10 @@ public:
      *  REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling addSection");
      *  REQUIRE(kNetwork, "Failed to add section: no network");
      */
-    static void addSection(const Network *kNetwork, uint32_t number);
+    static std::string addSection(const Network *kNetwork, uint32_t number);
 
     /**
-     *  REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling fin    ish");
+     *  REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling finish");
      */
     static void finish();
 
@@ -45,6 +45,7 @@ public:
         REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling tee");
         fgImpression << string;
         std::cout << string;
+        fgBuf << string;
         if (init) fgSimple << string;
     }
 
@@ -61,6 +62,8 @@ public:
 private:
     static std::ofstream fgSimple;
     static std::ofstream fgImpression;
+
+    static std::stringstream fgBuf;
 
     static double fgScale;
     static uint32_t fgLongestName;

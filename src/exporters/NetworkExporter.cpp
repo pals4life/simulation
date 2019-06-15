@@ -11,9 +11,12 @@
 #include "../DesignByContract.h"
 #include <stdlib.h>
 #include <math.h>
+#include <sstream>
 
 std::ofstream NetworkExporter::fgSimple;
 std::ofstream NetworkExporter::fgImpression;
+
+std::stringstream NetworkExporter::fgBuf;
 
 double NetworkExporter::fgScale = 0;
 uint32_t NetworkExporter::fgLongestName = 0;
@@ -77,7 +80,7 @@ void NetworkExporter::finish() {
     _initCheck = false;
 }
 
-void NetworkExporter::addSection(const Network *kNetwork, uint32_t number) {
+std::string NetworkExporter::addSection(const Network *kNetwork, uint32_t number) {
     REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling addSection");
     REQUIRE(kNetwork, "Failed to add section: no network");
     fgSimple << "-------------------------------------------------\n";
@@ -96,6 +99,8 @@ void NetworkExporter::addSection(const Network *kNetwork, uint32_t number) {
         }
     }
     fgSimple << '\n';
+
+    fgBuf.str("");
 
     tee("-------------------------------------------------\n", false);
     if (number != 1) tee("State of the network after " + std::to_string(number) + " ticks have passed:\n\n", false);
@@ -121,6 +126,8 @@ void NetworkExporter::addSection(const Network *kNetwork, uint32_t number) {
         }
     }
     tee("\n", false);
+
+    return fgBuf.str();
 }
 
 std::string NetworkExporter::whitespace(const int amount) {
