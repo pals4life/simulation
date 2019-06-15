@@ -21,6 +21,7 @@ IVehicle::IVehicle(const std::string& license, double position, double velocity)
 
     fMoved = false;
     fStationed = false;
+    fMerging = false;
 
     fLicensePlate = license;
 
@@ -66,27 +67,27 @@ void IVehicle::move(const uint32_t kLane, const uint32_t kIndex, Road* const kRo
     checkBusStop(kRoad->getBusStop(fPosition));                                                         // calculate the slowdown if needed
     const double kSpeedlimit = kRoad->getSpeedLimit(fPosition);                                         // calculate the speed limit
 
-    const std::pair<const IVehicle*, double> nextVehicle = kRoad->getNextVehicle(kLane, kIndex);        // get the next vehicle
-    double kAcceleration = getFollowingAcceleration(nextVehicle);                                       // calculate the following speed
+    const std::pair<const IVehicle*, double> kNextVehicle = kRoad->getNextVehicle(kLane, kIndex);        // get the next vehicle
+    double acceleration = getFollowingAcceleration(kNextVehicle);                                        // calculate the following speed
 
-    if(std::get<0>(fTrafficLightAccel)) kAcceleration = std::min(std::get<1>(fTrafficLightAccel), kAcceleration);    // we need to take the minimum of these values
-    if(std::get<0>(fBusStopAccel)     ) kAcceleration = std::min(std::get<1>(fBusStopAccel)     , kAcceleration);    // to ensure we slow down enough
+    if(std::get<0>(fTrafficLightAccel)) acceleration = std::min(std::get<1>(fTrafficLightAccel), acceleration);    // we need to take the minimum of these values
+    if(std::get<0>(fBusStopAccel)     ) acceleration = std::min(std::get<1>(fBusStopAccel)     , acceleration);    // to ensure we slow down enough
 
     const std::pair<double, double> kMinMax = getMinMaxAcceleration(kSpeedlimit);                       // calculate the min and max acceleration possible
 
-    fAcceleration = clamp(kAcceleration, kMinMax.first, kMinMax.second);                                // clamp the values
+    fAcceleration = clamp(acceleration, kMinMax.first, kMinMax.second);                                 // clamp the values
     fVelocity += fAcceleration;                                                                         // Calculate new velocity
     fPosition += fVelocity;                                                                             // Calculate new positions
 
     fPrevAcceleration.push_front(fAcceleration);
     fPrevAcceleration.pop_back();
 
-    if(kRoad->laneExists(kLane+1)) checkLaneChange(std::get<0>(fTrafficLightAccel), kLane, kIndex, kRoad, true , kSpeedlimit);// overtake if possible
-    if(kRoad->laneExists(kLane-1)) checkLaneChange(std::get<0>(fTrafficLightAccel), kLane, kIndex, kRoad, false, kSpeedlimit);// go back if possible
+    if(kRoad->laneExists(kLane+1) and !fMerging) checkLaneChange(std::get<0>(fTrafficLightAccel), kLane, kIndex, kRoad, true , kSpeedlimit);// overtake if possible
+    if(kRoad->laneExists(kLane-1) and !fMerging) checkLaneChange(std::get<0>(fTrafficLightAccel), kLane, kIndex, kRoad, false, kSpeedlimit);// go back if possible
 
     ENSURE(getVelocity() >= 0, "Velocity cannot be negative");
     ENSURE((getAcceleration() >= getMinAcceleration()) && (getAcceleration() <= getMaxAcceleration()), "Acceleration is too high / low");
-    ENSURE(nextVehicle.first == NULL or pairPosition<IVehicle>(nextVehicle) - getPosition() > getMinVehicleDist(), "distance between vehicles must be greater than minVehicleDist");
+    ENSURE(kNextVehicle.first == NULL or pairPosition<IVehicle>(kNextVehicle) - getPosition() > getMinVehicleDist(), "distance between vehicles must be greater than minVehicleDist");
     ENSURE(fPrevAcceleration.size() == 5, "Previous acceleration must contain 5 elements");
 }
 
@@ -180,14 +181,17 @@ void IVehicle::checkLaneChange(const bool trafficLight, const uint32_t lane, con
     if(trafficLight) return;
 
     // 3. Het voertuig heeft 5 seconden op rij een versnelling van 0.
-    for(uint32_t i = 0; i < 5; i++) if(fPrevAcceleration[i] > fgkEpsilonThreshold) return;
+    if(left)
+    {
+        for(uint32_t i = 0; i < 5; i++) if(fPrevAcceleration[i] > fgkEpsilonThreshold) return;
+    }
 
     // 1. Het voertuig rijdt trager dan de snelheidslimiet van de baan of zone,
     // 2. Het voertuig rijdt trager dan zijn maximaal haalbare snelheid.
     if(left and fVelocity >= std::min(kSpeedlimit, getMaxSpeed()) - fgkEpsilonThreshold) return;
 
     // 6. Er is geen voertuig op de nieuwe rijstrook in een straal van de ideale volgafstand (dus zowel voor als achter het voertuig).
-    road->changeLaneIfPossible(this, lane, index, left);
+    fMerging = road->changeLaneIfPossible(this, lane, index, left);
 }
 
 std::pair<bool, double> IVehicle::calculateStop(double nextPos) const
@@ -278,6 +282,19 @@ void IVehicle::setStationed(bool kStationed) const
     REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling setStationed");
     fStationed = kStationed;
     ENSURE(getStationed() == kStationed, "new moved not set when calling setStationed");
+}
+
+bool IVehicle::getMerging() const
+{
+    REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getMerging");
+    return fMerging;
+}
+
+void IVehicle::setMerging(bool kMerging) const
+{
+    REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling setMerging");
+    fMerging = kMerging;
+    ENSURE(getMerging() == kMerging, "new moved not set when calling setMerging");
 }
 
 std::tuple<uint32_t, uint32_t, double, double> IVehicle::getStatistics() const

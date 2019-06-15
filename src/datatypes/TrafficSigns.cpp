@@ -49,7 +49,7 @@ void TrafficLight::update() const
     {
         case kRed:
             // if there is a vehicle incoming or the redTime has been too long, switch to kGreen after 15 ticks
-            if((fkInRange != NULL or diff > fgkMaxDifference) and fTimer >= 15)
+            if(((fkInRange != NULL or diff > fgkMaxDifference) and fTimer >= 15) or fTimer >= 90)
             {
                 fColor = kGreen;
                 fTimer = 0;
@@ -68,7 +68,7 @@ void TrafficLight::update() const
 
         case kGreen:
             // if there is no vehicle incoming or greenTime has been too high, switch to kOrange after 15 ticks
-            if((fkInRange == NULL or diff < -fgkMaxDifference) and fTimer >= 15)
+            if(((fkInRange == NULL or diff < -fgkMaxDifference) and fTimer >= 15) or fTimer >= 90)
             {
                 fColor = kOrange;
                 fTimer = 0;
@@ -81,6 +81,7 @@ void TrafficLight::update() const
     }
 
     fTimer++;
+    ENSURE(fTimer <= 90, "timer has exceeded its maximum value");
 }
 TrafficLight::EColor TrafficLight::getColor() const
 {
