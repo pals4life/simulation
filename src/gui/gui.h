@@ -42,7 +42,7 @@ class Window: public QMainWindow
     Q_OBJECT
 
 public:
-    enum EState {kInactive, kPlay, kPause, kNext, kQuit, kBusy};
+    enum EState {kInactive, kPlay, kPause, kNext, kQuit, kBusy, kPrint};
     explicit Window(QWidget* parent = nullptr);
     /**
      * ENSURE(this->properlyInitialized(), "Window.init() constructor must end in properlyInitialized state");
@@ -86,6 +86,10 @@ public:
      * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling createRoadButtons");
      */
     void createRoadButtons(const std::vector<Road*> &roads);
+    /**
+     * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling createRoadButtons");
+     */
+     void updateSimpleOutput(std::string output);
 
 protected:
 
@@ -99,6 +103,7 @@ protected:
 
 private:
     std::map<QObject*, Road*> fRoadButtons;
+    QLabel* fSimpleOutput;
 
 private slots:
     /**
@@ -120,7 +125,18 @@ private slots:
     /**
      * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onExit");
      */
+    void onPrint();
+    /**
+     * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onExit");
+     */
     void onExit();
+
+public:
+    /**
+     * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onExit");
+     */
+    void setCrState(EState fCrState);
+
 };
 
 class RoadWindow: public Window

@@ -1,0 +1,14 @@
+Alphabet = {A}
+
+Draw = {
+        A -> 1
+}
+
+Rules = {
+        A -> "0.3 A(-A)(+A);0.7 A(-A)A(+A)"
+}
+
+Initiator     = "A"
+Angle         = 10
+StartingAngle = 90
+Iterations    = 8

@@ -1,0 +1,9 @@
+Alphabet = {F}
+Draw = { F-> 1
+}
+Rules = {
+	F -> "0.3 F(-&\F)(\++&F)F(--&/F)(+&F);0.6 F(+F)(-F)F(+F)(-F)FF;0.1 F"
+}
+Initiator = "^^^^F"
+Angle = 22.5
+Iterations = 3

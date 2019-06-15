@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NETWERK>
+    <VOERTUIG>
+        <type>AUTO</type>
+        <nummerplaat>1THK180</nummerplaat>
+        <baan>E19</baan>
+        <positie>50</positie>
+        <snelheid>0</snelheid>
+    </VOERTUIG>
+
+    <VOERTUIG>
+        <type>VRACHTWAGEN</type>
+        <nummerplaat>1THK1A0</nummerplaat>
+        <baan>E19</baan>
+        <positie>100</positie>
+        <snelheid>0</snelheid>
+    </VOERTUIG>
+
+    <VOERTUIG>
+        <type>MOTORFIETS</type>
+        <nummerplaat>1TNK1A0</nummerplaat>
+        <baan>E19</baan>
+        <positie>10</positie>
+        <snelheid>0</snelheid>
+    </VOERTUIG>
+
+    <VOERTUIG>
+        <type>BUS</type>
+        <nummerplaat>651BUF</nummerplaat>
+        <baan>E19</baan>
+        <positie>150</positie>
+        <snelheid>0</snelheid>
+    </VOERTUIG>
+
+    <BAAN>
+        <naam>E19</naam>
+        <snelheidslimiet>120</snelheidslimiet>
+        <lengte>10000</lengte>
+    </BAAN>
+
+</NETWERK>

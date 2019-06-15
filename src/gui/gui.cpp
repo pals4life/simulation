@@ -25,8 +25,11 @@ void Window::init()
     fRoot->setLayout(fLayout);
 
     QLabel* title = new QLabel("Project Software Engineering - BA1 Informatica - Thomas Dooms, Ward Gauderis, Mano Marichal - University of Antwerp");
-    fLayout->addWidget(title, 0,0,1,3);
-
+    QFont f("unexistent");
+    f.setStyleHint(QFont::Monospace);
+    title->setFont(f);
+    fLayout->addWidget(title, 0,0,1,4);
+    fSimpleOutput = title;
     properlyInitialized = true;
 
     ENSURE(this->checkProperlyInitialized(), "Window.init() must end in properlyInitialized eState");
@@ -49,24 +52,30 @@ void Window::createButtons()
     QPushButton* play = new QPushButton("Play", this);
     QPushButton* kPause = new QPushButton("Pause", this);
     QPushButton* skipOne = new QPushButton("Next tick", this);
+    QPushButton* print = new QPushButton("Print current state", this);
+
 
     play->show();
     kPause->show();
     skipOne->show();
+    print->show();
 
-    int size = 70;
+    const int size = 70;
 
     play->setFixedHeight(size);
     kPause->setFixedHeight(size);
     skipOne->setFixedHeight(size);
+    print->setFixedHeight(size);
 
     fLayout-> addWidget(play, 1, 0 ,1, 1);
     fLayout-> addWidget(kPause, 1, 1 ,1, 1);
     fLayout-> addWidget(skipOne, 1, 2 ,1, 1);
+    fLayout-> addWidget(print, 1, 3 ,1, 1);
 
     connect(play, SIGNAL(pressed()), this, SLOT(onPlay()));
     connect(kPause, SIGNAL(pressed()), this, SLOT(onPause()));
     connect(skipOne, SIGNAL(pressed()), this, SLOT(onNext()));
+    connect(print, SIGNAL(pressed()), this, SLOT(onPrint()));
 }
 
 std::string Window::askString(std::string example)
@@ -110,7 +119,7 @@ void Window::createRoadButtons(const std::vector<Road *> &roads)
         temp->show();
         connect(temp, SIGNAL(pressed()), this, SLOT(onRoadButton()));
 
-        fLayout->addWidget(temp, i+2, 0, 1, 3);
+        fLayout->addWidget(temp, i+2, 0, 1, 4);
         fRoadButtons[temp] = roads[i];
     }
 }
@@ -185,6 +194,13 @@ void Window::onRoadButton()
     fCrState = kInactive;
 }
 
+void Window::onPrint()
+{
+    REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onExit");
+    if (fCrState == kBusy) return;
+    fCrState = kPrint;
+}
+
 std::string Window::doubleToPrecision(double d, int precision)
 {
     int x = 1;
@@ -198,6 +214,16 @@ std::string Window::doubleToPrecision(double d, int precision)
     std::string as_double = as_int.substr(0, as_int.size() - precision) + "," + as_int.substr(as_int.size() - precision, precision);
 
     return as_double;
+}
+
+void Window::updateSimpleOutput(std::string output)
+{
+    fSimpleOutput->setText(output.c_str());
+}
+
+void Window::setCrState(Window::EState fCrState) {
+    REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling setCrState");
+    Window::fCrState = fCrState;
 }
 
 //---------------------------------------ROAD WINDOW CLASS-----------------------------------------------------
