@@ -66,7 +66,7 @@ public:
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling laneExists");
      * REQUIRE(index < fLanes[lane].size(), "Index is out of range");
      */
-    void changeLaneIfPossible(IVehicle* vehicle, uint32_t kLane, uint32_t kIndex, bool kLeft);
+    bool changeLaneIfPossible(IVehicle* vehicle, uint32_t kLane, uint32_t kIndex, bool kLeft);
 
     //--------------------------------------------------------------------------------------------------//
 
@@ -213,6 +213,7 @@ private:
 
 	Road* fNextRoad;
 	std::vector< std::deque<IVehicle*> > fLanes;
+	std::vector<std::tuple<uint32_t, uint32_t, uint32_t>> fMergingVehicles;
 
 	std::vector<const Zone*> fZones;
 	std::vector<const BusStop*> fBusStops;

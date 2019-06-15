@@ -37,6 +37,7 @@ public:
 
     /*
      * REQUIRE(properlyInitialized(), "TrafficLight was not properly initialized when calling getColor");
+     * ENSURE(fTimer <= 90, "timer has exceeded its maximum value");
      */
     EColor getColor() const;
 

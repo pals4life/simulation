@@ -45,6 +45,7 @@ public:
      * REQUIRE(this->properlyInitialized(), "moved vehicle must be properly initialized");
      * REQUIRE(kRoad->properlyInitialized(), "road was not initialized when calling move");
      * REQUIRE(kRoad->laneExists(kLane), "kLane does not exist when calling move");
+     *
      * ENSURE(getVelocity() >= 0, "Velocity cannot be negative");
      * ENSURE((getAcceleration() >= getMinAcceleration()) && (getAcceleration() <= getMinAcceleration()), "Acceleration is too high / low");
      * ENSURE(nextVehicle.first == NULL or pairPosition<IVehicle>(nextVehicle) - getPosition() > getMinVehicleDist(), "distance between vehicles must be greater than minVehicleDist");
@@ -107,6 +108,18 @@ public:
     void setStationed(bool kStationed) const;
 
     /*
+     * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getStationed");
+     * ENSURE(getMoved() == kMoved, "new moved not set when calling setMoved");
+     */
+    bool getMerging() const;
+
+    /*
+     * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling setStationed");
+     * ENSURE(getStationed() == kStationed, "new moved not set when calling setStationed");
+     */
+    void setMerging(bool kStationed) const;
+
+    /*
      * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getStatistics");
      */
     std::tuple<uint32_t, uint32_t, double, double> getStatistics() const;
@@ -163,6 +176,7 @@ protected:
 
     mutable bool fMoved;
     mutable bool fStationed;
+    mutable bool fMerging;
 
     double fPosition;
     double fVelocity;
@@ -179,7 +193,6 @@ protected:
     double fMaxVelocity;
 
     static const double fgkMinVehicleDist;
-
     static const double fgkEpsilonThreshold;
 };
 
