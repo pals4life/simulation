@@ -557,10 +557,12 @@ const Vector3D &Figure::getB() const {
 Figure::Figure(const std::string &name, const ini::Configuration &configuration) {
     int nrPoints = configuration[name]["nrPoints"];
     int nrLines = configuration[name]["nrLines"];
+    points.reserve(nrPoints);
     for (int j = 0; j < nrPoints; ++j) {
         std::vector<double> point = configuration[name]["point" + std::to_string(j)];
         addPoint(Vector3D::point(point));
     }
+    faces.reserve(nrLines);
     for (int k = 0; k < nrLines; ++k) {
         std::vector<int> line = configuration[name]["line" + std::to_string(k)];
         addFace(line);

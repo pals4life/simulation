@@ -1,3 +1,5 @@
+#include <utility>
+
 //============================================================================
 // @name        : NetworkExporter.cpp
 // @author      : Thomas Dooms, Ward Gauderis
@@ -12,6 +14,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <sstream>
+#include <iomanip>
 
 std::ofstream NetworkExporter::fgSimple;
 std::ofstream NetworkExporter::fgImpression;
@@ -167,29 +170,169 @@ void NetworkExporter::cgExport(const Network *kNetwork, uint32_t number) {
     std::ofstream ini(kFilename);
     ENSURE(ini.is_open(), "Failed to open file for cg export");
 
-    general(ini);
+    ini << std::fixed;
+    ini << std::setprecision(2);
 
+    for (uint32_t i = 0; i < kNetwork->fRoads.size(); i++) {
+        const Road *road = kNetwork->fRoads[i];
+        for (uint32_t j = 0; j < road->getNumLanes(); j++) {
+            for (uint32_t k = 0; k < (*road)[j].size(); k++) {
+                const IVehicle *vehicle = (*road)[j][k];
+                const std::string kType = vehicle->getType();
+                if (kType == "auto");
+                else if (kType == "bus");
+                else if (kType == "vrachtwagen");
+                else if (kType == "motorfiets");
+            }
+        }
+    }
+
+    int nr = 0;
+    Pos nu = {0, 0, 0};
+
+    car(ini, nr, nu);
+    general(ini, nr);
 
     ini.close();
-    const std::string kCommand = "(./engine/engine " + kFilename + " && rm " + kFilename + ") &";
+    const std::string kCommand = "(./engine/engine " + kFilename + ")"; //  " && rm " + kFilename +
     system(kCommand.c_str());
+    exit(0);
 }
 
-void NetworkExporter::general(std::ofstream &ini) {
+void NetworkExporter::general(std::ofstream &ini, const int &nr) {
     ini << "[General]\n"
            "size = 512\n"
-           "backgroundcolor = (0.5, 0.5, 0.5)\n"
+           "backgroundcolor = (0.16,0.17,0.16)\n"
            "type = \"LightedZBuffering\"\n"
-           "nrLigths = 1\n"
+           "nrLights = 2\n"
            "shadowEnabled = TRUE\n"
            "shadowMask = 1024\n"
-           "eye = (0, 0, 10)\n"
-           "nrFigures = 1\n"
-           "\n"
-           "[Light0]\n"
-           "infinity = FALSE\n"
-           "location = (1, 1, 5)\n"
-           "ambientLight = (0.1, 0.1, 0.1)\n"
-           "diffuseLight = (0.2, 0.2, 0.2)\n"
-           "specularLight = (0.5, 0.5, 0.5)\n";
+           "eye = (1,2,3)\n"
+           "nrFigures = " << nr << "\n"
+                                   "\n"
+                                   "[Light0]\n"
+                                   "infinity = FALSE\n"
+                                   "location = (-2,2,10)\n"
+                                   "ambientLight = (0.4,0.4,0.4)\n"
+                                   "diffuseLight = (0.4,0.4,0.4)\n"
+                                   "specularLight = (0.8,0.8,0.8)\n"
+                                   "[Light1]\n"
+                                   "infinity = TRUE\n"
+                                   "direction = (-2,-5,10)\n"
+                                   "ambientLight = (0.4,0.4,0.4)\n"
+                                   "diffuseLight = (0.4,0.4,0.4)\n"
+                                   "specularLight = (0.8,0.8,0.8)\n"
+                                   "\n";
+//           "[Figure0]\n"
+//           "type = \"LineDrawing\"\n"
+//           "ambientReflection = (0.2,0.2,0.2)\n"
+//           "diffuseReflection = (0.2,0.2,0.2)\n"
+//           "specularReflection = (0.2,0.2,0.2)\n"
+//           "reflectionCoefficient = 5\n"
+//           "nrPoints = 8\n"
+//           "nrLines = 6\n"
+//           "point0 = (1,-1,-1)\n"
+//           "point1 = (-1,1,-1)\n"
+//           "point2 = (1,1,1)\n"
+//           "point3 = (-1,-1,1)\n"
+//           "point4 = (1,1,-1)\n"
+//           "point5 = (-1,-1,-1)\n"
+//           "point6 = (1,-1,1)\n"
+//           "point7 = (-1,1,1)\n"
+//           "line0 = (0,4,2,6)\n"
+//           "line1 = (4,1,7,2)\n"
+//           "line2 = (1,5,3,7)\n"
+//           "line3 = (5,0,6,3)\n"
+//           "line4 = (6,2,7,3)\n"
+//           "line5 = (0,5,1,4)\n";
 }
+
+void NetworkExporter::car(std::ofstream &ini, int &nr, Pos &pos) {
+    Object bottom = Object::rectangle(pos, {pos.fX - 3, pos.fY - 1.5, pos.fZ + 0.5});
+    bottom.fAmbient = {0.5, 0.1, 0.1};
+    bottom.fDiffuse = {0.5, 0.1, 0.1};
+    bottom.fSpecular = {0.8, 0.1, 0.1};
+    bottom.fReflectionCoefficient = 5;
+    Object top = Object::rectangle({pos.fX - 1, pos.fY, pos.fZ + 0.5}, {pos.fX - 2, pos.fY - 1.5, pos.fZ + 1});
+    top.fAmbient = {0.1, 0.1, 0.1};
+    top.fDiffuse = {0.3, 0.1, 0.3};
+    top.fSpecular = {0.3, 0.3, 1};
+    top.fReflectionCoefficient = 5;
+    bottom.print(ini, nr++);
+    top.print(ini, nr++);
+    wheel(ini, nr, {pos.fX - 0.5, pos.fY+0.2, pos.fZ});
+    wheel(ini, nr, {pos.fX - 2.5, pos.fY+0.2, pos.fZ});
+}
+
+void NetworkExporter::wheel(std::ofstream &ini, int &nr, const Pos &kPos) {
+    ini << "[Figure" << nr++ << "]\n";
+    ini << "type = \"Cylinder\"\n";
+    ini << "scale = 0.25\n";
+    ini << "rotateX = 90\n";
+    ini << "center = " << kPos << "\n";
+    ini << "ambientReflection = (0.1, 0.1, 0.1)\n";
+    ini << "diffuseReflection = (0.1, 0.1, 0.1)\n";
+    ini << "n = 10\n";
+    ini << "height = 8\n";
+    ini << "\n";
+}
+
+Object Object::rectangle(const Pos &begin, const Pos &end) {
+    Object object;
+    object.fPoints.reserve(8);
+    object.fPoints.push_back({end.fX, begin.fY, begin.fZ});
+    object.fPoints.push_back({begin.fX, end.fY, begin.fZ});
+    object.fPoints.push_back({end.fX, end.fY, end.fZ});
+    object.fPoints.push_back({begin.fX, begin.fY, end.fZ});
+    object.fPoints.push_back({end.fX, end.fY, begin.fZ});
+    object.fPoints.push_back({begin.fX, begin.fY, begin.fZ});
+    object.fPoints.push_back({end.fX, begin.fY, end.fZ});
+    object.fPoints.push_back({begin.fX, end.fY, end.fZ});
+    object.fFaces.reserve(6);
+    object.fFaces.emplace_back(Face({0, 4, 2, 6}));
+    object.fFaces.emplace_back(Face({4, 1, 7, 2}));
+    object.fFaces.emplace_back(Face({1, 5, 3, 7}));
+    object.fFaces.emplace_back(Face({5, 0, 6, 3}));
+    object.fFaces.emplace_back(Face({6, 2, 7, 3}));
+    object.fFaces.emplace_back(Face({0, 5, 1, 4}));
+    return object;
+}
+
+void Object::print(std::ofstream &ini, const int nr) {
+    ini << "[Figure" << nr << "]\n";
+    ini << "type = \"LineDrawing\"\n";
+    ini << "ambientReflection = " << fAmbient << "\n";
+    ini << "diffuseReflection = " << fDiffuse << "\n";
+    ini << "specularReflection = " << fSpecular << "\n";
+    ini << "reflectionCoefficient = " << fReflectionCoefficient << "\n";
+    ini << "nrPoints = " << fPoints.size() << "\n";
+    ini << "nrLines = " << fFaces.size() << "\n";
+    for (unsigned int i = 0; i < fPoints.size(); i++) {
+        ini << "point" << i << " = " << fPoints[i] << "\n";
+    }
+    for (unsigned int i = 0; i < fFaces.size(); i++) {
+        ini << "line" << i << " = " << fFaces[i] << "\n";
+    }
+    ini << "\n";
+}
+
+std::ostream &operator<<(std::ostream &os, const Color &color) {
+    os << "(" << color.fR << "," << color.fG << "," << color.fB << ")";
+    return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const Pos &pos) {
+    os << "(" << pos.fX << "," << pos.fY << "," << pos.fZ << ")";
+    return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const Face &face) {
+    os << "(";
+    for (unsigned int i = 0; i < face.fIndexes.size() - 1; ++i) {
+        os << face.fIndexes[i] << ",";
+    }
+    os << face.fIndexes.back() << ")";
+    return os;
+}
+
+Face::Face(std::vector<int> fIndexes) : fIndexes(std::move(fIndexes)) {}

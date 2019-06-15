@@ -121,11 +121,14 @@ void getFigure(const ini::Configuration &configuration, Figures &figures, const 
                const Color &diffuse, const Color &specular, const double coefficient, const std::string &texture,
                const Vector3D &p, const Vector3D &a, const Vector3D &b) {
     std::string figureType = configuration[name]["type"];
-    double scale = configuration[name]["scale"];
+    double scale = configuration[name]["scale"].as_double_or_default(1);
     double x = M_PI * configuration[name]["rotateX"].as_double_or_default(0) / 180;
     double y = M_PI * configuration[name]["rotateY"].as_double_or_default(0) / 180;
     double z = M_PI * configuration[name]["rotateZ"].as_double_or_default(0) / 180;
-    std::vector<double> centerPoint = configuration[name]["center"];
+    std::vector<double> centerPoint = {0, 0, 0};
+    if (configuration[name]["center"].exists()) {
+        centerPoint = configuration[name]["center"];
+    }
     Vector3D center = Vector3D::point(centerPoint);
     Figure figure;
 
