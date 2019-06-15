@@ -40,3 +40,6 @@ find_package(Qt5Gui     REQUIRED )
 
 qt5_use_modules(simulation Core Widgets Gui)
 qt5_use_modules(simulation_debug Core Widgets Gui)
+
+# Build cg engine
+execute_process(COMMAND "make -C ./engine")
