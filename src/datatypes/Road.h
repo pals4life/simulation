@@ -15,7 +15,7 @@
 #include "vehicles/IVehicle.h"
 #include "TrafficSigns.h"
 
-typedef std::deque<IVehicle*>::const_iterator Iter;
+typedef std::vector<IVehicle*>::const_iterator Iter;
 
 class Road
 {
@@ -116,7 +116,7 @@ public:
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling operator[]");
      * REQUIRE(laneExists(kIndex), "lane does not exist");
      */
-    const std::deque<IVehicle*>& operator[](uint32_t kIndex) const;
+    const std::vector<IVehicle*>& operator[](uint32_t kIndex) const;
 
     //--------------------------------------------------------------------------------------------------//
     //              al de onderstaande functies zijn voor verkeerstekens methodes                       //
@@ -212,7 +212,7 @@ private:
 	std::string fName;
 
 	Road* fNextRoad;
-	std::vector< std::deque<IVehicle*> > fLanes;
+	std::vector<std::vector<IVehicle*> > fLanes;
 	std::vector<std::tuple<uint32_t, uint32_t, uint32_t>> fMergingVehicles;
 
 	std::vector<const Zone*> fZones;

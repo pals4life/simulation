@@ -62,10 +62,8 @@ void Road::updateVehicles()
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling updateVehicles");
 
-    for(uint32_t i = fLanes.size()-1; i != uint32_t(-1); i--)
+    for(uint32_t i = 0; i < fLanes.size(); i++)
     {
-        if(fLanes[i].empty()) continue;
-
         for(uint32_t j = 0; j < fLanes[i].size(); j++)
         {
             fLanes[i][j]->move(i,j, this);
@@ -111,7 +109,7 @@ bool Road::changeLaneIfPossible(IVehicle* vehicle, const uint32_t kLane, const u
     REQUIRE(laneExists(kLane + (kLeft ? 1 : -1)), "Cannot go to non-existing lane");
     REQUIRE(kIndex < fLanes[kLane].size(), "Index is out of range");
 
-    std::deque<IVehicle*>& newLane = fLanes[kLane + (kLeft ? 1 : -1)];
+    std::vector<IVehicle*>& newLane = fLanes[kLane + (kLeft ? 1 : -1)];
     const double ideal = 1.5 * vehicle->getVelocity();
 
     // this isn't specified but vehicles are not allowed to switch lanes when entering or leaving a road.
@@ -120,19 +118,19 @@ bool Road::changeLaneIfPossible(IVehicle* vehicle, const uint32_t kLane, const u
     if(!newLane.empty())
     {
         // we find the first vehicle that is in front of them on the new lane.
-        std::deque<IVehicle*>::iterator iter = std::upper_bound(newLane.begin(), newLane.end(), vehicle->getPosition(), comparePosition<IVehicle>);
+        Iter iter = std::upper_bound(newLane.begin(), newLane.end(), vehicle->getPosition(), comparePosition<IVehicle>);
 
         if(iter != newLane.begin() and (*(iter-1))->getPosition() + ideal > vehicle->getPosition()) return false;    // if iter == begin there is no vehicle behind them
         if(iter != newLane.end()   and (*iter    )->getPosition() - ideal < vehicle->getPosition()) return false;    // if iter == end there is no vehicle in front
 
         // insert in front of the iter, which is the vehicle in front.
-        newLane.insert(iter-1, vehicle);
+        newLane.insert(iter, vehicle);
         fMergingVehicles.push_back(std::tuple<uint32_t, uint32_t, uint32_t>(0, kLane, kIndex));
     }
     else
     {
         // if the lane is empty we can easily push it in front
-        newLane.push_front(vehicle);
+        newLane.insert(newLane.begin(), vehicle);
         fMergingVehicles.push_back(std::tuple<uint32_t, uint32_t, uint32_t>(0, kLane, kIndex));
     }
     return true;
@@ -192,7 +190,7 @@ bool Road::laneExists(uint32_t kLane) const
     return kLane < getNumLanes();
 }
 
-const std::deque<IVehicle*>& Road::operator[](const uint32_t kIndex) const
+const std::vector<IVehicle*>& Road::operator[](const uint32_t kIndex) const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling operator[]");
     REQUIRE(laneExists(kIndex), "lane does not exist");
@@ -373,7 +371,7 @@ void Road::dequeue(const uint32_t kLane)
         fLanes[kLane].front()->setPosition(fLanes[kLane].front()->getPosition() - fRoadLength); // current position minus roadlength
         fNextRoad->enqueue(fLanes[kLane].front(), kLane);                                       // enqueue in next road if there is one
     }
-    fLanes[kLane].pop_front();                                                                 // remove from the queue
+    fLanes[kLane].erase(fLanes[kLane].begin());                                                 // remove from the queue
 }
 
 

@@ -63,6 +63,8 @@ void IVehicle::move(const uint32_t kLane, const uint32_t kIndex, Road* const kRo
     updateStatistics();
     if(fStationed) return;  // stationed means the vehicle must not update
 
+    std::cout << "velocity: " << fVelocity << " , position: " << fPosition << '\n';
+
     checkTrafficLights(kRoad->getTrafficLight(fPosition));                                              // calculate the slowdown if needed
     checkBusStop(kRoad->getBusStop(fPosition));                                                         // calculate the slowdown if needed
     const double kSpeedlimit = kRoad->getSpeedLimit(fPosition);                                         // calculate the speed limit
@@ -126,7 +128,7 @@ void IVehicle::checkTrafficLights(std::pair<const TrafficLight*, double> nextTra
 
     if(std::get<0>(fTrafficLightAccel))
     {
-        if(nextTrafficLight.first->getColor() == TrafficLight::kGreen)
+        if(nextTrafficLight.first == NULL or nextTrafficLight.first->getColor() == TrafficLight::kGreen)
         {
             std::get<0>(fTrafficLightAccel) = false;
             return;
@@ -199,17 +201,40 @@ std::pair<bool, double> IVehicle::calculateStop(double nextPos) const
     REQUIRE(properlyInitialized(), "Vehicle was not initialized when calling calculateStop");
     REQUIRE(nextPos > getPosition(), "cannot stop behind current pos when calling calculateStop");
 
-    const double ideal = 0.75 * fVelocity;
-    const double dist = nextPos - fPosition;
+    const double kDist = nextPos - fPosition;
+    const double kAccel = -fVelocity*fVelocity/(kDist + 2*fVelocity);
 
-    // we will stop one tick before we reach the stop zone, because busses are barely able to stop in 2 * ideal dist.
-    std::pair<bool, double> result;
+    if(kDist < 10) return std::pair<bool, double>(false, 0);
 
-    if(dist-fVelocity < 2 * ideal) result = std::pair<bool, double>(true, -fVelocity*fVelocity/(dist+3*fVelocity + fgkEpsilonThreshold));
-    else result = std::pair<bool, double>(false, 0);
+    double futurePos = fPosition + fVelocity + getMaxAcceleration();
+    double futureVel = fVelocity;
+    while(futureVel > -getMinAcceleration())
+    {
+        futureVel += getMinAcceleration();
+        futurePos += futureVel;
+    }
+    futurePos += futureVel;
 
-    ENSURE(result.second > getMinAcceleration(), "Vehicle cannot stop faster than minimum acceleration");
-    return result;
+
+
+    if(futurePos > nextPos)
+        return std::pair<bool, double>(true, kAccel);
+    else return std::pair<bool, double>(false, 0);
+
+
+//    const double ideal = 0.75 * fVelocity;
+//    const double dist = nextPos - fPosition;
+//
+//    // we will stop one tick before we reach the stop zone, because busses are barely able to stop in 2 * ideal dist.
+//    std::pair<bool, double> result;
+
+//    if(dist-fVelocity < 2 * ideal) result = std::pair<bool, double>(true, -fVelocity*fVelocity/(dist+3*fVelocity + fgkEpsilonThreshold));
+//    else result = std::pair<bool, double>(false, 0);
+//
+//    if(result.second < getMinAcceleration()) result.second = getMinAcceleration();
+//    ENSURE(result.second >= getMinAcceleration(), "Vehicle cannot stop faster than minimum acceleration");
+//
+//    return result;
 }
 
 void IVehicle::updateStatistics()

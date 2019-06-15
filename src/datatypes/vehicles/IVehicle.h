@@ -159,8 +159,6 @@ private:
     /*
      * REQUIRE(properlyInitialized(), "Vehicle was not initialized when calling calculateStop");
      * REQUIRE(nextPos > getPosition(), "cannot stop behind current pos when calling calculate stop");
-     *
-     * ENSURE(result.second > getMinAcceleration(), "Vehicle cannot stop faster than minimum acceleration");
      */
     std::pair<bool, double> calculateStop(double nextPos) const;
 

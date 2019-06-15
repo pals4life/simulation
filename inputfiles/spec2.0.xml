@@ -2,7 +2,7 @@
 <NETWERK>
     <VOERTUIG>
         <type>AUTO</type>
-        <nummerplaat>1THK180</nummerplaat>
+        <nummerplaat>auto</nummerplaat>
         <baan>E19</baan>
         <positie>10</positie>
         <snelheid>0</snelheid>
@@ -10,7 +10,7 @@
 
     <VOERTUIG>
         <type>BUS</type>
-        <nummerplaat>651BUF</nummerplaat>
+        <nummerplaat>bus</nummerplaat>
         <baan>E19</baan>
         <positie>30</positie>
         <snelheid>0</snelheid>
