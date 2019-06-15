@@ -130,6 +130,13 @@ private slots:
      * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onExit");
      */
     void onExit();
+
+public:
+    /**
+     * REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onExit");
+     */
+    void setCrState(EState fCrState);
+
 };
 
 class RoadWindow: public Window

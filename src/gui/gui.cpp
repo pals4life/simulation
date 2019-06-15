@@ -72,7 +72,7 @@ void Window::createButtons()
     connect(play, SIGNAL(pressed()), this, SLOT(onPlay()));
     connect(kPause, SIGNAL(pressed()), this, SLOT(onPause()));
     connect(skipOne, SIGNAL(pressed()), this, SLOT(onNext()));
-    connect(skipOne, SIGNAL(pressed()), this, SLOT(onPrint()));
+    connect(print, SIGNAL(pressed()), this, SLOT(onPrint()));
 }
 
 std::string Window::askString(std::string example)
@@ -216,6 +216,11 @@ std::string Window::doubleToPrecision(double d, int precision)
 void Window::updateSimpleOutput(std::string output)
 {
     fSimpleOutput->setText(output.c_str());
+}
+
+void Window::setCrState(Window::EState fCrState) {
+    REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling setCrState");
+    Window::fCrState = fCrState;
 }
 
 //---------------------------------------ROAD WINDOW CLASS-----------------------------------------------------

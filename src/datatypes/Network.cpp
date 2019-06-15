@@ -49,7 +49,6 @@ void Network::startSimulation(Window* window, const std::string& simpleOutput, c
         NetworkExporter::init(this, simpleOutput, impressionOutput);
     }
 
-
     while(fTicksPassed < fgkMaxTicks)
     {
         if(not gui or checkWindow(window->getState()))
@@ -58,10 +57,6 @@ void Network::startSimulation(Window* window, const std::string& simpleOutput, c
 
             if(print) window->updateSimpleOutput(NetworkExporter::addSection(this, fTicksPassed));
             if(gui  ) Window::processEvents();
-        }
-        if (window->getState() == Window::kPrint)
-        {
-            // doe het hier
         }
     }
 
@@ -109,8 +104,6 @@ bool Network::checkWindow(Window::EState state) const
             return false;
         case Window::kQuit:
             exit(0);
-        case Window::kPrint:
-            return false;
         default:
             Window::delay(500);
             return false;
