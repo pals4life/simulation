@@ -4,3 +4,9 @@ outputfiles/*
 .directory/
 outputfiles/testoutputs/*
 !outputfiles/testoutputs/*-expected.txt
+
+engine/*.o
+
+engine/engine
+
+*.o

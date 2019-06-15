@@ -71,6 +71,8 @@ private:
     static uint32_t fgLongestName;
 
     static bool _initCheck;
+
+    static void general(std::ofstream& ini);
 };
 
 #endif //SIMULATION_NETWORKEXPORTER_H

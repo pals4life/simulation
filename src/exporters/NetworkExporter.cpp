@@ -163,11 +163,33 @@ void NetworkExporter::cgExport(const Network *kNetwork, uint32_t number) {
     int res = system("mkdir outputfiles >/dev/null 2>&1");
     ENSURE(res == 0 or res == 256, "Failed to create output directory");
 
-    const std::string ini = std::to_string(number) + ".ini";
-//    std::ofstream ini(("outputfiles/" + ini).c_str());
-//    ENSURE(ini.is_open(), "Failed to open file for cg export");
+    const std::string kFilename = "outputfiles/" + std::to_string(number) + ".ini";
+    std::ofstream ini(kFilename);
+    ENSURE(ini.is_open(), "Failed to open file for cg export");
 
-    
+    general(ini);
 
 
+    ini.close();
+    const std::string kCommand = "(./engine/engine " + kFilename + " && rm " + kFilename + ") &";
+    system(kCommand.c_str());
+}
+
+void NetworkExporter::general(std::ofstream &ini) {
+    ini << "[General]\n"
+           "size = 512\n"
+           "backgroundcolor = (0.5, 0.5, 0.5)\n"
+           "type = \"LightedZBuffering\"\n"
+           "nrLigths = 1\n"
+           "shadowEnabled = TRUE\n"
+           "shadowMask = 1024\n"
+           "eye = (0, 0, 10)\n"
+           "nrFigures = 1\n"
+           "\n"
+           "[Light0]\n"
+           "infinity = FALSE\n"
+           "location = (1, 1, 5)\n"
+           "ambientLight = (0.1, 0.1, 0.1)\n"
+           "diffuseLight = (0.2, 0.2, 0.2)\n"
+           "specularLight = (0.5, 0.5, 0.5)\n";
 }
