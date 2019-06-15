@@ -173,24 +173,28 @@ void NetworkExporter::cgExport(const Network *kNetwork, uint32_t number) {
     ini << std::fixed;
     ini << std::setprecision(2);
 
+    double y = 0;
+
+    int nr = 0;
     for (uint32_t i = 0; i < kNetwork->fRoads.size(); i++) {
         const Road *road = kNetwork->fRoads[i];
         for (uint32_t j = 0; j < road->getNumLanes(); j++) {
+            std::vector<std::vector<char> > scaleLane;
+            uint32_t max = 0;
+            scaleLane.resize(static_cast<uint32_t >(floor(road->getRoadLength() / fgScale) + 1));
             for (uint32_t k = 0; k < (*road)[j].size(); k++) {
                 const IVehicle *vehicle = (*road)[j][k];
-                const std::string kType = vehicle->getType();
-                if (kType == "auto");
-                else if (kType == "bus");
-                else if (kType == "vrachtwagen");
-                else if (kType == "motorfiets");
+                uint32_t pos = static_cast<uint32_t >(floor(vehicle->getPosition() / fgScale));
+                scaleLane[pos].push_back(toupper(vehicle->getType()[0]));
+                if (scaleLane[pos].size() > max) max = scaleLane[pos].size();
             }
+            if (max == 0) max = 1;
+            lane(ini, nr, max, y, scaleLane);
+            y += max * 2 + 1;
         }
+        y += 1;
     }
 
-    int nr = 0;
-    Pos nu = {0, 0, 0};
-
-    car(ini, nr, nu);
     general(ini, nr);
 
     ini.close();
@@ -201,67 +205,38 @@ void NetworkExporter::cgExport(const Network *kNetwork, uint32_t number) {
 
 void NetworkExporter::general(std::ofstream &ini, const int &nr) {
     ini << "[General]\n"
-           "size = 512\n"
-           "backgroundcolor = (0.16,0.17,0.16)\n"
+           "size = 4096\n"
+           "backgroundcolor = (0.05,0.06,0.05)\n"
            "type = \"LightedZBuffering\"\n"
-           "nrLights = 2\n"
-           "shadowEnabled = TRUE\n"
-           "shadowMask = 1024\n"
-           "eye = (1,2,3)\n"
+           "nrLights = 1\n"
+           "shadowEnabled = FALSE\n"
+           "eye = (0,0,120)\n"
            "nrFigures = " << nr << "\n"
                                    "\n"
                                    "[Light0]\n"
-                                   "infinity = FALSE\n"
-                                   "location = (-2,2,10)\n"
-                                   "ambientLight = (0.4,0.4,0.4)\n"
-                                   "diffuseLight = (0.4,0.4,0.4)\n"
-                                   "specularLight = (0.8,0.8,0.8)\n"
-                                   "[Light1]\n"
                                    "infinity = TRUE\n"
-                                   "direction = (-2,-5,10)\n"
+                                   "direction = (0,0,-100)\n"
                                    "ambientLight = (0.4,0.4,0.4)\n"
-                                   "diffuseLight = (0.4,0.4,0.4)\n"
+                                   "diffuseLight = (0.8,0.8,0.8)\n"
                                    "specularLight = (0.8,0.8,0.8)\n"
                                    "\n";
-//           "[Figure0]\n"
-//           "type = \"LineDrawing\"\n"
-//           "ambientReflection = (0.2,0.2,0.2)\n"
-//           "diffuseReflection = (0.2,0.2,0.2)\n"
-//           "specularReflection = (0.2,0.2,0.2)\n"
-//           "reflectionCoefficient = 5\n"
-//           "nrPoints = 8\n"
-//           "nrLines = 6\n"
-//           "point0 = (1,-1,-1)\n"
-//           "point1 = (-1,1,-1)\n"
-//           "point2 = (1,1,1)\n"
-//           "point3 = (-1,-1,1)\n"
-//           "point4 = (1,1,-1)\n"
-//           "point5 = (-1,-1,-1)\n"
-//           "point6 = (1,-1,1)\n"
-//           "point7 = (-1,1,1)\n"
-//           "line0 = (0,4,2,6)\n"
-//           "line1 = (4,1,7,2)\n"
-//           "line2 = (1,5,3,7)\n"
-//           "line3 = (5,0,6,3)\n"
-//           "line4 = (6,2,7,3)\n"
-//           "line5 = (0,5,1,4)\n";
 }
 
-void NetworkExporter::car(std::ofstream &ini, int &nr, Pos &pos) {
+void NetworkExporter::car(std::ofstream &ini, int &nr, const Pos &pos) {
     Object bottom = Object::rectangle(pos, {pos.fX - 3, pos.fY - 1.5, pos.fZ + 0.5});
     bottom.fAmbient = {0.5, 0.1, 0.1};
     bottom.fDiffuse = {0.5, 0.1, 0.1};
     bottom.fSpecular = {0.8, 0.1, 0.1};
-    bottom.fReflectionCoefficient = 5;
+    bottom.fReflectionCoefficient = 20;
     Object top = Object::rectangle({pos.fX - 1, pos.fY, pos.fZ + 0.5}, {pos.fX - 2, pos.fY - 1.5, pos.fZ + 1});
     top.fAmbient = {0.1, 0.1, 0.1};
     top.fDiffuse = {0.3, 0.1, 0.3};
     top.fSpecular = {0.3, 0.3, 1};
-    top.fReflectionCoefficient = 5;
+    top.fReflectionCoefficient = 20;
     bottom.print(ini, nr++);
     top.print(ini, nr++);
-    wheel(ini, nr, {pos.fX - 0.5, pos.fY+0.2, pos.fZ});
-    wheel(ini, nr, {pos.fX - 2.5, pos.fY+0.2, pos.fZ});
+    wheel(ini, nr, {pos.fX - 0.5, pos.fY + 0.2, pos.fZ});
+    wheel(ini, nr, {pos.fX - 2.5, pos.fY + 0.2, pos.fZ});
 }
 
 void NetworkExporter::wheel(std::ofstream &ini, int &nr, const Pos &kPos) {
@@ -275,6 +250,31 @@ void NetworkExporter::wheel(std::ofstream &ini, int &nr, const Pos &kPos) {
     ini << "n = 10\n";
     ini << "height = 8\n";
     ini << "\n";
+}
+
+void NetworkExporter::lane(std::ofstream &ini, int &nr, double max, double y,
+                           const std::vector<std::vector<char>> &scaleLane) {
+    ini << "[Figure" << nr++ << "]\n";
+    ini << "type = \"LineDrawing\"\n";
+    ini << "ambientReflection = (0.2, 0.2, 0.2)\n";
+    ini << "diffuseReflection = (0.2, 0.2, 0.2)\n";
+    ini << "nrPoints = 4\n";
+    ini << "nrLines = 1\n";
+    ini << "point0 = " << Pos{y, 0, 0} << "\n";
+    ini << "point1 = " << Pos{y + (max * 2), 0, 0} << "\n";
+    ini << "point2 = " << Pos{y + (max * 2), scaleLane.size() * 10.0, 0} << "\n";
+    ini << "point3 = " << Pos{y, scaleLane.size() * 10.0, 0} << "\n";
+    ini << "line0 = (0,1,2,3)\n";
+    ini << "\n";
+    for (unsigned int i = 0; i < max; ++i) {
+        for (unsigned int j = 0; j < scaleLane.size(); ++j) {
+            if (i >= scaleLane[j].size()) continue;
+            if (scaleLane[j][i] == 'A') {
+                car(ini, nr, {y, j * 10.0, 0});
+            }
+        }
+        y += 2;
+    }
 }
 
 Object Object::rectangle(const Pos &begin, const Pos &end) {
