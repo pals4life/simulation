@@ -195,7 +195,7 @@ void Window::onPrint()
 {
     REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling onExit");
     if (fCrState == kBusy) return;
-    //fCrState = kPrint;
+    fCrState = kPrint;
 }
 
 std::string Window::doubleToPrecision(double d, int precision)

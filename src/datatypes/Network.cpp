@@ -105,6 +105,8 @@ bool Network::checkWindow(Window::EState state) const
             return false;
         case Window::kQuit:
             exit(0);
+        case Window::kPrint:
+            // ward doe het hier
         default:
             Window::delay(500);
             return false;
