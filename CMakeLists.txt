@@ -42,4 +42,7 @@ qt5_use_modules(simulation Core Widgets Gui)
 qt5_use_modules(simulation_debug Core Widgets Gui)
 
 # Build cg engine
-execute_process(COMMAND "make -C ./engine")
+add_custom_target(
+        engine COMMAND make run
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/engine
+        )

@@ -155,3 +155,19 @@ NetworkExporter::printLane(const std::vector<std::vector<char>> &lane, const uin
 bool NetworkExporter::properlyInitialized() {
     return _initCheck;
 }
+
+void NetworkExporter::cgExport(const Network *kNetwork, uint32_t number) {
+    REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling cgExport");
+    REQUIRE(kNetwork, "Failed to export to cg: no network");
+
+    int res = system("mkdir outputfiles >/dev/null 2>&1");
+    ENSURE(res == 0 or res == 256, "Failed to create output directory");
+
+    const std::string ini = std::to_string(number) + ".ini";
+//    std::ofstream ini(("outputfiles/" + ini).c_str());
+//    ENSURE(ini.is_open(), "Failed to open file for cg export");
+
+    
+
+
+}

@@ -32,6 +32,8 @@ public:
      */
     static std::string addSection(const Network *kNetwork, uint32_t number);
 
+    static void cgExport(const Network *kNetwork, uint32_t number);
+
     /**
      *  REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling finish");
      */
