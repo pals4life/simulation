@@ -59,6 +59,10 @@ void Network::startSimulation(Window* window, const std::string& simpleOutput, c
             if(print) window->updateSimpleOutput(NetworkExporter::addSection(this, fTicksPassed));
             if(gui  ) Window::processEvents();
         }
+        if (window->getState() == Window::kPrint)
+        {
+            // doe het hier
+        }
     }
 
     if(print)
@@ -106,7 +110,7 @@ bool Network::checkWindow(Window::EState state) const
         case Window::kQuit:
             exit(0);
         case Window::kPrint:
-            // ward doe het hier
+            return false;
         default:
             Window::delay(500);
             return false;
