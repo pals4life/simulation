@@ -25,6 +25,9 @@ void Window::init()
     fRoot->setLayout(fLayout);
 
     QLabel* title = new QLabel("Project Software Engineering - BA1 Informatica - Thomas Dooms, Ward Gauderis, Mano Marichal - University of Antwerp");
+    QFont f("unexistent");
+    f.setStyleHint(QFont::Monospace);
+    title->setFont(f);
     fLayout->addWidget(title, 0,0,1,4);
     fSimpleOutput = title;
     properlyInitialized = true;
