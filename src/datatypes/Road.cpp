@@ -124,7 +124,7 @@ bool Road::changeLaneIfPossible(IVehicle* vehicle, const uint32_t kLane, const u
         if(iter != newLane.end()   and (*iter    )->getPosition() - ideal < vehicle->getPosition()) return false;    // if iter == end there is no vehicle in front
 
         // insert in front of the iter, which is the vehicle in front.
-        newLane.insert(iter, vehicle);
+        newLane.insert(iter-1, vehicle);
         fMergingVehicles.push_back(std::tuple<uint32_t, uint32_t, uint32_t>(0, kLane, kIndex));
     }
     else

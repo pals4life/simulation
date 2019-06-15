@@ -183,10 +183,7 @@ void IVehicle::checkLaneChange(const bool trafficLight, const uint32_t lane, con
     if(trafficLight) return;
 
     // 3. Het voertuig heeft 5 seconden op rij een versnelling van 0.
-    if(left)
-    {
-        for(uint32_t i = 0; i < 5; i++) if(fPrevAcceleration[i] > fgkEpsilonThreshold) return;
-    }
+    for(uint32_t i = 0; i < 5; i++) if(fPrevAcceleration[i] > fgkEpsilonThreshold) return;
 
     // 1. Het voertuig rijdt trager dan de snelheidslimiet van de baan of zone,
     // 2. Het voertuig rijdt trager dan zijn maximaal haalbare snelheid.
