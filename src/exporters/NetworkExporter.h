@@ -14,6 +14,44 @@
 #include "../datatypes/Network.h"
 #include <fstream>
 #include <stdint.h>
+#include <ostream>
+
+struct Color {
+    double fR;
+    double fG;
+    double fB;
+
+    friend std::ostream &operator<<(std::ostream &os, const Color &color);
+};
+
+struct Pos {
+    double fX;
+    double fY;
+    double fZ;
+
+    friend std::ostream &operator<<(std::ostream &os, const Pos &pos);
+};
+
+struct Face {
+    std::vector<int> fIndexes;
+
+    Face(std::vector<int> fIndexes);
+
+    friend std::ostream &operator<<(std::ostream &os, const Face &face);
+};
+
+struct Object {
+    std::vector<Pos> fPoints;
+    std::vector<Face> fFaces;
+    Color fAmbient;
+    Color fDiffuse;
+    Color fSpecular;
+    double fReflectionCoefficient;
+
+    static Object rectangle(const Pos &begin, const Pos &end);
+
+    void print(std::ofstream &ini, int nr);
+};
 
 class NetworkExporter {
 public:
@@ -71,6 +109,25 @@ private:
     static uint32_t fgLongestName;
 
     static bool _initCheck;
+
+    static void sign(std::ofstream &ini, int &nr, const double &x, const double &y, char c);
+
+    static void general(std::ofstream &ini, const int &kNr);
+
+    static void line(std::ofstream &ini, int &nr, const double &y, const double &x);
+
+    static void lane(std::ofstream &ini, int &nr, double max, double y, double roadlength);
+
+    static void wheel(std::ofstream &ini, int &nr, const Pos &kPos);
+
+    static void car(std::ofstream &ini, int &nr, const Pos &pos, bool real);
+
+    static void bus(std::ofstream &ini, int &nr, const Pos &pos);
+
+    static void truck(std::ofstream &ini, int &nr, const Pos &pos);
+
+    static void motorcycle(std::ofstream &ini, int &nr, const Pos &pos);
+
 };
 
 #endif //SIMULATION_NETWORKEXPORTER_H

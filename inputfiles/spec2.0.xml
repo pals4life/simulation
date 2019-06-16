@@ -16,26 +16,10 @@
         <snelheid>0</snelheid>
     </VOERTUIG>
 
-    <VOERTUIG>
-        <type>VRACHTWAGEN</type>
-        <nummerplaat>bus1</nummerplaat>
-        <baan>E19</baan>
-        <positie>50</positie>
-        <snelheid>0</snelheid>
-    </VOERTUIG>
-
-    <VOERTUIG>
-        <type>MOTORFIETS</type>
-        <nummerplaat>us</nummerplaat>
-        <baan>E19</baan>
-        <positie>0</positie>
-        <snelheid>0</snelheid>
-    </VOERTUIG>
-
     <BAAN>
         <naam>E19</naam>
         <snelheidslimiet>140</snelheidslimiet>
-        <lengte>3000</lengte>
+        <lengte>2000</lengte>
         <verbinding>E313</verbinding>
         <rijstroken>2</rijstroken>
     </BAAN>
