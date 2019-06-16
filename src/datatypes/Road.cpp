@@ -123,14 +123,25 @@ bool Road::changeLaneIfPossible(IVehicle* vehicle, const uint32_t kLane, const u
 
     if(!newLane.empty())
     {
-        // we find the first vehicle that is in front of them on the new lane.
-        std::vector<IVehicle*>::const_reverse_iterator iter = std::upper_bound(newLane.crbegin(), newLane.crend(), vehicle->getPosition(), comparePositionGT<IVehicle>);
-        Iter baseIter = iter.base()+1;
-        if(baseIter != newLane.end()   and (*baseIter    )->getPosition() + ideal > vehicle->getPosition()) return false;    // if iter == begin there is no vehicle behind them
-        if(baseIter != newLane.begin() and (*(baseIter-1))->getPosition() - ideal < vehicle->getPosition()) return false;    // if iter == end there is no vehicle in front
+        uint32_t infront = -1;
+        uint32_t behind = -1;
+        for(uint32_t i = 0; i < newLane.size(); i++)
+        {
+            if(comparePositionGT<IVehicle>(vehicle->getPosition(), newLane[i]))
+            {
+                behind = i;
+                if(i != 0) infront = i-1;
+                break;
+            }
+        }
+        if(behind == uint32_t(-1)) infront = newLane.size() - 1;
 
-        // insert in front of the iter, which is the vehicle in front.
-        newLane.insert(baseIter, vehicle);
+        if(behind  != uint32_t(-1) and newLane[behind ]->getPosition() + ideal > vehicle->getPosition()) return false;
+        if(infront != uint32_t(-1) and newLane[infront]->getPosition() - ideal < vehicle->getPosition()) return false;
+
+        if(behind == uint32_t(-1)) newLane.push_back(vehicle);
+        else newLane.insert(begin(newLane)+behind, vehicle);
+
         fMergingVehicles.push_back(std::tuple<uint32_t, uint32_t, uint32_t>(0, kLane, kIndex));
     }
     else
