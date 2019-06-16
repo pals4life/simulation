@@ -63,8 +63,6 @@ void IVehicle::move(const uint32_t kLane, const uint32_t kIndex, Road* const kRo
     updateStatistics();
     if(fStationed) return;  // stationed means the vehicle must not update
 
-//    std::cout << "velocity: " << fVelocity << " , position: " << fPosition << '\n';
-
     checkTrafficLights(kRoad->getTrafficLight(fPosition));                                              // calculate the slowdown if needed
     checkBusStop(kRoad->getBusStop(fPosition));                                                         // calculate the slowdown if needed
     const double kSpeedlimit = kRoad->getSpeedLimit(fPosition);                                         // calculate the speed limit
@@ -101,7 +99,7 @@ double IVehicle::getFollowingAcceleration(std::pair<const IVehicle*, double> nex
     if(nextVehicle.first == NULL) return getMaxAcceleration();                                                  // if there is not car in front, acceleration = max
 
     double ideal  = 0.75 * fVelocity + nextVehicle.first->getVehicleLength() + 2;                               // ideal following distance = 3/4 speed + 2 meters extra
-    double actual = pairPosition<IVehicle>(nextVehicle) - nextVehicle.first->getVehicleLength() - fPosition;    // distance between 2 vehicles
+    double actual = pairPosition<IVehicle>(nextVehicle) - nextVehicle.first->getVelocity() - nextVehicle.first->getVehicleLength() - fPosition;    // distance between 2 vehicles
     return 0.5 * (actual - ideal);                                                                              // take the average
 }
 
@@ -109,6 +107,7 @@ std::pair<double, double> IVehicle::getMinMaxAcceleration(double speedlimit) con
 {
     REQUIRE(properlyInitialized(), "Vehicle was not initialized when calling getMinMaxAcceleration");
     REQUIRE(speedlimit >= 0, "speedlimit must be greater than 0 when calling getMinMaxAcceleration");
+
     double maxSpeed = std::min(speedlimit, getMaxSpeed());                              // take the maxSpeed as the minimum of both
     double minSpeed = std::max(0.0       , getMinSpeed());                              // if the minimum speed is negative for some reason
 
@@ -134,7 +133,7 @@ void IVehicle::checkTrafficLights(std::pair<const TrafficLight*, double> nextTra
             return;
         }
     }
-    else if(nextTrafficLight.first != NULL)
+    else if(nextTrafficLight.first != NULL and nextTrafficLight.first->getColor() != TrafficLight::kGreen)
     {
         std::pair<bool, double> temp = calculateStop(pairPosition<TrafficLight>(nextTrafficLight));
         std::get<0>(fTrafficLightAccel) = temp.first;
@@ -212,7 +211,12 @@ std::pair<bool, double> IVehicle::calculateStop(double nextPos) const
     }
     futurePos += futureVel;
 
-    if(futurePos > nextPos) return std::pair<bool, double>(true, kAccel);
+    if(futurePos-10 > nextPos)
+    {
+        std::cout << "stopping at: " << getPosition() << '\n';
+        return std::pair<bool, double>(true, kAccel);
+    }
+
     else return std::pair<bool, double>(false, 0);
 
 

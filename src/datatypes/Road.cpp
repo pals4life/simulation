@@ -118,13 +118,13 @@ bool Road::changeLaneIfPossible(IVehicle* vehicle, const uint32_t kLane, const u
     if(!newLane.empty())
     {
         // we find the first vehicle that is in front of them on the new lane.
-        Iter iter = std::upper_bound(newLane.begin(), newLane.end(), vehicle->getPosition(), comparePosition<IVehicle>);
-
-        if(iter != newLane.begin() and (*(iter-1))->getPosition() + ideal > vehicle->getPosition()) return false;    // if iter == begin there is no vehicle behind them
-        if(iter != newLane.end()   and (*iter    )->getPosition() - ideal < vehicle->getPosition()) return false;    // if iter == end there is no vehicle in front
+        std::vector<IVehicle*>::const_reverse_iterator iter = std::upper_bound(newLane.rbegin(), newLane.rend(), vehicle->getPosition(), comparePosition<IVehicle>);
+        Iter baseIter = iter.base();
+        if(baseIter     != newLane.end() and (*baseIter      )->getPosition() + ideal > vehicle->getPosition()) return false;    // if iter == begin there is no vehicle behind them
+        if((baseIter+1) != newLane.end() and (*(baseIter+1)  )->getPosition() - ideal < vehicle->getPosition()) return false;    // if iter == end there is no vehicle in front
 
         // insert in front of the iter, which is the vehicle in front.
-        newLane.insert(iter-1, vehicle);
+        newLane.insert(baseIter, vehicle);
         fMergingVehicles.push_back(std::tuple<uint32_t, uint32_t, uint32_t>(0, kLane, kIndex));
     }
     else
@@ -333,10 +333,11 @@ void Road::dequeueFinishedVehicles()
     {
         while(!fLanes[i].empty())                                           // as long there are vehicles we can delete
         {
-            if(fLanes[i].front()->getPosition() > fRoadLength) dequeue(i);  // check if they have left the road
+            if(fLanes[i].front()->getPosition() >= fRoadLength) dequeue(i); // check if they have left the road
             else break;                                                     // break, because if the first car is still on the road everyone behind him is also still on the road
         }
-        if(fLanes[i].empty()) return;
+
+        if(fLanes[i].empty()) continue;
         ENSURE(fLanes[i].front()->getPosition() <= getRoadLength(), "Update failed to place vehicle on next road or delete it.");
     }
 }

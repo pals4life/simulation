@@ -9,7 +9,7 @@
     </VOERTUIG>
 
     <VOERTUIG>
-        <type>BUS</type>
+        <type>AUTO</type>
         <nummerplaat>bus</nummerplaat>
         <baan>E19</baan>
         <positie>30</positie>
@@ -19,7 +19,7 @@
     <BAAN>
         <naam>E19</naam>
         <snelheidslimiet>140</snelheidslimiet>
-        <lengte>3000</lengte>
+        <lengte>2000</lengte>
         <verbinding>E313</verbinding>
         <rijstroken>2</rijstroken>
     </BAAN>
