@@ -112,8 +112,7 @@ private:
 
     static void general(std::ofstream &ini, const int &nr);
 
-    static void lane(std::ofstream &ini, int &nr, double max, double y,
-                     const std::vector<std::vector<char>>& scaleLane);
+    static void lane(std::ofstream &ini, int &nr, double max, double y, double roadlength);
 
     static void wheel(std::ofstream &ini, int &nr, const Pos &kPos);
 

@@ -15,6 +15,7 @@
 #include <math.h>
 #include <sstream>
 #include <iomanip>
+#include <cfloat>
 
 std::ofstream NetworkExporter::fgSimple;
 std::ofstream NetworkExporter::fgImpression;
@@ -113,19 +114,16 @@ std::string NetworkExporter::addSection(const Network *kNetwork, uint32_t number
         tee(road->getName() + whitespace(fgLongestName - road->getName().size()) + " | ", false);
         for (uint32_t j = 0; j < road->getNumLanes(); j++) {
             std::vector<std::vector<char> > lane;
-            uint32_t max = 0;
-            lane.resize(static_cast<uint32_t >(floor(road->getRoadLength() / fgScale) + 1));
+            uint32_t max = 1;
+            lane.resize(static_cast<uint32_t >(floor(road->getRoadLength() / fgScale)));
             for (uint32_t k = 0; k < (*road)[j].size(); k++) {
                 const IVehicle *vehicle = (*road)[j][k];
                 uint32_t pos = static_cast<uint32_t >(floor(vehicle->getPosition() / fgScale));
+                if (pos >= lane.size()) pos = lane.size() - 1;
                 lane[pos].push_back(toupper(vehicle->getType()[0]));
                 if (lane[pos].size() > max) max = lane[pos].size();
             }
-            if (max == 0) {
-                printLane(lane, 1, j);
-            } else {
-                printLane(lane, max, j);
-            }
+            printLane(lane, max, j);
         }
     }
     tee("\n", false);
@@ -166,7 +164,7 @@ void NetworkExporter::cgExport(const Network *kNetwork, uint32_t number) {
     int res = system("mkdir outputfiles >/dev/null 2>&1");
     ENSURE(res == 0 or res == 256, "Failed to create output directory");
 
-    const std::string kFilename = "outputfiles/" + std::to_string(number) + ".ini";
+    const std::string kFilename = "outputfiles/" + std::to_string(1) + ".ini";
     std::ofstream ini(kFilename);
     ENSURE(ini.is_open(), "Failed to open file for cg export");
 
@@ -174,22 +172,36 @@ void NetworkExporter::cgExport(const Network *kNetwork, uint32_t number) {
     ini << std::setprecision(2);
 
     double y = 0;
-
     int nr = 0;
+
     for (uint32_t i = 0; i < kNetwork->fRoads.size(); i++) {
         const Road *road = kNetwork->fRoads[i];
         for (uint32_t j = 0; j < road->getNumLanes(); j++) {
-            std::vector<std::vector<char> > scaleLane;
-            uint32_t max = 0;
-            scaleLane.resize(static_cast<uint32_t >(floor(road->getRoadLength() / fgScale) + 1));
+            uint32_t max = 1;
+            double roadLength = road->getRoadLength() / fgScale;
+            double prevPosition = DBL_MAX;
             for (uint32_t k = 0; k < (*road)[j].size(); k++) {
                 const IVehicle *vehicle = (*road)[j][k];
-                uint32_t pos = static_cast<uint32_t >(floor(vehicle->getPosition() / fgScale));
-                scaleLane[pos].push_back(toupper(vehicle->getType()[0]));
-                if (scaleLane[pos].size() > max) max = scaleLane[pos].size();
+                double position = vehicle->getPosition() / fgScale;
+                char type = vehicle->getType()[0];
+                double length = vehicle->getVehicleLength();
+                std::cout << position << "\n";
+                if (position >= prevPosition) {
+                    max++;
+                }
+                switch (type) {
+                    case 'a':
+                        car(ini, nr, {-position, y + (max - 1) * 2, 0});
+                        break;
+                    case 'b':
+                        car(ini, nr, {-position, y + (max - 1) * 2, 0});
+                        break;
+                    default:
+                        std::cerr << "Vehicle type can not be represented with the CG engine\n";
+                }
+                prevPosition = position - length;
             }
-            if (max == 0) max = 1;
-            lane(ini, nr, max, y, scaleLane);
+            lane(ini, nr, max, y, roadLength);
             y += max * 2 + 1;
         }
         y += 1;
@@ -198,9 +210,9 @@ void NetworkExporter::cgExport(const Network *kNetwork, uint32_t number) {
     general(ini, nr);
 
     ini.close();
-    const std::string kCommand = "(./engine/engine " + kFilename + ")"; //  " && rm " + kFilename +
+    const std::string kCommand = "./engine/engine " + kFilename + ""; //  " && rm " + kFilename +
     system(kCommand.c_str());
-    exit(0);
+//    exit(0);
 }
 
 void NetworkExporter::general(std::ofstream &ini, const int &nr) {
@@ -210,7 +222,7 @@ void NetworkExporter::general(std::ofstream &ini, const int &nr) {
            "type = \"LightedZBuffering\"\n"
            "nrLights = 1\n"
            "shadowEnabled = FALSE\n"
-           "eye = (0,0,120)\n"
+           "eye = (0,30,100)\n"
            "nrFigures = " << nr << "\n"
                                    "\n"
                                    "[Light0]\n"
@@ -220,30 +232,39 @@ void NetworkExporter::general(std::ofstream &ini, const int &nr) {
                                    "diffuseLight = (0.8,0.8,0.8)\n"
                                    "specularLight = (0.8,0.8,0.8)\n"
                                    "\n";
+//                                   "[Figure0]\n"
+//                                   "type = Cube\n"
+//                                   "ambientReflection = (1,1,1)\n"
+//                                   "scale = 0.25\n"
+//                                   "[Figure1]\n"
+//                                   "type = Cube\n"
+//                                   "ambientReflection = (1,1,1)\n"
+//                                   "scale = 0.25\n"
+//                                   "center = (1, 2, 0)\n";
 }
 
 void NetworkExporter::car(std::ofstream &ini, int &nr, const Pos &pos) {
-    Object bottom = Object::rectangle(pos, {pos.fX - 3, pos.fY - 1.5, pos.fZ + 0.5});
+    Object bottom = Object::rectangle(pos, {pos.fX + 3, pos.fY + 1.5, pos.fZ + 0.5});
     bottom.fAmbient = {0.5, 0.1, 0.1};
     bottom.fDiffuse = {0.5, 0.1, 0.1};
     bottom.fSpecular = {0.8, 0.1, 0.1};
     bottom.fReflectionCoefficient = 20;
-    Object top = Object::rectangle({pos.fX - 1, pos.fY, pos.fZ + 0.5}, {pos.fX - 2, pos.fY - 1.5, pos.fZ + 1});
+    Object top = Object::rectangle({pos.fX + 1, pos.fY, pos.fZ + 0.5}, {pos.fX + 2, pos.fY + 1.5, pos.fZ + 1});
     top.fAmbient = {0.1, 0.1, 0.1};
     top.fDiffuse = {0.3, 0.1, 0.3};
     top.fSpecular = {0.3, 0.3, 1};
     top.fReflectionCoefficient = 20;
     bottom.print(ini, nr++);
     top.print(ini, nr++);
-    wheel(ini, nr, {pos.fX - 0.5, pos.fY + 0.2, pos.fZ});
-    wheel(ini, nr, {pos.fX - 2.5, pos.fY + 0.2, pos.fZ});
+    wheel(ini, nr, {pos.fX + 0.5, pos.fY - 0.25, pos.fZ});
+    wheel(ini, nr, {pos.fX + 2.5, pos.fY - 0.25, pos.fZ});
 }
 
 void NetworkExporter::wheel(std::ofstream &ini, int &nr, const Pos &kPos) {
     ini << "[Figure" << nr++ << "]\n";
     ini << "type = \"Cylinder\"\n";
     ini << "scale = 0.25\n";
-    ini << "rotateX = 90\n";
+    ini << "rotateX = -90\n";
     ini << "center = " << kPos << "\n";
     ini << "ambientReflection = (0.1, 0.1, 0.1)\n";
     ini << "diffuseReflection = (0.1, 0.1, 0.1)\n";
@@ -252,29 +273,19 @@ void NetworkExporter::wheel(std::ofstream &ini, int &nr, const Pos &kPos) {
     ini << "\n";
 }
 
-void NetworkExporter::lane(std::ofstream &ini, int &nr, double max, double y,
-                           const std::vector<std::vector<char>> &scaleLane) {
+void NetworkExporter::lane(std::ofstream &ini, int &nr, double max, double y, double roadlength) {
     ini << "[Figure" << nr++ << "]\n";
     ini << "type = \"LineDrawing\"\n";
-    ini << "ambientReflection = (0.2, 0.2, 0.2)\n";
-    ini << "diffuseReflection = (0.2, 0.2, 0.2)\n";
+    ini << "ambientReflection = (1, 1, 0.2)\n";
+    ini << "diffuseReflection = (1, 1, 0.2)\n";
     ini << "nrPoints = 4\n";
     ini << "nrLines = 1\n";
-    ini << "point0 = " << Pos{y, 0, 0} << "\n";
-    ini << "point1 = " << Pos{y + (max * 2), 0, 0} << "\n";
-    ini << "point2 = " << Pos{y + (max * 2), scaleLane.size() * 10.0, 0} << "\n";
-    ini << "point3 = " << Pos{y, scaleLane.size() * 10.0, 0} << "\n";
+    ini << "point0 = " << Pos{0, y, 0} << "\n";
+    ini << "point1 = " << Pos{0, y + (max * 2), 0} << "\n";
+    ini << "point2 = " << Pos{-roadlength, y + (max * 2), 0} << "\n";
+    ini << "point3 = " << Pos{-roadlength, y, 0} << "\n";
     ini << "line0 = (0,1,2,3)\n";
     ini << "\n";
-    for (unsigned int i = 0; i < max; ++i) {
-        for (unsigned int j = 0; j < scaleLane.size(); ++j) {
-            if (i >= scaleLane[j].size()) continue;
-            if (scaleLane[j][i] == 'A') {
-                car(ini, nr, {y, j * 10.0, 0});
-            }
-        }
-        y += 2;
-    }
 }
 
 Object Object::rectangle(const Pos &begin, const Pos &end) {

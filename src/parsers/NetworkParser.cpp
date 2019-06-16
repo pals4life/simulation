@@ -95,7 +95,7 @@ Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
             for (std::vector<IVehicle *>::iterator it2 = it1->second.begin(); it2 != it1->second.end(); it2++) {
                 if ((*it2)->getPosition() >= foundRoad->getRoadLength()) {
                     std::cerr << "Inconsistent traffic situation: car " << (*it2)->getLicensePlate()
-                              << "is not on road "
+                              << " is not on road "
                               << it1->first << std::endl;
                 }
                 std::vector<IVehicle *>::iterator it3 = it2;
