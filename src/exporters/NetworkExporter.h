@@ -110,7 +110,11 @@ private:
 
     static bool _initCheck;
 
-    static void general(std::ofstream &ini, const int &nr);
+    static void sign(std::ofstream &ini, int &nr, const double &x, const double &y, char c);
+
+    static void general(std::ofstream &ini, const int &kNr);
+
+    static void line(std::ofstream &ini, int &nr, const double &y, const double &x);
 
     static void lane(std::ofstream &ini, int &nr, double max, double y, double roadlength);
 

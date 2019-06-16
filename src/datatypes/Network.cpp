@@ -51,7 +51,7 @@ void Network::startSimulation(Window* window, const std::string& simpleOutput, c
         if(checkWindow(window->getState()))
         {
             if(update()) break;
-
+            NetworkExporter::cgExport(this, fTicksPassed);
             window->updateSimpleOutput(NetworkExporter::addSection(this, fTicksPassed));
             Window::processEvents();
         }

@@ -200,7 +200,7 @@ void NetworkExporter::cgExport(const Network *kNetwork, uint32_t number) {
                         truck(ini, nr, {-position, y + (max - 1) * 2, 0.25});
                         break;
                     case 'm':
-                        motorcycle(ini, nr, {-position, (y + (max - 1) * 2)+0.5, 0.25});
+                        motorcycle(ini, nr, {-position, (y + (max - 1) * 2) + 0.5, 0.25});
                         break;
                     default:
                         std::cerr << "Vehicle type can not be represented with the CG engine\n";
@@ -208,8 +208,36 @@ void NetworkExporter::cgExport(const Network *kNetwork, uint32_t number) {
                 prevPosition = position - length;
             }
             lane(ini, nr, max, y, roadLength);
-            y += max * 2 + 0.5;
+            if (j != road->getNumLanes() - 1) line(ini, nr, y + 2.0 * max, roadLength);
+            y += max * 2.0 + 0.5;
         }
+        for (unsigned int b = 0; b < road->getBusStops().size(); b++) {
+            double pos = road->getBusStops()[b]->getPosition();
+            sign(ini, nr, pos, y, 'y');
+        }
+        for (unsigned int b = 0; b < road->getTrafficLights().size(); b++) {
+            double pos = road->getTrafficLights()[b]->getPosition();
+            TrafficLight::EColor color = road->getTrafficLights()[b]->getColor();
+            char c;
+            switch (color) {
+                case TrafficLight::EColor::kGreen:
+                    c = 'r';
+                    break;
+                case TrafficLight::EColor::kOrange:
+                    c = 'o';
+                    break;
+                case TrafficLight::EColor::kRed:
+                    c = 'r';
+                    break;
+            }
+            sign(ini, nr, pos, y, c);
+        }
+        for (unsigned int b = 0; b < road->getZones().size(); b++) {
+            double pos = road->getZones()[b]->getPosition();
+            sign(ini, nr, pos, y, 'w');
+        }
+
+
         y += 1;
     }
 
@@ -218,10 +246,9 @@ void NetworkExporter::cgExport(const Network *kNetwork, uint32_t number) {
     ini.close();
     const std::string kCommand = "./engine/engine " + kFilename + ""; //  " && rm " + kFilename +
     system(kCommand.c_str());
-//    exit(0);
 }
 
-void NetworkExporter::general(std::ofstream &ini, const int &nr) {
+void NetworkExporter::general(std::ofstream &ini, const int &kNr) {
     ini << "[General]\n"
            "size = 4096\n"
            "backgroundcolor = (0.05,0.06,0.05)\n"
@@ -229,24 +256,15 @@ void NetworkExporter::general(std::ofstream &ini, const int &nr) {
            "nrLights = 1\n"
            "shadowEnabled = FALSE\n"
            "eye = (0,50,100)\n"
-           "nrFigures = " << nr << "\n"
-                                   "\n"
-                                   "[Light0]\n"
-                                   "infinity = TRUE\n"
-                                   "direction = (-3,-1,-10)\n"
-                                   "ambientLight = (0.4,0.4,0.4)\n"
-                                   "diffuseLight = (1,1,1)\n"
-                                   "specularLight = (1,1,1)\n"
-                                   "\n";
-//                                   "[Figure0]\n"
-//                                   "type = Cube\n"
-//                                   "ambientReflection = (1,1,1)\n"
-//                                   "scale = 0.25\n"
-//                                   "[Figure1]\n"
-//                                   "type = Cube\n"
-//                                   "ambientReflection = (1,1,1)\n"
-//                                   "scale = 0.25\n"
-//                                   "center = (1, 2, 0)\n";
+           "nrFigures = " << kNr << "\n"
+                                    "\n"
+                                    "[Light0]\n"
+                                    "infinity = TRUE\n"
+                                    "direction = (-3,-1,-10)\n"
+                                    "ambientLight = (0.4,0.4,0.4)\n"
+                                    "diffuseLight = (1,1,1)\n"
+                                    "specularLight = (1,1,1)\n"
+                                    "\n";
 }
 
 void NetworkExporter::car(std::ofstream &ini, int &nr, const Pos &pos, bool real) {
@@ -310,7 +328,8 @@ void NetworkExporter::lane(std::ofstream &ini, int &nr, double max, double y, do
 
 void NetworkExporter::bus(std::ofstream &ini, int &nr, const Pos &pos) {
     Object bottom = Object::rectangle(pos, {pos.fX + 10, pos.fY + 1.5, pos.fZ + 3});
-    Object window = Object::rectangle({pos.fX+0.5, pos.fY-0.02, pos.fZ+0.5}, {pos.fX + 1.25, pos.fY + 1.52, pos.fZ + 2.5});
+    Object window = Object::rectangle({pos.fX + 0.5, pos.fY - 0.02, pos.fZ + 0.5},
+                                      {pos.fX + 1.25, pos.fY + 1.52, pos.fZ + 2.5});
     window.fDiffuse = {1, 0.6, 0.2};
     bottom.fAmbient = {0.5, 0.3, 0.1};
     bottom.fDiffuse = {0.8, 0.8, 0.1};
@@ -351,8 +370,9 @@ void NetworkExporter::truck(std::ofstream &ini, int &nr, const Pos &pos) {
 
 void NetworkExporter::motorcycle(std::ofstream &ini, int &nr, const Pos &pos) {
     Object bottom = Object::rectangle(pos, {pos.fX + 1, pos.fY + 0.5, pos.fZ + 0.5});
-    Object seat = Object::rectangle({pos.fX + 0.5, pos.fY+0.05, pos.fZ + 0.5}, {pos.fX + 0.9, pos.fY + 0.45, pos.fZ + 0.75});
-    Object steer = Object::rectangle({pos.fX, pos.fY-0.1, pos.fZ + 0.5}, {pos.fX + 0.1, pos.fY + 0.6, pos.fZ + 0.75});
+    Object seat = Object::rectangle({pos.fX + 0.5, pos.fY + 0.05, pos.fZ + 0.5},
+                                    {pos.fX + 0.9, pos.fY + 0.45, pos.fZ + 0.75});
+    Object steer = Object::rectangle({pos.fX, pos.fY - 0.1, pos.fZ + 0.5}, {pos.fX + 0.1, pos.fY + 0.6, pos.fZ + 0.75});
     bottom.fAmbient = {0.5, 0.5, 0.5};
     bottom.fDiffuse = {0.1, 1, 0.1};
     bottom.fSpecular = {0.1, 0.7, 0.1};
@@ -364,6 +384,75 @@ void NetworkExporter::motorcycle(std::ofstream &ini, int &nr, const Pos &pos) {
     steer.print(ini, nr++);
     bottom.print(ini, nr++);
     seat.print(ini, nr++);
+}
+
+void NetworkExporter::line(std::ofstream &ini, int &nr, const double &y, const double &x) {
+    double now = 0;
+    bool white = true;
+    while (-now < x) {
+        ini << "[Figure" << nr++ << "]\n";
+        ini << "type = \"LineDrawing\"\n";
+        if (white) {
+            ini << "ambientReflection = (0.9,0.9,0.9)\n";
+            ini << "diffuseReflection = (0.9,0.9,0.9)\n";
+            ini << "specularReflection = (0.9,0,9.9)\n";
+            ini << "reflectoinCoefficient = 10\n";
+        } else {
+            ini << "ambientReflection = (0.2, 0.2, 0.2)\n";
+            ini << "diffuseReflection = (0.3, 0.3, 0.3)\n";
+            ini << "specularReflection = (0.2, 0.2, 0.2)\n";
+            ini << "reflectoinCoefficient = 10\n";
+        }
+        white = !white;
+        ini << "nrPoints = 4\n";
+        ini << "nrLines = 1\n";
+        ini << "point0 = " << Pos{now, y, 0} << "\n";
+        ini << "point1 = " << Pos{now, y + 0.5, 0} << "\n";
+        if (now + x <= 2) {
+            now = -x;
+        } else {
+            now -= 2;
+        }
+        ini << "point2 = " << Pos{now, y + 0.5, 0} << "\n";
+        ini << "point3 = " << Pos{now, y, 0} << "\n";
+        ini << "line0 = (0,1,2,3)\n";
+        ini << "\n";
+    }
+}
+
+void NetworkExporter::sign(std::ofstream &ini, int &nr, const double &x, const double &y, char c) {
+    Object pole = Object::rectangle({-x, y, 0}, {-x - 0.1, y + 0.1, 2});
+    pole.fDiffuse = {0.3, 0.3, 0.3};
+    pole.fSpecular = {0.3, 0.3, 0.3};
+    pole.print(ini, nr++);
+    ini << "[Figure" << nr++ << "]\n";
+    ini << "type = \"Sphere\"\n";
+    switch (c) {
+        case 'r':
+            ini << "ambientReflection = (1,0,0)\n";
+            ini << "diffuseReflection = (1,0,0)\n";
+            break;
+        case 'o':
+            ini << "ambientReflection = (1, 0.5, 0)\n";
+            ini << "diffuseReflection = (1, 0.5, 0)\n";
+            break;
+        case 'g':
+            ini << "ambientReflection = (0,1,0)\n";
+            ini << "diffuseReflection = (0,1,0)\n";
+            break;
+        case 'y':
+            ini << "ambientReflection = (1,1,0)\n";
+            ini << "diffuseReflection = (1,1,0)\n";
+            break;
+        case 'w':
+            ini << "ambientReflection = (1,1,1)\n";
+            ini << "diffuseReflection = (1,1,1)\n";
+            break;
+    }
+    ini << "scale = 0.4\n";
+    ini << "center = " << Pos{-x - 0.05, y, 2} << "\n";
+    ini << "n = 1\n";
+    ini << "\n";
 }
 
 Object Object::rectangle(const Pos &begin, const Pos &end) {
