@@ -220,7 +220,7 @@ void NetworkExporter::cgExport(const Network *kNetwork, uint32_t number) {
             char c;
             switch (color) {
                 case TrafficLight::EColor::kGreen:
-                    c = 'r';
+                    c = 'g';
                     break;
                 case TrafficLight::EColor::kOrange:
                     c = 'o';
