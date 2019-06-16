@@ -18,10 +18,9 @@ int main(int argc, char** argv)
 {
     QApplication application(argc, argv);
 
-    Window* window = nullptr;
+    Window* window = new Window;
     std::string filename;
 
-    window = new Window;
     window->init();
     window->createButtons();
 
@@ -35,7 +34,6 @@ int main(int argc, char** argv)
         parser.clear();
 
         window->createRoadButtons(network->getRoads());
-
         network->startSimulation(window, "simple", "impression");
         delete network;
     }

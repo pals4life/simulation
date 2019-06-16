@@ -80,6 +80,12 @@ void Road::updateVehicles()
             fLanes[kLane][kIndex]->setMerging(false);
             fLanes[kLane].erase(fLanes[kLane].begin() + kIndex);
             fMergingVehicles.erase(fMergingVehicles.begin() + i);
+            for(uint32_t j = 0; j < fMergingVehicles.size(); j++)
+            {
+                uint32_t& kOtherLane = std::get<1>(fMergingVehicles[i]);
+                uint32_t& kOtherIndex = std::get<2>(fMergingVehicles[i]);
+                if(kOtherLane == kLane and kOtherIndex > kIndex) --kOtherIndex;
+            }
             i--;
         }
     }
@@ -118,10 +124,10 @@ bool Road::changeLaneIfPossible(IVehicle* vehicle, const uint32_t kLane, const u
     if(!newLane.empty())
     {
         // we find the first vehicle that is in front of them on the new lane.
-        std::vector<IVehicle*>::const_reverse_iterator iter = std::upper_bound(newLane.rbegin(), newLane.rend(), vehicle->getPosition(), comparePosition<IVehicle>);
-        Iter baseIter = iter.base();
-        if(baseIter     != newLane.end() and (*baseIter      )->getPosition() + ideal > vehicle->getPosition()) return false;    // if iter == begin there is no vehicle behind them
-        if((baseIter+1) != newLane.end() and (*(baseIter+1)  )->getPosition() - ideal < vehicle->getPosition()) return false;    // if iter == end there is no vehicle in front
+        std::vector<IVehicle*>::const_reverse_iterator iter = std::upper_bound(newLane.crbegin(), newLane.crend(), vehicle->getPosition(), comparePositionGT<IVehicle>);
+        Iter baseIter = iter.base()+1;
+        if(baseIter != newLane.end()   and (*baseIter    )->getPosition() + ideal > vehicle->getPosition()) return false;    // if iter == begin there is no vehicle behind them
+        if(baseIter != newLane.begin() and (*(baseIter-1))->getPosition() - ideal < vehicle->getPosition()) return false;    // if iter == end there is no vehicle in front
 
         // insert in front of the iter, which is the vehicle in front.
         newLane.insert(baseIter, vehicle);
