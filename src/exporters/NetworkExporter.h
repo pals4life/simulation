@@ -116,13 +116,14 @@ private:
 
     static void wheel(std::ofstream &ini, int &nr, const Pos &kPos);
 
-    static void car(std::ofstream &ini, int &nr, const Pos &pos);
+    static void car(std::ofstream &ini, int &nr, const Pos &pos, bool real);
 
-    static void bus(std::ofstream &ini, int &kNr, Pos &kPos);
+    static void bus(std::ofstream &ini, int &nr, const Pos &pos);
 
-    static void truck(std::ofstream &ini, int &kNr, Pos &kPos);
+    static void truck(std::ofstream &ini, int &nr, const Pos &pos);
 
-    static void motorcycle(std::ofstream &ini, int &kNr, Pos &kPos);
+    static void motorcycle(std::ofstream &ini, int &nr, const Pos &pos);
+
 };
 
 #endif //SIMULATION_NETWORKEXPORTER_H
