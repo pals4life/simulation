@@ -27,7 +27,7 @@ TEST_F(NetworkTester, NetworkSimulation1)
     roads.push_back(new Road("E13", NULL, 150, 1, std::vector<const Zone*>(1, zone), std::vector<const BusStop*>(), std::vector<const TrafficLight*>()));
     Network network(roads);
     testing::internal::CaptureStdout();
-    network.startSimulation(NULL, "simple", "impression");
+    network.startSimulation(NULL, "simple", "impression", true);
     testing::internal::GetCapturedStdout();
     EXPECT_EQ(network.getTicksPassed(), 1);
 }
@@ -40,7 +40,7 @@ TEST_F(NetworkTester, NetworkSimulation2)
     roads[0]->enqueue(new Car("ABC", 0, 0));
     Network network(roads);
     testing::internal::CaptureStdout();
-    network.startSimulation(NULL, "simple", "impression");
+    network.startSimulation(NULL, "simple", "impression", true);
     testing::internal::GetCapturedStdout();
     EXPECT_GT(network.getTicksPassed(), 0);
     EXPECT_EQ(roads[0]->isEmpty(), true);

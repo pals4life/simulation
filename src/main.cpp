@@ -34,7 +34,7 @@ int main(int argc, char** argv)
         parser.clear();
 
         window->createRoadButtons(network->getRoads());
-        network->startSimulation(window, "simple", "impression");
+        network->startSimulation(window, "simple", "impression", false);
         delete network;
     }
 

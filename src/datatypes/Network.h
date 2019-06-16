@@ -37,7 +37,7 @@ public:
      * REQUIRE(this->properlyInitialized(), "Network was not initialized when calling startSimulation");
      * REQUIRE(amountOfTicks >= 0, "Amount of ticks must be a positive integer");
      */
-    void startSimulation(Window* window, const std::string& simpleOutput, const std::string& impressionOutput);
+    void startSimulation(Window* window, const std::string& simpleOutput, const std::string& impressionOutput, bool debug);
 
     /**
      * REQUIRE(this->properlyInitialized(), "Network was not initialized when calling update");
