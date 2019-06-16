@@ -185,7 +185,6 @@ void NetworkExporter::cgExport(const Network *kNetwork, uint32_t number) {
                 double position = vehicle->getPosition() / fgScale;
                 char type = vehicle->getType()[0];
                 double length = vehicle->getVehicleLength();
-                std::cout << position << "\n";
                 if (position >= prevPosition) {
                     max++;
                 }
@@ -212,11 +211,11 @@ void NetworkExporter::cgExport(const Network *kNetwork, uint32_t number) {
             y += max * 2.0 + 0.5;
         }
         for (unsigned int b = 0; b < road->getBusStops().size(); b++) {
-            double pos = road->getBusStops()[b]->getPosition();
+            double pos = road->getBusStops()[b]->getPosition() / fgScale;
             sign(ini, nr, pos, y, 'y');
         }
         for (unsigned int b = 0; b < road->getTrafficLights().size(); b++) {
-            double pos = road->getTrafficLights()[b]->getPosition();
+            double pos = road->getTrafficLights()[b]->getPosition() / fgScale;
             TrafficLight::EColor color = road->getTrafficLights()[b]->getColor();
             char c;
             switch (color) {
@@ -233,7 +232,7 @@ void NetworkExporter::cgExport(const Network *kNetwork, uint32_t number) {
             sign(ini, nr, pos, y, c);
         }
         for (unsigned int b = 0; b < road->getZones().size(); b++) {
-            double pos = road->getZones()[b]->getPosition();
+            double pos = road->getZones()[b]->getPosition() / fgScale;
             sign(ini, nr, pos, y, 'w');
         }
 
