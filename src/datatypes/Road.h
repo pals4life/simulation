@@ -143,17 +143,17 @@ public:
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getZones");
      */
-    std::vector<const Zone*> getZones();
+    std::vector<const Zone*> getZones() const;
 
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getBusStops");
      */
-    std::vector<const BusStop*> getBusStops();
+    std::vector<const BusStop*> getBusStops() const;
 
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getTrafficLights");
      */
-    std::vector<const TrafficLight*> getTrafficLights();
+    std::vector<const TrafficLight*> getTrafficLights() const;
 
     //--------------------------------------------------------------------------------------------------//
     //      al de onderstaande functies leiden tot een oneindige loop als banen een cirkel vormen       //
