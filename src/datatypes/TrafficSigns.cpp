@@ -42,7 +42,7 @@ void TrafficLight::update() const
 {
     REQUIRE(properlyInitialized(), "TrafficLight was not properly initialized when calling updateVehicles");
 
-    if(fkInRange != NULL and fkInRange->getPosition() >= fPosition) fkInRange = NULL;
+    if(fkInRange != NULL and fkInRange->getPosition() >= fPosition+50) fkInRange = NULL;
 
     const uint32_t diff = fRedTime - fGreenTime;
     switch(fColor)

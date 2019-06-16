@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <NETWERK>
     <VOERTUIG>
-        <type>MOTORFIETS</type>
+        <type>AUTO</type>
         <nummerplaat>auto</nummerplaat>
         <baan>E19</baan>
         <positie>10</positie>
@@ -9,17 +9,17 @@
     </VOERTUIG>
 
     <VOERTUIG>
-        <type>VRACHTWAGEN</type>
+        <type>AUTO</type>
         <nummerplaat>bus</nummerplaat>
         <baan>E19</baan>
-        <positie>500</positie>
+        <positie>30</positie>
         <snelheid>0</snelheid>
     </VOERTUIG>
 
     <BAAN>
         <naam>E19</naam>
         <snelheidslimiet>140</snelheidslimiet>
-        <lengte>3000</lengte>
+        <lengte>2000</lengte>
         <verbinding>E313</verbinding>
         <rijstroken>2</rijstroken>
     </BAAN>
