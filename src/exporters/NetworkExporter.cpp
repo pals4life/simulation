@@ -120,7 +120,6 @@ std::string NetworkExporter::addSection(const Network *kNetwork, uint32_t number
             for (uint32_t k = 0; k < (*road)[j].size(); k++) {
                 const IVehicle *vehicle = (*road)[j][k];
                 uint32_t pos = static_cast<uint32_t >(floor(vehicle->getPosition() / fgScale));
-                if (pos >= lane.size()) pos = lane.size() - 1;
                 lane[pos].push_back(toupper(vehicle->getType()[0]));
                 if (lane[pos].size() > max) max = lane[pos].size();
             }
@@ -192,16 +191,16 @@ void NetworkExporter::cgExport(const Network *kNetwork, uint32_t number) {
                 }
                 switch (type) {
                     case 'a':
-                        car(ini, nr, {-position, y + (max - 1) * 2, 0}, true);
+                        car(ini, nr, {-position, y + (max - 1) * 2, 0.25}, true);
                         break;
                     case 'b':
-                        bus(ini, nr, {-position, y + (max - 1) * 2, 0});
+                        bus(ini, nr, {-position, y + (max - 1) * 2, 0.25});
                         break;
                     case 'v':
-                        truck(ini, nr, {-position, y + (max - 1) * 2, 0});
+                        truck(ini, nr, {-position, y + (max - 1) * 2, 0.25});
                         break;
                     case 'm':
-                        motorcycle(ini, nr, {-position, (y + (max - 1) * 2)+0.5, 0});
+                        motorcycle(ini, nr, {-position, (y + (max - 1) * 2)+0.5, 0.25});
                         break;
                     default:
                         std::cerr << "Vehicle type can not be represented with the CG engine\n";
@@ -209,7 +208,7 @@ void NetworkExporter::cgExport(const Network *kNetwork, uint32_t number) {
                 prevPosition = position - length;
             }
             lane(ini, nr, max, y, roadLength);
-            y += max * 2 + 1;
+            y += max * 2 + 0.5;
         }
         y += 1;
     }
@@ -229,15 +228,15 @@ void NetworkExporter::general(std::ofstream &ini, const int &nr) {
            "type = \"LightedZBuffering\"\n"
            "nrLights = 1\n"
            "shadowEnabled = FALSE\n"
-           "eye = (0,30,100)\n"
+           "eye = (0,50,100)\n"
            "nrFigures = " << nr << "\n"
                                    "\n"
                                    "[Light0]\n"
                                    "infinity = TRUE\n"
-                                   "direction = (0,0,-100)\n"
+                                   "direction = (-3,-1,-10)\n"
                                    "ambientLight = (0.4,0.4,0.4)\n"
-                                   "diffuseLight = (0.8,0.8,0.8)\n"
-                                   "specularLight = (0.8,0.8,0.8)\n"
+                                   "diffuseLight = (1,1,1)\n"
+                                   "specularLight = (1,1,1)\n"
                                    "\n";
 //                                   "[Figure0]\n"
 //                                   "type = Cube\n"
@@ -255,21 +254,21 @@ void NetworkExporter::car(std::ofstream &ini, int &nr, const Pos &pos, bool real
     Object top = Object::rectangle({pos.fX + 1, pos.fY, pos.fZ + 0.5}, {pos.fX + 2, pos.fY + 1.5, pos.fZ + 1});
     if (real) {
         bottom.fAmbient = {0.5, 0.1, 0.1};
-        bottom.fDiffuse = {0.5, 0.1, 0.1};
-        bottom.fSpecular = {0.8, 0.1, 0.1};
+        bottom.fDiffuse = {1, 0.1, 0.1};
+        bottom.fSpecular = {1, 0.1, 0.1};
         bottom.fReflectionCoefficient = 20;
         top.fAmbient = {0.1, 0.1, 0.1};
-        top.fDiffuse = {0.3, 0.1, 0.3};
+        top.fDiffuse = {0.8, 0.1, 0.8};
         top.fSpecular = {0.3, 0.3, 1};
         top.fReflectionCoefficient = 20;
     } else {
         bottom.fAmbient = {0.5, 0.1, 0.5};
-        bottom.fDiffuse = {0.5, 0.1, 0.5};
+        bottom.fDiffuse = {1, 0.1, 1};
         bottom.fSpecular = {0.8, 0.1, 0.8};
         bottom.fReflectionCoefficient = 20;
-        top.fAmbient = {0.1, 0.5, 0.1};
-        top.fDiffuse = {0.1, 0.5, 0.1};
-        top.fSpecular = {0.1, 0.8, 1};
+        top.fAmbient = {0.5, 0.0, 0.5};
+        top.fDiffuse = {0.4, 0.0, 0.3};
+        top.fSpecular = {0.1, 0.0, 0.2};
         top.fReflectionCoefficient = 20;
 
     }
@@ -295,8 +294,10 @@ void NetworkExporter::wheel(std::ofstream &ini, int &nr, const Pos &kPos) {
 void NetworkExporter::lane(std::ofstream &ini, int &nr, double max, double y, double roadlength) {
     ini << "[Figure" << nr++ << "]\n";
     ini << "type = \"LineDrawing\"\n";
-    ini << "ambientReflection = (1, 1, 0.2)\n";
-    ini << "diffuseReflection = (1, 1, 0.2)\n";
+    ini << "ambientReflection = (0.2, 0.2, 0.2)\n";
+    ini << "diffuseReflection = (0.3, 0.3, 0.3)\n";
+    ini << "specularReflection = (0.2, 0.2, 0.2)\n";
+    ini << "reflectoinCoefficient = 10\n";
     ini << "nrPoints = 4\n";
     ini << "nrLines = 1\n";
     ini << "point0 = " << Pos{0, y, 0} << "\n";
@@ -309,11 +310,15 @@ void NetworkExporter::lane(std::ofstream &ini, int &nr, double max, double y, do
 
 void NetworkExporter::bus(std::ofstream &ini, int &nr, const Pos &pos) {
     Object bottom = Object::rectangle(pos, {pos.fX + 10, pos.fY + 1.5, pos.fZ + 3});
-    bottom.fAmbient = {0.1, 0.1, 0.5};
-    bottom.fDiffuse = {0.1, 0.1, 0.5};
-    bottom.fSpecular = {0.1, 0.1, 0.8};
+    Object window = Object::rectangle({pos.fX+0.5, pos.fY-0.02, pos.fZ+0.5}, {pos.fX + 1.25, pos.fY + 1.52, pos.fZ + 2.5});
+    window.fDiffuse = {1, 0.6, 0.2};
+    bottom.fAmbient = {0.5, 0.3, 0.1};
+    bottom.fDiffuse = {0.8, 0.8, 0.1};
+    bottom.fSpecular = {0.5, 0.5, 0.1};
     bottom.fReflectionCoefficient = 20;
+    window.print(ini, nr++);
     bottom.print(ini, nr++);
+    wheel(ini, nr, {pos.fX + 5, pos.fY - 0.25, pos.fZ});
     wheel(ini, nr, {pos.fX + 2, pos.fY - 0.25, pos.fZ});
     wheel(ini, nr, {pos.fX + 8, pos.fY - 0.25, pos.fZ});
 }
@@ -321,20 +326,20 @@ void NetworkExporter::bus(std::ofstream &ini, int &nr, const Pos &pos) {
 void NetworkExporter::truck(std::ofstream &ini, int &nr, const Pos &pos) {
     Object cabin = Object::rectangle({pos.fX, pos.fY, pos.fZ + 1}, {pos.fX + 1, pos.fY + 1.5, pos.fZ + 3});
     cabin.fAmbient = {0.5, 0.1, 0.1};
-    cabin.fDiffuse = {0.5, 0.1, 0.1};
+    cabin.fDiffuse = {0.8, 0.1, 0.1};
     cabin.fSpecular = {0.8, 0.1, 0.};
     cabin.fReflectionCoefficient = 20;
     Object bottom = Object::rectangle(pos, {pos.fX + 15, pos.fY + 1.5, pos.fZ + 1});
     bottom.fAmbient = {0.1, 0.1, 0.1};
-    bottom.fDiffuse = {0.1, 0.1, 0.1};
+    bottom.fDiffuse = {0.3, 0.3, 0.3};
     bottom.fSpecular = {0.1, 0.1, 0.1};
     bottom.fReflectionCoefficient = 20;
     Object container = Object::rectangle({pos.fX + 2, pos.fY, pos.fZ + 1}, {pos.fX + 8, pos.fY + 1.5, pos.fZ + 3});
-    container.fAmbient = {0.1, 0.1, 0.5};
-    container.fDiffuse = {0.1, 0.1, 0.5};
-    container.fSpecular = {0.1, 0.1, 0.8};
+    container.fAmbient = {0.1, 0.3, 0.5};
+    container.fDiffuse = {0.1, 0.8, 0.8};
+    container.fSpecular = {0.1, 0.5, 0.5};
     container.fReflectionCoefficient = 20;
-    car(ini, nr, {pos.fX + 10, pos.fY, pos.fZ + 1}, false);
+    car(ini, nr, {pos.fX + 10, pos.fY, pos.fZ + 1.25}, false);
     bottom.print(ini, nr++);
     container.print(ini, nr++);
     cabin.print(ini, nr++);
@@ -349,8 +354,8 @@ void NetworkExporter::motorcycle(std::ofstream &ini, int &nr, const Pos &pos) {
     Object seat = Object::rectangle({pos.fX + 0.5, pos.fY+0.05, pos.fZ + 0.5}, {pos.fX + 0.9, pos.fY + 0.45, pos.fZ + 0.75});
     Object steer = Object::rectangle({pos.fX, pos.fY-0.1, pos.fZ + 0.5}, {pos.fX + 0.1, pos.fY + 0.6, pos.fZ + 0.75});
     bottom.fAmbient = {0.5, 0.5, 0.5};
-    bottom.fDiffuse = {0.5, 0.5, 0.5};
-    bottom.fSpecular = {0.7, 0.7, 0.7};
+    bottom.fDiffuse = {0.1, 1, 0.1};
+    bottom.fSpecular = {0.1, 0.7, 0.1};
     bottom.fReflectionCoefficient = 20;
     seat.fAmbient = {0.1, 0.1, 0.1};
     seat.fDiffuse = {0.1, 0.1, 0.1};
