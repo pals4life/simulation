@@ -164,7 +164,7 @@ void NetworkExporter::cgExport(const Network *kNetwork, uint32_t number) {
     int res = system("mkdir outputfiles >/dev/null 2>&1");
     ENSURE(res == 0 or res == 256, "Failed to create output directory");
 
-    const std::string kFilename = "outputfiles/" + std::to_string(1) + ".ini";
+    const std::string kFilename = "outputfiles/cg.ini";
     std::ofstream ini(kFilename);
     ENSURE(ini.is_open(), "Failed to open file for cg export");
 
@@ -235,8 +235,6 @@ void NetworkExporter::cgExport(const Network *kNetwork, uint32_t number) {
             double pos = road->getZones()[b]->getPosition() / fgScale;
             sign(ini, nr, pos, y, 'w');
         }
-
-
         y += 1;
     }
 
