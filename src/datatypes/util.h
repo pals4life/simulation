@@ -27,6 +27,12 @@ bool comparePosition(double lhs, const T* rhs)
 }
 
 template<typename T>
+bool comparePositionGT(double lhs, const T* rhs)
+{
+    return lhs > rhs->getPosition();
+}
+
+template<typename T>
 bool comparePositions(const T* lhs, const T* rhs)
 {
     return lhs->getPosition() < rhs->getPosition();

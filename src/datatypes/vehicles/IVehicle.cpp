@@ -211,9 +211,8 @@ std::pair<bool, double> IVehicle::calculateStop(double nextPos) const
     }
     futurePos += futureVel;
 
-    if(futurePos-10 > nextPos)
+    if(futurePos-fVelocity > nextPos)
     {
-        std::cout << "stopping at: " << getPosition() << '\n';
         return std::pair<bool, double>(true, kAccel);
     }
 
