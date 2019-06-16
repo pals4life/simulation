@@ -18,23 +18,15 @@ int main(int argc, char** argv)
 {
     QApplication application(argc, argv);
 
-    const auto gui = true;
-    const bool output = true;
-
     Window* window = nullptr;
     std::string filename;
 
-    if(gui)
-    {
-        window = new Window;
-        window->init();
-        window->createButtons();
-        filename = window->askString("inputfiles/spec2.0.xml");
-    }
-    else
-    {
-        filename = argv[1];
-    }
+    window = new Window;
+    window->init();
+    window->createButtons();
+
+    if(argc != 2) filename = window->askString("inputfiles/spec2.0.xml");
+    else filename = argv[1];
 
     NetworkParser parser;
     if (parser.loadFile(filename))
@@ -42,9 +34,9 @@ int main(int argc, char** argv)
         Network* network = parser.parseNetwork(parser.getRoot());
         parser.clear();
 
-        if (gui) window->createRoadButtons(network->getRoads());
+        window->createRoadButtons(network->getRoads());
 
-        network->startSimulation(window, "simple", "impression", output, gui);
+        network->startSimulation(window, "simple", "impression");
         delete network;
     }
 
