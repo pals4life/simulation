@@ -231,19 +231,19 @@ void Road::addTrafficLight(const TrafficLight* kTrafficLight)
     insert_sorted<TrafficLight>(fTrafficLights, kTrafficLight);
 }
 
-std::vector<const Zone*> Road::getZones()
+std::vector<const Zone*> Road::getZones() const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getZones");
     return fZones;
 }
 
-std::vector<const BusStop*> Road::getBusStops()
+std::vector<const BusStop*> Road::getBusStops() const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getBusStops");
     return fBusStops;
 }
 
-std::vector<const TrafficLight*> Road::getTrafficLights()
+std::vector<const TrafficLight*> Road::getTrafficLights() const
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getTrafficLights");
     return fTrafficLights;
