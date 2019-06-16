@@ -1,6 +1,6 @@
 Inconsistent traffic situation: road E20 does not exist
 Failed to recognize element FIETS: skipping element
-Inconsistent traffic situation: car 651BUFis not on road E19
+Inconsistent traffic situation: car 651BUF is not on road E19
 Inconsistent traffic situation: car 651BUF is less than 5m away from car 1THK180 on road E19
 Inconsistent traffic situation: car 651BUF is less than 5m away from car 651BIF on roads E19 and E313
 Inconsistent traffic situation: car 1THK180 is less than 5m away from car 651BIF on roads E19 and E313

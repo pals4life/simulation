@@ -51,8 +51,8 @@ void Network::startSimulation(Window* window, const std::string& simpleOutput, c
         if(debug or checkWindow(window->getState()))
         {
             if(update()) break;
-            NetworkExporter::cgExport(this, fTicksPassed);
-            window->updateSimpleOutput(NetworkExporter::addSection(this, fTicksPassed));
+            if(not debug) NetworkExporter::cgExport(this, fTicksPassed);
+            if(not debug) window->updateSimpleOutput(NetworkExporter::addSection(this, fTicksPassed));
             if(not debug) Window::processEvents();
         }
     }

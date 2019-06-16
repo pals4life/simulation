@@ -34,9 +34,9 @@ TEST_F(NetworkParserTester, ParseNetwork) {
         Network *network = parser.parseNetwork(parser.getRoot());
         EXPECT_TRUE(network);
         testing::internal::CaptureStdout();
-        network->startSimulation(NULL, "simple", "impression", false, false);
+        network->startSimulation(NULL, "simple", "impression", true);
         testing::internal::GetCapturedStdout();
-        EXPECT_EQ(229, network->getTicksPassed());
+        EXPECT_EQ(232, network->getTicksPassed());
         delete network;
     }
     testing::internal::CaptureStderr();
