@@ -127,10 +127,7 @@ void Window::createRoadButtons(const std::vector<Road *> &roads)
 Window::EState Window::getState() const
 {
     REQUIRE(this->checkProperlyInitialized(), "Window was not properly initialized when calling CreateButtons");
-
-    EState temp = fCrState;
-    if(fCrState == kNext) fCrState = kPause;
-    return temp;
+    return fCrState;
 }
 
 void Window::closeEvent (QCloseEvent *event)
