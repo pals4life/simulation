@@ -165,16 +165,16 @@ TEST_F(RoadTester, RoadUpdate7)
 TEST_F(RoadTester, RoadUpdate8)
 {
     const Zone* zone = new Zone(0, 50);
-    Road* testRoad = new Road("E13", NULL, 100, 1, std::vector<const Zone*>(1, zone), std::vector<const BusStop*>(), std::vector<const TrafficLight*>());
+    Road* testRoad = new Road("E13", NULL, 5000, 1, std::vector<const Zone*>(1, zone), std::vector<const BusStop*>(), std::vector<const TrafficLight*>());
 
-    Car* testCar0 = new Car("12R3", 50, 10);
+    Car* testCar0 = new Car("12R3", 200, 10);
     Car* testCar1 = new Car("AE-12", 0, 30);
 
     testRoad->enqueue(testCar0);
     testRoad->enqueue(testCar1);
 
     testRoad->updateVehicles();
-    ASSERT_EQ(testCar0->getPosition(), 60+testCar0->getMaxAcceleration());
+    ASSERT_EQ(testCar0->getPosition(), 210+testCar0->getMaxAcceleration());
     ASSERT_EQ(testCar1->getPosition(), 30+testCar1->getMaxAcceleration());
 
     delete testRoad;

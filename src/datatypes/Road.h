@@ -68,6 +68,15 @@ public:
      */
     bool changeLaneIfPossible(IVehicle* vehicle, uint32_t kLane, uint32_t kIndex, bool kLeft);
 
+    /**
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextTrafficLight");
+     * REQUIRE(laneExists(lane), "Cannot get vehicles on an non-existant lane");
+     * REQUIRE(index < fLanes[lane].size(), "Index is out of range");
+     *
+     * ENSURE(getNextVehicle(kLane, kIndex).getMoved());
+     */
+    void updateNextVehicles();
+
     //--------------------------------------------------------------------------------------------------//
 
     /**
@@ -178,7 +187,7 @@ public:
     std::pair<const TrafficLight*, double> getTrafficLight(double kPosition = 0) const;
 
     /**
-     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextTrafficLight");
+     * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextVehicle");
      * REQUIRE(laneExists(lane), "Cannot get vehicles on an non-existant lane");
      * REQUIRE(index < fLanes[lane].size(), "Index is out of range");
      */
@@ -202,7 +211,7 @@ private:
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling dequeue");
      * REQUIRE(!isEmpty(), "Road cannot be empty when calling dequeue");
-     * REQUIRE(lane < this->getNumLanes() and lane >= 0, "Cannot dequeue vehicle from an non-existant lane");
+     * REQUIRE(kLane < this->getNumLanes() and kLane >= 0, "Cannot dequeue vehicle from an non-existant lane");
      */
     void dequeue(uint32_t kLane);
 

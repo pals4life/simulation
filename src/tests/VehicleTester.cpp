@@ -55,8 +55,8 @@ TEST_F(VehicleTester, move2)
 
 TEST_F(VehicleTester, move3)
 {
-    IVehicle* car1 = new Car("AAA-123", 100, 0);
-    IVehicle* bus1 = new Car("BBB-123", 99 + car1->getMinVehicleDist(), 0);
+    IVehicle* car1 = new Car("AAA-123", 120, 0);
+    IVehicle* bus1 = new Car("BBB-123", 100, 0);
     IVehicle* car3 = new Car("BBB-123", 200, 0);
 
     const Zone* zone = new Zone(0, 100);

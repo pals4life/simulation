@@ -67,8 +67,9 @@ void IVehicle::move(const uint32_t kLane, const uint32_t kIndex, Road* const kRo
     checkBusStop(kRoad->getBusStop(fPosition));                                                         // calculate the slowdown if needed
     const double kSpeedlimit = kRoad->getSpeedLimit(fPosition);                                         // calculate the speed limit
 
-    const std::pair<const IVehicle*, double> kNextVehicle = kRoad->getNextVehicle(kLane, kIndex);        // get the next vehicle
-    double acceleration = getFollowingAcceleration(kNextVehicle);                                        // calculate the following speed
+    const std::pair<const IVehicle*, double> kNextVehicle = kRoad->getNextVehicle(kLane, kIndex);       // get the next vehicle
+    if(kNextVehicle.first != NULL and not kNextVehicle.first->getMoved()) kRoad->updateNextVehicles();  // if the next road hasnt been updated yet, update it.
+    double acceleration = getFollowingAcceleration(kNextVehicle);                                       // calculate the following speed
 
     if(std::get<0>(fTrafficLightAccel)) acceleration = std::min(std::get<1>(fTrafficLightAccel), acceleration);    // we need to take the minimum of these values
     if(std::get<0>(fBusStopAccel)     ) acceleration = std::min(std::get<1>(fBusStopAccel)     , acceleration);    // to ensure we slow down enough

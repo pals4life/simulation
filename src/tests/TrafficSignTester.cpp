@@ -56,13 +56,13 @@ TEST_F(TrafficSignTester, TrafficLightUpdate3)
 
 TEST_F(TrafficSignTester, TrafficLightUpdate4)
 {
-    const IVehicle* bus = new Bus("aa", 0, 0);
+    const IVehicle* bus = new Bus("aa", 100, 0);
     TrafficLight light(0);
     light.setColor(TrafficLight::EColor::kRed);
     for(uint32_t i = 0; i < 15; i++) light.update();
     light.setInRange(bus);
     light.update();
-    EXPECT_EQ(TrafficLight::EColor::kGreen, light.getColor());
+    EXPECT_EQ(light.getColor(), TrafficLight::EColor::kRed);
 }
 
 TEST_F(TrafficSignTester, BusStopInit)
