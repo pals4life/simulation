@@ -13,13 +13,12 @@
         <snelheidslimiet>140</snelheidslimiet>
         <lengte>2000</lengte>
         <verbinding>E313</verbinding>
-        <rijstroken>2</rijstroken>
     </BAAN>
 
     <BAAN>
         <naam>E313</naam>
         <snelheidslimiet>120</snelheidslimiet>
-        <lengte>5000</lengte>
+        <lengte>2000</lengte>
     </BAAN>
 
     <VERKEERSTEKEN>
@@ -33,6 +32,6 @@
         <type>VERKEERSLICHT</type>
         <baan>E19</baan>
         <positie>1500</positie>
-        <snelheidslimiet>140</snelheidslimiet>
     </VERKEERSTEKEN>
+
 </NETWERK>
