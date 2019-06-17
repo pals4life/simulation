@@ -21,7 +21,7 @@ int main(int argc, char** argv)
     Window* window = new Window;
     std::string filename;
 
-    const bool GUI = false;
+    const bool GUI = true;
 
     if (GUI)
     {
