@@ -4,6 +4,7 @@ outputfiles/*
 .directory/
 outputfiles/testoutputs/*
 !outputfiles/testoutputs/*-expected.txt
+!outputfiles/testoutputs/*-expected.bmp
 
 engine/*.o
 
