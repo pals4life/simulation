@@ -121,6 +121,7 @@ TEST_F(NetworkExporterTester, CgExport) {
     Network test({});
     testing::internal::CaptureStdout();
     NetworkExporter::init(&test, "test", "test");
+    testing::internal::GetCapturedStdout();
 
     EXPECT_DEATH(NetworkExporter::cgExport(NULL, 0), "Failed to export to cg: no network");
 
@@ -136,10 +137,11 @@ TEST_F(NetworkExporterTester, CgExport) {
     bool loaded = parser.loadFile("inputfiles/testinputs/test13.xml");
     EXPECT_TRUE(loaded);
     if (loaded) {
+        testing::internal::CaptureStdout();
         Network *network = parser.parseNetwork(parser.getRoot());
         NetworkExporter::init(network, "test", "test");
         NetworkExporter::cgExport(network, 0);
-
+        testing::internal::GetCapturedStdout();
         res = system(
                 "mv outputfiles/cg.ini \"outputfiles/testoutputs/NetworkExporterTester-CGExport(full).txt\" >/dev/null 2>&1");
         EXPECT_EQ(0, res);
@@ -154,7 +156,6 @@ TEST_F(NetworkExporterTester, CgExport) {
         NetworkExporter::finish();
         delete network;
     }
-    testing::internal::GetCapturedStdout();
     res = system("rm outputfiles/test.txt >/dev/null 2>&1");
     EXPECT_EQ(0, res % 256);
 }
