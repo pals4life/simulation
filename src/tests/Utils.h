@@ -14,4 +14,5 @@
 bool FileCompare(const std::string &leftFileName, const std::string &rightFileName);
 
 
+
 #endif //SIMULATION_UTILS_H
