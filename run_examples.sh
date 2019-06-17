@@ -23,6 +23,8 @@ echo
 sleep 1
 ./simulation_debug
 
+run inputfiles/extra_examples/full_simulation.xml
+
 for file in inputfiles/use_case_test_files/* ; do
     run $file
 done

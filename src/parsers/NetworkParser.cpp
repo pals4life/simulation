@@ -94,14 +94,14 @@ Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
             Road *foundRoad = *found;
             for (std::vector<IVehicle *>::iterator it2 = it1->second.begin(); it2 != it1->second.end(); it2++) {
                 if ((*it2)->getPosition() >= foundRoad->getRoadLength()) {
-                    std::cerr << "Inconsistent traffic situation: car " << (*it2)->getLicensePlate()
+                    std::cerr << "Inconsistent traffic situation: vehicle " << (*it2)->getLicensePlate()
                               << " is not on road "
                               << it1->first << std::endl;
                 }
                 std::vector<IVehicle *>::iterator it3 = it2;
                 if (++it3 < it1->second.end() && abs((*it2)->getPosition() - (*it3)->getPosition()) < 5) {
-                    std::cerr << "Inconsistent traffic situation: car " << (*it2)->getLicensePlate()
-                              << " is less than 5m away from car " << (*it3)->getLicensePlate() << " on road "
+                    std::cerr << "Inconsistent traffic situation: vehicle " << (*it2)->getLicensePlate()
+                              << " is less than 5m away from vehicle " << (*it3)->getLicensePlate() << " on road "
                               << it1->first << std::endl;
                 }
                 const double kFromEnd = foundRoad->getRoadLength() - (*it2)->getPosition();
@@ -111,8 +111,8 @@ Network *NetworkParser::parseNetwork(TiXmlElement *const element) {
                         if (!tempRoads[nextRoad->getName()].empty()) {
                             nextVehicle = tempRoads[nextRoad->getName()].front();
                             if (nextVehicle->getPosition() + kFromEnd < 5) {
-                                std::cerr << "Inconsistent traffic situation: car " << (*it2)->getLicensePlate()
-                                          << " is less than 5m away from car " << nextVehicle->getLicensePlate()
+                                std::cerr << "Inconsistent traffic situation: vehicle " << (*it2)->getLicensePlate()
+                                          << " is less than 5m away from vehicle " << nextVehicle->getLicensePlate()
                                           << " on roads " << it1->first << " and " << nextRoad->getName()
                                           << std::endl;
                             }
