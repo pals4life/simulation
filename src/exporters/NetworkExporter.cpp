@@ -247,7 +247,7 @@ void NetworkExporter::cgExport(const Network *kNetwork, const unsigned int kTick
     std::string command = "./engine/engine " + filename + " >/dev/null 2>&1";
     if (kTick > 0) command += " &";
     res = system(command.c_str());
-    ENSURE(res == 0, "Failed to run engine on the generated ini file");
+    ENSURE(res == 0 or res == 256, "Failed to run engine on the generated ini file");
     ENSURE(!ini.is_open(), "Failed to close ofstream to ini");
 }
 
