@@ -62,7 +62,7 @@ TEST_F(TrafficSignTester, TrafficLightUpdate4)
     for(uint32_t i = 0; i < 15; i++) light.update();
     light.setInRange(bus);
     light.update();
-    EXPECT_EQ(TrafficLight::EColor::kRed, light.getColor());
+    EXPECT_EQ(TrafficLight::EColor::kGreen, light.getColor());
 }
 
 TEST_F(TrafficSignTester, BusStopInit)

@@ -16,6 +16,7 @@
 #include <sstream>
 #include <iomanip>
 #include <cfloat>
+#include <sys/stat.h>
 
 typedef Object object;
 std::ofstream NetworkExporter::fgSimple;
@@ -157,15 +158,17 @@ bool NetworkExporter::properlyInitialized() {
     return _initCheck;
 }
 
-void NetworkExporter::cgExport(const Network *kNetwork, uint32_t number) {
+void NetworkExporter::cgExport(const Network *kNetwork, const unsigned int kTick) {
     REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling cgExport");
     REQUIRE(kNetwork, "Failed to export to cg: no network");
+    REQUIRE(FileExists("engine/engine"), "Failed to export to cg engine: engine not found");
 
     int res = system("mkdir outputfiles >/dev/null 2>&1");
     ENSURE(res == 0 or res == 256, "Failed to create output directory");
 
-    const std::string kFilename = "outputfiles/cg.ini";
-    std::ofstream ini(kFilename);
+    std::string filename = "outputfiles/cg.ini";
+    if (kTick > 0) filename = "outputfiles/tick" + std::to_string(kTick) + ".ini";
+    std::ofstream ini(filename);
     ENSURE(ini.is_open(), "Failed to open file for cg export");
 
     ini << std::fixed;
@@ -241,11 +244,17 @@ void NetworkExporter::cgExport(const Network *kNetwork, uint32_t number) {
     general(ini, nr);
 
     ini.close();
-    const std::string kCommand = "./engine/engine " + kFilename + ""; //  " && rm " + kFilename +
-    system(kCommand.c_str());
+    std::string command = "./engine/engine " + filename + " >/dev/null 2>&1";
+    if (kTick > 0) command += " &";
+    res = system(command.c_str());
+    ENSURE(res == 0, "Failed to run engine on the generated ini file");
+    ENSURE(!ini.is_open(), "Failed to close ofstream to ini");
 }
 
 void NetworkExporter::general(std::ofstream &ini, const int &kNr) {
+    REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling general");
+    REQUIRE(ini.is_open(), "Ofstream to ini is not open");
+    REQUIRE(kNr >= 0, "kNr must be greater than 0");
     ini << "[General]\n"
            "size = 4096\n"
            "backgroundcolor = (0.05,0.06,0.05)\n"
@@ -265,6 +274,9 @@ void NetworkExporter::general(std::ofstream &ini, const int &kNr) {
 }
 
 void NetworkExporter::car(std::ofstream &ini, int &nr, const Pos &pos, bool real) {
+    REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling car");
+    REQUIRE(ini.is_open(), "Ofstream to ini is not open");
+    REQUIRE(nr >= 0, "Nr must be greater than 0");
     Object bottom = Object::rectangle(pos, {pos.fX + 3, pos.fY + 1.5, pos.fZ + 0.5});
     Object top = Object::rectangle({pos.fX + 1, pos.fY, pos.fZ + 0.5}, {pos.fX + 2, pos.fY + 1.5, pos.fZ + 1});
     if (real) {
@@ -294,6 +306,9 @@ void NetworkExporter::car(std::ofstream &ini, int &nr, const Pos &pos, bool real
 }
 
 void NetworkExporter::wheel(std::ofstream &ini, int &nr, const Pos &kPos) {
+    REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling wheel");
+    REQUIRE(ini.is_open(), "Ofstream to ini is not open");
+    REQUIRE(nr >= 0, "Nr must be greater than 0");
     ini << "[Figure" << nr++ << "]\n";
     ini << "type = \"Cylinder\"\n";
     ini << "scale = 0.25\n";
@@ -307,6 +322,9 @@ void NetworkExporter::wheel(std::ofstream &ini, int &nr, const Pos &kPos) {
 }
 
 void NetworkExporter::lane(std::ofstream &ini, int &nr, double max, double y, double roadlength) {
+    REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling lane");
+    REQUIRE(ini.is_open(), "Ofstream to ini is not open");
+    REQUIRE(nr >= 0, "Nr must be greater than 0");
     ini << "[Figure" << nr++ << "]\n";
     ini << "type = \"LineDrawing\"\n";
     ini << "ambientReflection = (0.2, 0.2, 0.2)\n";
@@ -324,6 +342,9 @@ void NetworkExporter::lane(std::ofstream &ini, int &nr, double max, double y, do
 }
 
 void NetworkExporter::bus(std::ofstream &ini, int &nr, const Pos &pos) {
+    REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling bus");
+    REQUIRE(ini.is_open(), "Ofstream to ini is not open");
+    REQUIRE(nr >= 0, "Nr must be greater than 0");
     Object bottom = Object::rectangle(pos, {pos.fX + 10, pos.fY + 1.5, pos.fZ + 3});
     Object window = Object::rectangle({pos.fX + 0.5, pos.fY - 0.02, pos.fZ + 0.5},
                                       {pos.fX + 1.25, pos.fY + 1.52, pos.fZ + 2.5});
@@ -340,6 +361,9 @@ void NetworkExporter::bus(std::ofstream &ini, int &nr, const Pos &pos) {
 }
 
 void NetworkExporter::truck(std::ofstream &ini, int &nr, const Pos &pos) {
+    REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling truck");
+    REQUIRE(ini.is_open(), "Ofstream to ini is not open");
+    REQUIRE(nr >= 0, "Nr must be greater than 0");
     Object cabin = Object::rectangle({pos.fX, pos.fY, pos.fZ + 1}, {pos.fX + 1, pos.fY + 1.5, pos.fZ + 3});
     cabin.fAmbient = {0.5, 0.1, 0.1};
     cabin.fDiffuse = {0.8, 0.1, 0.1};
@@ -366,6 +390,9 @@ void NetworkExporter::truck(std::ofstream &ini, int &nr, const Pos &pos) {
 }
 
 void NetworkExporter::motorcycle(std::ofstream &ini, int &nr, const Pos &pos) {
+    REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling motorcycle");
+    REQUIRE(ini.is_open(), "Ofstream to ini is not open");
+    REQUIRE(nr >= 0, "Nr must be greater than 0");
     Object bottom = Object::rectangle(pos, {pos.fX + 1, pos.fY + 0.5, pos.fZ + 0.5});
     Object seat = Object::rectangle({pos.fX + 0.5, pos.fY + 0.05, pos.fZ + 0.5},
                                     {pos.fX + 0.9, pos.fY + 0.45, pos.fZ + 0.75});
@@ -384,6 +411,9 @@ void NetworkExporter::motorcycle(std::ofstream &ini, int &nr, const Pos &pos) {
 }
 
 void NetworkExporter::line(std::ofstream &ini, int &nr, const double &y, const double &x) {
+    REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling line");
+    REQUIRE(ini.is_open(), "Ofstream to ini is not open");
+    REQUIRE(nr >= 0, "Nr must be greater than 0");
     double now = 0;
     bool white = true;
     while (-now < x) {
@@ -418,6 +448,9 @@ void NetworkExporter::line(std::ofstream &ini, int &nr, const double &y, const d
 }
 
 void NetworkExporter::sign(std::ofstream &ini, int &nr, const double &x, const double &y, char c) {
+    REQUIRE(properlyInitialized(), "NetworkExporter was not initialized when calling sign");
+    REQUIRE(ini.is_open(), "Ofstream to ini is not open");
+    REQUIRE(nr >= 0, "Nr must be greater than 0");
     Object pole = Object::rectangle({-x, y, 0}, {-x - 0.1, y + 0.1, 2});
     pole.fDiffuse = {0.3, 0.3, 0.3};
     pole.fSpecular = {0.3, 0.3, 0.3};
@@ -445,6 +478,8 @@ void NetworkExporter::sign(std::ofstream &ini, int &nr, const double &x, const d
             ini << "ambientReflection = (1,1,1)\n";
             ini << "diffuseReflection = (1,1,1)\n";
             break;
+        default:
+            std::cerr << "Sign of type " << c << " could not be displayed\n";
     }
     ini << "scale = 0.4\n";
     ini << "center = " << Pos{-x - 0.05, y, 2} << "\n";
@@ -453,16 +488,18 @@ void NetworkExporter::sign(std::ofstream &ini, int &nr, const double &x, const d
 }
 
 Object Object::rectangle(const Pos &begin, const Pos &end) {
+    REQUIRE(!(begin.fX == end.fX && begin.fY == end.fY && begin.fZ == end.fZ),
+            "NetworkExporter was not initialized when calling sign");
     Object object;
     object.fPoints.reserve(8);
-    object.fPoints.push_back({end.fX, begin.fY, begin.fZ});
-    object.fPoints.push_back({begin.fX, end.fY, begin.fZ});
-    object.fPoints.push_back({end.fX, end.fY, end.fZ});
-    object.fPoints.push_back({begin.fX, begin.fY, end.fZ});
-    object.fPoints.push_back({end.fX, end.fY, begin.fZ});
-    object.fPoints.push_back({begin.fX, begin.fY, begin.fZ});
-    object.fPoints.push_back({end.fX, begin.fY, end.fZ});
-    object.fPoints.push_back({begin.fX, end.fY, end.fZ});
+    object.fPoints.emplace_back(end.fX, begin.fY, begin.fZ);
+    object.fPoints.emplace_back(begin.fX, end.fY, begin.fZ);
+    object.fPoints.emplace_back(end.fX, end.fY, end.fZ);
+    object.fPoints.emplace_back(begin.fX, begin.fY, end.fZ);
+    object.fPoints.emplace_back(end.fX, end.fY, begin.fZ);
+    object.fPoints.emplace_back(begin.fX, begin.fY, begin.fZ);
+    object.fPoints.emplace_back(end.fX, begin.fY, end.fZ);
+    object.fPoints.emplace_back(begin.fX, end.fY, end.fZ);
     object.fFaces.reserve(6);
     object.fFaces.emplace_back(Face({0, 4, 2, 6}));
     object.fFaces.emplace_back(Face({4, 1, 7, 2}));
@@ -470,10 +507,15 @@ Object Object::rectangle(const Pos &begin, const Pos &end) {
     object.fFaces.emplace_back(Face({5, 0, 6, 3}));
     object.fFaces.emplace_back(Face({6, 2, 7, 3}));
     object.fFaces.emplace_back(Face({0, 5, 1, 4}));
+    ENSURE(object.fFaces.size() == 6, "Rectangle was not initialized correctly");
+    ENSURE(object.fPoints.size() == 8, "Rectangle was not initialized correctly");
     return object;
 }
 
 void Object::print(std::ofstream &ini, const int nr) {
+    REQUIRE(properlyInitialized(), "Object was not initialized when calling print");
+    REQUIRE(ini.is_open(), "Ofstream to ini is not open");
+    REQUIRE(nr >= 0, "Nr must be greater than 0");
     ini << "[Figure" << nr << "]\n";
     ini << "type = \"LineDrawing\"\n";
     ini << "ambientReflection = " << fAmbient << "\n";
@@ -491,14 +533,46 @@ void Object::print(std::ofstream &ini, const int nr) {
     ini << "\n";
 }
 
+Object::Object() {
+    _initCheck = this;
+    ENSURE(this->properlyInitialized(), "Object was not initialized when constructed");
+}
+
+bool Object::properlyInitialized() const {
+    return _initCheck == this;
+}
+
 std::ostream &operator<<(std::ostream &os, const Color &color) {
     os << "(" << color.fR << "," << color.fG << "," << color.fB << ")";
     return os;
 }
 
+bool Color::properlyInitialized() const {
+    return _initCheck == this;
+}
+
+Color::Color(double fR, double fG, double fB) : fR(fR), fG(fG), fB(fB) {
+    _initCheck = this;
+    ENSURE(this->properlyInitialized(), "Color was not initialized when constructed");
+}
+
+Color::Color() {
+    _initCheck = this;
+    ENSURE(this->properlyInitialized(), "Color was not initialized when constructed");
+}
+
 std::ostream &operator<<(std::ostream &os, const Pos &pos) {
     os << "(" << pos.fX << "," << pos.fY << "," << pos.fZ << ")";
     return os;
+}
+
+bool Pos::properlyInitialized() const {
+    return _initCheck == this;
+}
+
+Pos::Pos(double fX, double fY, double fZ) : fX(fX), fY(fY), fZ(fZ) {
+    _initCheck = this;
+    ENSURE(this->properlyInitialized(), "Pos was not initialized when constructed");
 }
 
 std::ostream &operator<<(std::ostream &os, const Face &face) {
@@ -510,4 +584,26 @@ std::ostream &operator<<(std::ostream &os, const Face &face) {
     return os;
 }
 
-Face::Face(std::vector<int> fIndexes) : fIndexes(std::move(fIndexes)) {}
+Face::Face(std::vector<int> fIndexes) : fIndexes(std::move(fIndexes)) {
+    _initCheck = this;
+    ENSURE(this->properlyInitialized(), "Face was not initialized when constructed");
+}
+
+bool Face::properlyInitialized() const {
+    return _initCheck == this;
+}
+
+// source: Serge Demeyer - TicTactToe in C++, Ansi-style
+bool FileExists(const std::string &filename) {
+    struct stat st{};
+    if (stat(filename.c_str(), &st) != 0) return false;
+    std::ifstream f(filename);
+    if (f.good()) {
+        f.close();
+        return true;
+    }
+    f.close();
+    return false;
+}
+
+

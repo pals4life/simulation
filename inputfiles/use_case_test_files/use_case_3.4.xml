@@ -10,23 +10,29 @@
 
     <BAAN>
         <naam>E19</naam>
-        <snelheidslimiet>140</snelheidslimiet>
+        <snelheidslimiet>50</snelheidslimiet>
         <lengte>2000</lengte>
         <verbinding>E313</verbinding>
-        <rijstroken>2</rijstroken>
     </BAAN>
 
     <BAAN>
         <naam>E313</naam>
-        <snelheidslimiet>120</snelheidslimiet>
+        <snelheidslimiet>50</snelheidslimiet>
         <lengte>5000</lengte>
     </BAAN>
 
     <VERKEERSTEKEN>
         <type>ZONE</type>
         <baan>E19</baan>
-        <positie>20</positie>
-        <snelheidslimiet>140</snelheidslimiet>
+        <positie>1000</positie>
+        <snelheidslimiet>200</snelheidslimiet>
+    </VERKEERSTEKEN>
+
+    <VERKEERSTEKEN>
+        <type>ZONE</type>
+        <baan>E313</baan>
+        <positie>1000</positie>
+        <snelheidslimiet>200</snelheidslimiet>
     </VERKEERSTEKEN>
 
 </NETWERK>
