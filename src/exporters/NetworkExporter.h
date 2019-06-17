@@ -25,8 +25,14 @@ struct Color {
 
     friend std::ostream &operator<<(std::ostream &os, const Color &color);
 
+    /**
+     *  ENSURE(this->properlyInitialized(), "Color was not initialized when constructed");
+     */
     Color(double fR, double fG, double fB);
 
+    /**
+     *  ENSURE(this->properlyInitialized(), "Color was not initialized when constructed");
+     */
     Color();
 
 private:
@@ -42,6 +48,9 @@ struct Pos {
 
     friend std::ostream &operator<<(std::ostream &os, const Pos &pos);
 
+    /**
+     *  ENSURE(this->properlyInitialized(), "Pos was not initialized when constructed");
+     */
     Pos(double fX, double fY, double fZ);
 
 private:
@@ -51,6 +60,9 @@ private:
 struct Face {
     std::vector<int> fIndexes;
 
+    /**
+     *  ENSURE(this->properlyInitialized(), "Face was not initialized when constructed");
+     */
     Face(std::vector<int> fIndexes);
 
     friend std::ostream &operator<<(std::ostream &os, const Face &face);
@@ -71,10 +83,23 @@ struct Object {
 
     bool properlyInitialized() const;
 
+    /**
+     *  REQUIRE(!(begin.fX == end.fX && begin.fY == end.fY && begin.fZ == end.fZ), "NetworkExporter was not initialized when calling sign");
+     *  ENSURE(object.fFaces.size() == 6, "Rectangle was not initialized correctly");
+     *  ENSURE(object.fPoints.size() == 8, "Rectangle was not initialized correctly");
+     */
     static Object rectangle(const Pos &begin, const Pos &end);
 
+    /**
+     *  REQUIRE(properlyInitialized(), "Object was not initialized when calling print");
+     *  REQUIRE(ini.is_open(), "Ofstream to ini is not open");
+     *  REQUIRE(nr >= 0, "Nr must be greater than 0");
+     */
     void print(std::ofstream &ini, int nr);
 
+    /**
+     *  ENSURE(this->properlyInitialized(), "Object was not initialized when constructed");
+     */
     Object();
 
 private:

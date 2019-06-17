@@ -167,7 +167,7 @@ void NetworkExporter::cgExport(const Network *kNetwork, const unsigned int kTick
     ENSURE(res == 0 or res == 256, "Failed to create output directory");
 
     std::string filename = "outputfiles/cg.ini";
-    if (kTick < 0) filename = "outputfiles/tick" + std::to_string(kTick) + ".ini";
+    if (kTick > 0) filename = "outputfiles/tick" + std::to_string(kTick) + ".ini";
     std::ofstream ini(filename);
     ENSURE(ini.is_open(), "Failed to open file for cg export");
 
@@ -244,8 +244,9 @@ void NetworkExporter::cgExport(const Network *kNetwork, const unsigned int kTick
     general(ini, nr);
 
     ini.close();
-    const std::string kCommand = "./engine/engine " + filename + " >/dev/null 2>&1";
-    res = system(kCommand.c_str());
+    std::string command = "./engine/engine " + filename + " >/dev/null 2>&1";
+    if (kTick > 0) command += " &";
+    res = system(command.c_str());
     ENSURE(res == 0, "Failed to run engine on the generated ini file");
     ENSURE(!ini.is_open(), "Failed to close ofstream to ini");
 }
@@ -491,14 +492,14 @@ Object Object::rectangle(const Pos &begin, const Pos &end) {
             "NetworkExporter was not initialized when calling sign");
     Object object;
     object.fPoints.reserve(8);
-    object.fPoints.push_back({end.fX, begin.fY, begin.fZ});
-    object.fPoints.push_back({begin.fX, end.fY, begin.fZ});
-    object.fPoints.push_back({end.fX, end.fY, end.fZ});
-    object.fPoints.push_back({begin.fX, begin.fY, end.fZ});
-    object.fPoints.push_back({end.fX, end.fY, begin.fZ});
-    object.fPoints.push_back({begin.fX, begin.fY, begin.fZ});
-    object.fPoints.push_back({end.fX, begin.fY, end.fZ});
-    object.fPoints.push_back({begin.fX, end.fY, end.fZ});
+    object.fPoints.emplace_back(end.fX, begin.fY, begin.fZ);
+    object.fPoints.emplace_back(begin.fX, end.fY, begin.fZ);
+    object.fPoints.emplace_back(end.fX, end.fY, end.fZ);
+    object.fPoints.emplace_back(begin.fX, begin.fY, end.fZ);
+    object.fPoints.emplace_back(end.fX, end.fY, begin.fZ);
+    object.fPoints.emplace_back(begin.fX, begin.fY, begin.fZ);
+    object.fPoints.emplace_back(end.fX, begin.fY, end.fZ);
+    object.fPoints.emplace_back(begin.fX, end.fY, end.fZ);
     object.fFaces.reserve(6);
     object.fFaces.emplace_back(Face({0, 4, 2, 6}));
     object.fFaces.emplace_back(Face({4, 1, 7, 2}));
@@ -534,9 +535,6 @@ void Object::print(std::ofstream &ini, const int nr) {
 
 Object::Object() {
     _initCheck = this;
-    fDiffuse = Color();
-    fAmbient = Color();
-    fSpecular = Color();
     ENSURE(this->properlyInitialized(), "Object was not initialized when constructed");
 }
 
@@ -545,7 +543,6 @@ bool Object::properlyInitialized() const {
 }
 
 std::ostream &operator<<(std::ostream &os, const Color &color) {
-    REQUIRE(color.properlyInitialized(), "Color was not initialized when calling operator <<");
     os << "(" << color.fR << "," << color.fG << "," << color.fB << ")";
     return os;
 }
@@ -565,7 +562,6 @@ Color::Color() {
 }
 
 std::ostream &operator<<(std::ostream &os, const Pos &pos) {
-    REQUIRE(pos.properlyInitialized(), "Pos was not initialized when calling operator <<");
     os << "(" << pos.fX << "," << pos.fY << "," << pos.fZ << ")";
     return os;
 }
@@ -580,7 +576,6 @@ Pos::Pos(double fX, double fY, double fZ) : fX(fX), fY(fY), fZ(fZ) {
 }
 
 std::ostream &operator<<(std::ostream &os, const Face &face) {
-    REQUIRE(face.properlyInitialized(), "Face was not initialized when calling operator <<");
     os << "(";
     for (unsigned int i = 0; i < face.fIndexes.size() - 1; ++i) {
         os << face.fIndexes[i] << ",";
