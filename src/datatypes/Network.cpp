@@ -50,12 +50,14 @@ void Network::startSimulation(Window* window, const std::string& simpleOutput, c
     {
         if(debug or checkWindow(window->getState()))
         {
+            if (!debug and window->getState() == Window::kNext) window->setCrState(Window::kPause);
+
             if(update()) break;
             if(not debug) NetworkExporter::cgExport(this, fTicksPassed);
             if(not debug) window->updateSimpleOutput(NetworkExporter::addSection(this, fTicksPassed));
             if(not debug) Window::processEvents();
         }
-        else if (window->getState() == Window::kPrint)
+        if (!debug and window->getState() == Window::kPrint)
         {
             // hier
             window->setCrState(Window::kPause);
