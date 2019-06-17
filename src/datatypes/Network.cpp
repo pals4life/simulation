@@ -53,13 +53,13 @@ void Network::startSimulation(Window* window, const std::string& simpleOutput, c
             if (!debug and window->getState() == Window::kNext) window->setCrState(Window::kPause);
 
             if(update()) break;
-            if(not debug) NetworkExporter::cgExport(this, fTicksPassed);
+            if(not debug) NetworkExporter::cgExport(this, 0);
             if(not debug) window->updateSimpleOutput(NetworkExporter::addSection(this, fTicksPassed));
             if(not debug) Window::processEvents();
         }
         if (!debug and window->getState() == Window::kPrint)
         {
-            // hier
+            NetworkExporter::cgExport(this, fTicksPassed);
             window->setCrState(Window::kPause);
         }
     }
