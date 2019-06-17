@@ -2,7 +2,7 @@
 cd "$(dirname "$0")"
 ./build_all.sh
 
-./simulation
+./simulation inputfiles/spec2.0.xml
 ./simulation_debug
 
 echo done
