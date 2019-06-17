@@ -21,12 +21,16 @@ int main(int argc, char** argv)
     Window* window = new Window;
     std::string filename;
 
-    const bool GUI = true;
+    const bool GUI = false;
 
     if (GUI)
     {
         window->init();
         window->createButtons();
+    }
+    else
+    {
+        if(argc == 1) throw std::runtime_error("argument count must be > 1, if gui is false");
     }
 
 

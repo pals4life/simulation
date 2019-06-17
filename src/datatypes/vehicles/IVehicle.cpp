@@ -98,8 +98,18 @@ double IVehicle::getFollowingAcceleration(std::pair<const IVehicle*, double> nex
 
     if(nextVehicle.first == NULL) return getMaxAcceleration();                                                  // if there is not car in front, acceleration = max
 
-    double ideal  = 0.75 * fVelocity + nextVehicle.first->getVehicleLength() + 2;                               // ideal following distance = 3/4 speed + 2 meters extra
+    double ideal;
+    if(fVelocity - nextVehicle.first->getVelocity() > -getMinAcceleration())
+    {
+        ideal  = 1.5 * fVelocity + nextVehicle.first->getVehicleLength() + 2;                               // ideal following distance = 3/4 speed + 2 meters extra
+    }
+    else
+    {
+        ideal  = 0.75 * fVelocity + nextVehicle.first->getVehicleLength() + 2;                               // ideal following distance = 3/4 speed + 2 meters extra
+    }
     double actual = pairPosition<IVehicle>(nextVehicle) - nextVehicle.first->getVelocity() - nextVehicle.first->getVehicleLength() - fPosition;    // distance between 2 vehicles
+
+
     return 0.5 * (actual - ideal);                                                                              // take the average
 }
 
