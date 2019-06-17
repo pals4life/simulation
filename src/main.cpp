@@ -21,21 +21,17 @@ int main(int argc, char** argv)
     Window* window = new Window;
     std::string filename;
 
-    const bool GUI = false;
+    const bool GUI = true;
 
     if (GUI)
     {
         window->init();
         window->createButtons();
     }
-    else
-    {
-        if(argc == 1) throw std::runtime_error("argument count must be > 1, if gui is false");
-    }
 
-
-    if(GUI) filename = window->askString("inputfiles/use_case_test_files/use_case_3.7.xml");
-    else filename = argv[1];
+    if (argc > 1) filename = argv[1];
+    else if(GUI) filename = window->askString("inputfiles/spec2.0.xml");
+    else throw std::runtime_error("argument count must be > 1, if gui is false");
 
     NetworkParser parser;
     if (parser.loadFile(filename))
