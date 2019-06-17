@@ -244,7 +244,7 @@ void NetworkExporter::cgExport(const Network *kNetwork, const unsigned int kTick
     general(ini, nr);
 
     ini.close();
-    std::string command = "./engine/engine " + filename + " >/dev/null 2>&1";
+    std::string command = "./engine/engine " + filename + "";
     if (kTick > 0) command += " &";
     res = system(command.c_str());
     ENSURE(res == 0 or res == 256, "Failed to run engine on the generated ini file");
@@ -280,22 +280,22 @@ void NetworkExporter::car(std::ofstream &ini, int &nr, const Pos &pos, bool real
     Object bottom = Object::rectangle(pos, {pos.fX + 3, pos.fY + 1.5, pos.fZ + 0.5});
     Object top = Object::rectangle({pos.fX + 1, pos.fY, pos.fZ + 0.5}, {pos.fX + 2, pos.fY + 1.5, pos.fZ + 1});
     if (real) {
-        bottom.fAmbient = {0.5, 0.1, 0.1};
-        bottom.fDiffuse = {1, 0.1, 0.1};
-        bottom.fSpecular = {1, 0.1, 0.1};
+        bottom.fAmbient.set(0.5, 0.1, 0.1);
+        bottom.fDiffuse.set(1, 0.1, 0.1);
+        bottom.fSpecular.set(1, 0.1, 0.1);
         bottom.fReflectionCoefficient = 20;
-        top.fAmbient = {0.1, 0.1, 0.1};
-        top.fDiffuse = {0.8, 0.1, 0.8};
-        top.fSpecular = {0.3, 0.3, 1};
+        top.fAmbient.set(0.1, 0.1, 0.1);
+        top.fDiffuse.set(0.8, 0.1, 0.8);
+        top.fSpecular.set(0.3, 0.3, 1);
         top.fReflectionCoefficient = 20;
     } else {
-        bottom.fAmbient = {0.5, 0.1, 0.5};
-        bottom.fDiffuse = {1, 0.1, 1};
-        bottom.fSpecular = {0.8, 0.1, 0.8};
+        bottom.fAmbient.set(0.5, 0.1, 0.5);
+        bottom.fDiffuse.set(1, 0.1, 1);
+        bottom.fSpecular.set(0.8, 0.1, 0.8);
         bottom.fReflectionCoefficient = 20;
-        top.fAmbient = {0.5, 0.0, 0.5};
-        top.fDiffuse = {0.4, 0.0, 0.3};
-        top.fSpecular = {0.1, 0.0, 0.2};
+        top.fAmbient.set(0.5, 0.0, 0.5);
+        top.fDiffuse.set(0.4, 0.0, 0.3);
+        top.fSpecular.set(0.1, 0.0, 0.2);
         top.fReflectionCoefficient = 20;
 
     }
@@ -348,10 +348,10 @@ void NetworkExporter::bus(std::ofstream &ini, int &nr, const Pos &pos) {
     Object bottom = Object::rectangle(pos, {pos.fX + 10, pos.fY + 1.5, pos.fZ + 3});
     Object window = Object::rectangle({pos.fX + 0.5, pos.fY - 0.02, pos.fZ + 0.5},
                                       {pos.fX + 1.25, pos.fY + 1.52, pos.fZ + 2.5});
-    window.fDiffuse = {1, 0.6, 0.2};
-    bottom.fAmbient = {0.5, 0.3, 0.1};
-    bottom.fDiffuse = {0.8, 0.8, 0.1};
-    bottom.fSpecular = {0.5, 0.5, 0.1};
+    window.fDiffuse.set(1, 0.6, 0.2);
+    bottom.fAmbient.set(0.5, 0.3, 0.1);
+    bottom.fDiffuse.set(0.8, 0.8, 0.1);
+    bottom.fSpecular.set(0.5, 0.5, 0.1);
     bottom.fReflectionCoefficient = 20;
     window.print(ini, nr++);
     bottom.print(ini, nr++);
@@ -365,19 +365,19 @@ void NetworkExporter::truck(std::ofstream &ini, int &nr, const Pos &pos) {
     REQUIRE(ini.is_open(), "Ofstream to ini is not open");
     REQUIRE(nr >= 0, "Nr must be greater than 0");
     Object cabin = Object::rectangle({pos.fX, pos.fY, pos.fZ + 1}, {pos.fX + 1, pos.fY + 1.5, pos.fZ + 3});
-    cabin.fAmbient = {0.5, 0.1, 0.1};
-    cabin.fDiffuse = {0.8, 0.1, 0.1};
-    cabin.fSpecular = {0.8, 0.1, 0.};
+    cabin.fAmbient.set(0.5, 0.1, 0.1);
+    cabin.fDiffuse.set(0.8, 0.1, 0.1);
+    cabin.fSpecular.set(0.8, 0.1, 0.);
     cabin.fReflectionCoefficient = 20;
     Object bottom = Object::rectangle(pos, {pos.fX + 15, pos.fY + 1.5, pos.fZ + 1});
-    bottom.fAmbient = {0.1, 0.1, 0.1};
-    bottom.fDiffuse = {0.3, 0.3, 0.3};
-    bottom.fSpecular = {0.1, 0.1, 0.1};
+    bottom.fAmbient.set(0.1, 0.1, 0.1);
+    bottom.fDiffuse.set(0.3, 0.3, 0.3);
+    bottom.fSpecular.set(0.1, 0.1, 0.1);
     bottom.fReflectionCoefficient = 20;
     Object container = Object::rectangle({pos.fX + 2, pos.fY, pos.fZ + 1}, {pos.fX + 8, pos.fY + 1.5, pos.fZ + 3});
-    container.fAmbient = {0.1, 0.3, 0.5};
-    container.fDiffuse = {0.1, 0.8, 0.8};
-    container.fSpecular = {0.1, 0.5, 0.5};
+    container.fAmbient.set(0.1, 0.3, 0.5);
+    container.fDiffuse.set(0.1, 0.8, 0.8);
+    container.fSpecular.set(0.1, 0.5, 0.5);
     container.fReflectionCoefficient = 20;
     car(ini, nr, {pos.fX + 10, pos.fY, pos.fZ + 1.25}, false);
     bottom.print(ini, nr++);
@@ -397,14 +397,14 @@ void NetworkExporter::motorcycle(std::ofstream &ini, int &nr, const Pos &pos) {
     Object seat = Object::rectangle({pos.fX + 0.5, pos.fY + 0.05, pos.fZ + 0.5},
                                     {pos.fX + 0.9, pos.fY + 0.45, pos.fZ + 0.75});
     Object steer = Object::rectangle({pos.fX, pos.fY - 0.1, pos.fZ + 0.5}, {pos.fX + 0.1, pos.fY + 0.6, pos.fZ + 0.75});
-    bottom.fAmbient = {0.5, 0.5, 0.5};
-    bottom.fDiffuse = {0.1, 1, 0.1};
-    bottom.fSpecular = {0.1, 0.7, 0.1};
+    bottom.fAmbient.set(0.5, 0.5, 0.5);
+    bottom.fDiffuse.set(0.1, 1, 0.1);
+    bottom.fSpecular.set(0.1, 0.7, 0.1);
     bottom.fReflectionCoefficient = 20;
-    seat.fAmbient = {0.1, 0.1, 0.1};
-    seat.fDiffuse = {0.1, 0.1, 0.1};
-    steer.fAmbient = {0.1, 0.1, 0.1};
-    steer.fDiffuse = {0.1, 0.1, 0.1};
+    seat.fAmbient.set(0.1, 0.1, 0.1);
+    seat.fDiffuse.set(0.1, 0.1, 0.1);
+    steer.fAmbient.set(0.1, 0.1, 0.1);
+    steer.fDiffuse.set(0.1, 0.1, 0.1);
     steer.print(ini, nr++);
     bottom.print(ini, nr++);
     seat.print(ini, nr++);
@@ -452,8 +452,8 @@ void NetworkExporter::sign(std::ofstream &ini, int &nr, const double &x, const d
     REQUIRE(ini.is_open(), "Ofstream to ini is not open");
     REQUIRE(nr >= 0, "Nr must be greater than 0");
     Object pole = Object::rectangle({-x, y, 0}, {-x - 0.1, y + 0.1, 2});
-    pole.fDiffuse = {0.3, 0.3, 0.3};
-    pole.fSpecular = {0.3, 0.3, 0.3};
+    pole.fDiffuse.set(0.3, 0.3, 0.3);
+    pole.fSpecular.set(0.3, 0.3, 0.3);
     pole.print(ini, nr++);
     ini << "[Figure" << nr++ << "]\n";
     ini << "type = \"Sphere\"\n";
@@ -501,12 +501,12 @@ Object Object::rectangle(const Pos &begin, const Pos &end) {
     object.fPoints.emplace_back(end.fX, begin.fY, end.fZ);
     object.fPoints.emplace_back(begin.fX, end.fY, end.fZ);
     object.fFaces.reserve(6);
-    object.fFaces.emplace_back(Face({0, 4, 2, 6}));
-    object.fFaces.emplace_back(Face({4, 1, 7, 2}));
-    object.fFaces.emplace_back(Face({1, 5, 3, 7}));
-    object.fFaces.emplace_back(Face({5, 0, 6, 3}));
-    object.fFaces.emplace_back(Face({6, 2, 7, 3}));
-    object.fFaces.emplace_back(Face({0, 5, 1, 4}));
+    object.fFaces.emplace_back(std::vector<int>{0, 4, 2, 6});
+    object.fFaces.emplace_back(std::vector<int>{4, 1, 7, 2});
+    object.fFaces.emplace_back(std::vector<int>{1, 5, 3, 7});
+    object.fFaces.emplace_back(std::vector<int>{5, 0, 6, 3});
+    object.fFaces.emplace_back(std::vector<int>{6, 2, 7, 3});
+    object.fFaces.emplace_back(std::vector<int>{0, 5, 1, 4});
     ENSURE(object.fFaces.size() == 6, "Rectangle was not initialized correctly");
     ENSURE(object.fPoints.size() == 8, "Rectangle was not initialized correctly");
     return object;
@@ -543,6 +543,7 @@ bool Object::properlyInitialized() const {
 }
 
 std::ostream &operator<<(std::ostream &os, const Color &color) {
+    REQUIRE(color.properlyInitialized(), "Color was not initialized when calling operator <<");
     os << "(" << color.fR << "," << color.fG << "," << color.fB << ")";
     return os;
 }
@@ -557,11 +558,22 @@ Color::Color(double fR, double fG, double fB) : fR(fR), fG(fG), fB(fB) {
 }
 
 Color::Color() {
+    fR = 0;
+    fG = 0;
+    fB = 0;
     _initCheck = this;
     ENSURE(this->properlyInitialized(), "Color was not initialized when constructed");
 }
 
+void Color::set(const double &kR, const double &kG, const double &kB) {
+    REQUIRE(properlyInitialized(), "Color was not initialized when calling set");
+    fR = kR;
+    fG = kG;
+    fB = kB;
+}
+
 std::ostream &operator<<(std::ostream &os, const Pos &pos) {
+    REQUIRE(pos.properlyInitialized(), "Position was not initialized when calling operator <<");
     os << "(" << pos.fX << "," << pos.fY << "," << pos.fZ << ")";
     return os;
 }
@@ -576,6 +588,7 @@ Pos::Pos(double fX, double fY, double fZ) : fX(fX), fY(fY), fZ(fZ) {
 }
 
 std::ostream &operator<<(std::ostream &os, const Face &face) {
+    REQUIRE(face.properlyInitialized(), "Face was not initialized when calling operator <<");
     os << "(";
     for (unsigned int i = 0; i < face.fIndexes.size() - 1; ++i) {
         os << face.fIndexes[i] << ",";

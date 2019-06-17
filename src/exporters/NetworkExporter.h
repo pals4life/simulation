@@ -23,6 +23,9 @@ struct Color {
 
     bool properlyInitialized() const;
 
+    /**
+     *  REQUIRE(color.properlyInitialized(), "Color was not initialized when calling operator <<");
+     */
     friend std::ostream &operator<<(std::ostream &os, const Color &color);
 
     /**
@@ -35,6 +38,11 @@ struct Color {
      */
     Color();
 
+    /**
+     *  REQUIRE(properlyInitialized(), "Color was not initialized when calling set");
+     */
+    void set(const double &kR, const double &kG, const double &kB);
+
 private:
     Color *_initCheck;
 };
@@ -46,6 +54,9 @@ struct Pos {
 
     bool properlyInitialized() const;
 
+    /**
+     *  REQUIRE(pos.properlyInitialized(), "Position was not initialized when calling operator <<");
+     */
     friend std::ostream &operator<<(std::ostream &os, const Pos &pos);
 
     /**
@@ -65,6 +76,9 @@ struct Face {
      */
     Face(std::vector<int> fIndexes);
 
+    /**
+     *  REQUIRE(face.properlyInitialized(), "Face was not initialized when calling operator <<");
+     */
     friend std::ostream &operator<<(std::ostream &os, const Face &face);
 
     bool properlyInitialized() const;
@@ -79,7 +93,7 @@ struct Object {
     Color fAmbient;
     Color fDiffuse;
     Color fSpecular;
-    double fReflectionCoefficient;
+    double fReflectionCoefficient{};
 
     bool properlyInitialized() const;
 
