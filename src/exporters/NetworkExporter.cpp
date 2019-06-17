@@ -117,7 +117,7 @@ std::string NetworkExporter::addSection(const Network *kNetwork, uint32_t number
         for (uint32_t j = 0; j < road->getNumLanes(); j++) {
             std::vector<std::vector<char> > lane;
             uint32_t max = 1;
-            lane.resize(static_cast<uint32_t >(floor(road->getRoadLength() / fgScale)));
+            lane.resize(static_cast<uint32_t >(ceil(road->getRoadLength() / fgScale)));
             for (uint32_t k = 0; k < (*road)[j].size(); k++) {
                 const IVehicle *vehicle = (*road)[j][k];
                 uint32_t pos = static_cast<uint32_t >(floor(vehicle->getPosition() / fgScale));
