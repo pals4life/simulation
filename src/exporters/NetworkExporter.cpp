@@ -256,7 +256,7 @@ void NetworkExporter::general(std::ofstream &ini, const int &kNr) {
     REQUIRE(ini.is_open(), "Ofstream to ini is not open");
     REQUIRE(kNr >= 0, "kNr must be greater than 0");
     ini << "[General]\n"
-           "size = 4096\n"
+           "size = 2024\n"
            "backgroundcolor = (0.05,0.06,0.05)\n"
            "type = \"LightedZBuffering\"\n"
            "nrLights = 1\n"

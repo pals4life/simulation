@@ -113,3 +113,48 @@ TEST_F(NetworkExporterTester, Tee) {
     int res = system("rm outputfiles/test.txt >/dev/null 2>&1");
     EXPECT_EQ(0, res % 256);
 }
+
+TEST_F(NetworkExporterTester, CgExport) {
+    EXPECT_DEATH(NetworkExporter::cgExport(NULL, 0),
+                 "NetworkExporter was not initialized when calling cgExport");
+
+    Network test({});
+    testing::internal::CaptureStdout();
+    NetworkExporter::init(&test, "test", "test");
+
+    EXPECT_DEATH(NetworkExporter::cgExport(NULL, 0), "Failed to export to cg: no network");
+
+    NetworkExporter::cgExport(&test, 0);
+    NetworkExporter::finish();
+    int res = system(
+            "mv outputfiles/cg.ini \"outputfiles/testoutputs/NetworkExporterTester-CGExport(empty).txt\" >/dev/null 2>&1");
+    EXPECT_EQ(0, res);
+    EXPECT_TRUE(FileCompare("outputfiles/testoutputs/NetworkExporterTester-CGExport(empty).txt",
+                            "outputfiles/testoutputs/NetworkExporterTester-CGExport(empty)-expected.txt"));
+
+    NetworkParser parser;
+    bool loaded = parser.loadFile("inputfiles/testinputs/test13.xml");
+    EXPECT_TRUE(loaded);
+    if (loaded) {
+        Network *network = parser.parseNetwork(parser.getRoot());
+        NetworkExporter::init(network, "test", "test");
+        NetworkExporter::cgExport(network, 0);
+
+        res = system(
+                "mv outputfiles/cg.ini \"outputfiles/testoutputs/NetworkExporterTester-CGExport(full).txt\" >/dev/null 2>&1");
+        EXPECT_EQ(0, res);
+        res = system(
+                "mv outputfiles/cg.bmp \"outputfiles/testoutputs/NetworkExporterTester-CGExport(full).bmp\" >/dev/null 2>&1");
+        EXPECT_EQ(0, res);
+        EXPECT_TRUE(FileCompare("outputfiles/testoutputs/NetworkExporterTester-CGExport(full).txt",
+                                "outputfiles/testoutputs/NetworkExporterTester-CGExport(full)-expected.txt"));
+        EXPECT_TRUE(FileCompare("outputfiles/testoutputs/NetworkExporterTester-CGExport(full).bmp",
+                                "outputfiles/testoutputs/NetworkExporterTester-CGExport(full)-expected.bmp"));
+
+        NetworkExporter::finish();
+        delete network;
+    }
+    testing::internal::GetCapturedStdout();
+    res = system("rm outputfiles/test.txt >/dev/null 2>&1");
+    EXPECT_EQ(0, res % 256);
+}

@@ -36,7 +36,7 @@ TEST_F(NetworkParserTester, ParseNetwork) {
         testing::internal::CaptureStdout();
         network->startSimulation(NULL, "simple", "impression", true);
         testing::internal::GetCapturedStdout();
-        EXPECT_EQ(232, network->getTicksPassed());
+        EXPECT_EQ(230, network->getTicksPassed());
         delete network;
     }
     testing::internal::CaptureStderr();

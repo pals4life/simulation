@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NETWERK>
+    <VOERTUIG>
+        <type>AUTO</type>
+        <nummerplaat>auto</nummerplaat>
+        <baan>E19</baan>
+        <positie>500</positie>
+        <snelheid>0</snelheid>
+    </VOERTUIG>
+
+    <VOERTUIG>
+        <type>VRACHTWAGEN</type>
+        <nummerplaat>vrachtwagen</nummerplaat>
+        <baan>E313</baan>
+        <positie>2000</positie>
+        <snelheid>0</snelheid>
+    </VOERTUIG>
+
+    <VOERTUIG>
+        <type>MOTORFIETS</type>
+        <nummerplaat>motor</nummerplaat>
+        <baan>E313</baan>
+        <positie>1000</positie>
+        <snelheid>0</snelheid>
+    </VOERTUIG>
+
+    <VOERTUIG>
+        <type>BUS</type>
+        <nummerplaat>bus</nummerplaat>
+        <baan>E19</baan>
+        <positie>1000</positie>
+        <snelheid>0</snelheid>
+    </VOERTUIG>
+
+    <BAAN>
+        <naam>E19</naam>
+        <snelheidslimiet>140</snelheidslimiet>
+        <lengte>2000</lengte>
+        <verbinding>E313</verbinding>
+        <rijstroken>2</rijstroken>
+    </BAAN>
+
+    <BAAN>
+        <naam>E313</naam>
+        <snelheidslimiet>120</snelheidslimiet>
+        <lengte>3000</lengte>
+        <rijstroken>2</rijstroken>
+    </BAAN>
+
+    <VERKEERSTEKEN>
+        <type>BUSHALTE</type>
+        <baan>E19</baan>
+        <positie>500</positie>
+    </VERKEERSTEKEN>
+
+    <VERKEERSTEKEN>
+        <type>VERKEERSLICHT</type>
+        <baan>E19</baan>
+        <positie>1000</positie>
+    </VERKEERSTEKEN>
+
+    <VERKEERSTEKEN>
+        <type>VERKEERSLICHT</type>
+        <baan>E313</baan>
+        <positie>2000</positie>
+    </VERKEERSTEKEN>
+
+    <VERKEERSTEKEN>
+        <type>ZONE</type>
+        <baan>E19</baan>
+        <positie>200</positie>
+        <snelheidslimiet>140</snelheidslimiet>
+    </VERKEERSTEKEN>
+
+    <VERKEERSTEKEN>
+        <type>VERKEERSLICHT</type>
+        <baan>E19</baan>
+        <positie>1500</positie>
+        <snelheidslimiet>140</snelheidslimiet>
+    </VERKEERSTEKEN>
+</NETWERK>

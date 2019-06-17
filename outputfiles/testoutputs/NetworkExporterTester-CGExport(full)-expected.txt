@@ -1,0 +1,2075 @@
+[Figure0]
+type = "LineDrawing"
+ambientReflection = (0.00,0.00,0.00)
+diffuseReflection = (1.00,0.60,0.20)
+specularReflection = (0.00,0.00,0.00)
+reflectionCoefficient = 0.00
+nrPoints = 8
+nrLines = 6
+point0 = (-38.75,-0.02,0.75)
+point1 = (-39.50,1.52,0.75)
+point2 = (-38.75,1.52,2.75)
+point3 = (-39.50,-0.02,2.75)
+point4 = (-38.75,1.52,0.75)
+point5 = (-39.50,-0.02,0.75)
+point6 = (-38.75,-0.02,2.75)
+point7 = (-39.50,1.52,2.75)
+line0 = (0,4,2,6)
+line1 = (4,1,7,2)
+line2 = (1,5,3,7)
+line3 = (5,0,6,3)
+line4 = (6,2,7,3)
+line5 = (0,5,1,4)
+
+[Figure1]
+type = "LineDrawing"
+ambientReflection = (0.50,0.30,0.10)
+diffuseReflection = (0.80,0.80,0.10)
+specularReflection = (0.50,0.50,0.10)
+reflectionCoefficient = 20.00
+nrPoints = 8
+nrLines = 6
+point0 = (-30.00,0.00,0.25)
+point1 = (-40.00,1.50,0.25)
+point2 = (-30.00,1.50,3.25)
+point3 = (-40.00,0.00,3.25)
+point4 = (-30.00,1.50,0.25)
+point5 = (-40.00,0.00,0.25)
+point6 = (-30.00,0.00,3.25)
+point7 = (-40.00,1.50,3.25)
+line0 = (0,4,2,6)
+line1 = (4,1,7,2)
+line2 = (1,5,3,7)
+line3 = (5,0,6,3)
+line4 = (6,2,7,3)
+line5 = (0,5,1,4)
+
+[Figure2]
+type = "Cylinder"
+scale = 0.25
+rotateX = -90
+center = (-35.00,-0.25,0.25)
+ambientReflection = (0.1, 0.1, 0.1)
+diffuseReflection = (0.1, 0.1, 0.1)
+n = 10
+height = 8
+
+[Figure3]
+type = "Cylinder"
+scale = 0.25
+rotateX = -90
+center = (-38.00,-0.25,0.25)
+ambientReflection = (0.1, 0.1, 0.1)
+diffuseReflection = (0.1, 0.1, 0.1)
+n = 10
+height = 8
+
+[Figure4]
+type = "Cylinder"
+scale = 0.25
+rotateX = -90
+center = (-32.00,-0.25,0.25)
+ambientReflection = (0.1, 0.1, 0.1)
+diffuseReflection = (0.1, 0.1, 0.1)
+n = 10
+height = 8
+
+[Figure5]
+type = "LineDrawing"
+ambientReflection = (0.50,0.10,0.10)
+diffuseReflection = (1.00,0.10,0.10)
+specularReflection = (1.00,0.10,0.10)
+reflectionCoefficient = 20.00
+nrPoints = 8
+nrLines = 6
+point0 = (-17.00,0.00,0.25)
+point1 = (-20.00,1.50,0.25)
+point2 = (-17.00,1.50,0.75)
+point3 = (-20.00,0.00,0.75)
+point4 = (-17.00,1.50,0.25)
+point5 = (-20.00,0.00,0.25)
+point6 = (-17.00,0.00,0.75)
+point7 = (-20.00,1.50,0.75)
+line0 = (0,4,2,6)
+line1 = (4,1,7,2)
+line2 = (1,5,3,7)
+line3 = (5,0,6,3)
+line4 = (6,2,7,3)
+line5 = (0,5,1,4)
+
+[Figure6]
+type = "LineDrawing"
+ambientReflection = (0.10,0.10,0.10)
+diffuseReflection = (0.80,0.10,0.80)
+specularReflection = (0.30,0.30,1.00)
+reflectionCoefficient = 20.00
+nrPoints = 8
+nrLines = 6
+point0 = (-18.00,0.00,0.75)
+point1 = (-19.00,1.50,0.75)
+point2 = (-18.00,1.50,1.25)
+point3 = (-19.00,0.00,1.25)
+point4 = (-18.00,1.50,0.75)
+point5 = (-19.00,0.00,0.75)
+point6 = (-18.00,0.00,1.25)
+point7 = (-19.00,1.50,1.25)
+line0 = (0,4,2,6)
+line1 = (4,1,7,2)
+line2 = (1,5,3,7)
+line3 = (5,0,6,3)
+line4 = (6,2,7,3)
+line5 = (0,5,1,4)
+
+[Figure7]
+type = "Cylinder"
+scale = 0.25
+rotateX = -90
+center = (-19.50,-0.25,0.25)
+ambientReflection = (0.1, 0.1, 0.1)
+diffuseReflection = (0.1, 0.1, 0.1)
+n = 10
+height = 8
+
+[Figure8]
+type = "Cylinder"
+scale = 0.25
+rotateX = -90
+center = (-17.50,-0.25,0.25)
+ambientReflection = (0.1, 0.1, 0.1)
+diffuseReflection = (0.1, 0.1, 0.1)
+n = 10
+height = 8
+
+[Figure9]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (0.00,0.00,0.00)
+point1 = (0.00,2.00,0.00)
+point2 = (-80.00,2.00,0.00)
+point3 = (-80.00,0.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure10]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (0.00,2.00,0.00)
+point1 = (0.00,2.50,0.00)
+point2 = (-2.00,2.50,0.00)
+point3 = (-2.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure11]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-2.00,2.00,0.00)
+point1 = (-2.00,2.50,0.00)
+point2 = (-4.00,2.50,0.00)
+point3 = (-4.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure12]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-4.00,2.00,0.00)
+point1 = (-4.00,2.50,0.00)
+point2 = (-6.00,2.50,0.00)
+point3 = (-6.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure13]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-6.00,2.00,0.00)
+point1 = (-6.00,2.50,0.00)
+point2 = (-8.00,2.50,0.00)
+point3 = (-8.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure14]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-8.00,2.00,0.00)
+point1 = (-8.00,2.50,0.00)
+point2 = (-10.00,2.50,0.00)
+point3 = (-10.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure15]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-10.00,2.00,0.00)
+point1 = (-10.00,2.50,0.00)
+point2 = (-12.00,2.50,0.00)
+point3 = (-12.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure16]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-12.00,2.00,0.00)
+point1 = (-12.00,2.50,0.00)
+point2 = (-14.00,2.50,0.00)
+point3 = (-14.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure17]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-14.00,2.00,0.00)
+point1 = (-14.00,2.50,0.00)
+point2 = (-16.00,2.50,0.00)
+point3 = (-16.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure18]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-16.00,2.00,0.00)
+point1 = (-16.00,2.50,0.00)
+point2 = (-18.00,2.50,0.00)
+point3 = (-18.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure19]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-18.00,2.00,0.00)
+point1 = (-18.00,2.50,0.00)
+point2 = (-20.00,2.50,0.00)
+point3 = (-20.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure20]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-20.00,2.00,0.00)
+point1 = (-20.00,2.50,0.00)
+point2 = (-22.00,2.50,0.00)
+point3 = (-22.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure21]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-22.00,2.00,0.00)
+point1 = (-22.00,2.50,0.00)
+point2 = (-24.00,2.50,0.00)
+point3 = (-24.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure22]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-24.00,2.00,0.00)
+point1 = (-24.00,2.50,0.00)
+point2 = (-26.00,2.50,0.00)
+point3 = (-26.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure23]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-26.00,2.00,0.00)
+point1 = (-26.00,2.50,0.00)
+point2 = (-28.00,2.50,0.00)
+point3 = (-28.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure24]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-28.00,2.00,0.00)
+point1 = (-28.00,2.50,0.00)
+point2 = (-30.00,2.50,0.00)
+point3 = (-30.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure25]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-30.00,2.00,0.00)
+point1 = (-30.00,2.50,0.00)
+point2 = (-32.00,2.50,0.00)
+point3 = (-32.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure26]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-32.00,2.00,0.00)
+point1 = (-32.00,2.50,0.00)
+point2 = (-34.00,2.50,0.00)
+point3 = (-34.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure27]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-34.00,2.00,0.00)
+point1 = (-34.00,2.50,0.00)
+point2 = (-36.00,2.50,0.00)
+point3 = (-36.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure28]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-36.00,2.00,0.00)
+point1 = (-36.00,2.50,0.00)
+point2 = (-38.00,2.50,0.00)
+point3 = (-38.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure29]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-38.00,2.00,0.00)
+point1 = (-38.00,2.50,0.00)
+point2 = (-40.00,2.50,0.00)
+point3 = (-40.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure30]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-40.00,2.00,0.00)
+point1 = (-40.00,2.50,0.00)
+point2 = (-42.00,2.50,0.00)
+point3 = (-42.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure31]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-42.00,2.00,0.00)
+point1 = (-42.00,2.50,0.00)
+point2 = (-44.00,2.50,0.00)
+point3 = (-44.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure32]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-44.00,2.00,0.00)
+point1 = (-44.00,2.50,0.00)
+point2 = (-46.00,2.50,0.00)
+point3 = (-46.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure33]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-46.00,2.00,0.00)
+point1 = (-46.00,2.50,0.00)
+point2 = (-48.00,2.50,0.00)
+point3 = (-48.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure34]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-48.00,2.00,0.00)
+point1 = (-48.00,2.50,0.00)
+point2 = (-50.00,2.50,0.00)
+point3 = (-50.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure35]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-50.00,2.00,0.00)
+point1 = (-50.00,2.50,0.00)
+point2 = (-52.00,2.50,0.00)
+point3 = (-52.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure36]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-52.00,2.00,0.00)
+point1 = (-52.00,2.50,0.00)
+point2 = (-54.00,2.50,0.00)
+point3 = (-54.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure37]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-54.00,2.00,0.00)
+point1 = (-54.00,2.50,0.00)
+point2 = (-56.00,2.50,0.00)
+point3 = (-56.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure38]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-56.00,2.00,0.00)
+point1 = (-56.00,2.50,0.00)
+point2 = (-58.00,2.50,0.00)
+point3 = (-58.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure39]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-58.00,2.00,0.00)
+point1 = (-58.00,2.50,0.00)
+point2 = (-60.00,2.50,0.00)
+point3 = (-60.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure40]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-60.00,2.00,0.00)
+point1 = (-60.00,2.50,0.00)
+point2 = (-62.00,2.50,0.00)
+point3 = (-62.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure41]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-62.00,2.00,0.00)
+point1 = (-62.00,2.50,0.00)
+point2 = (-64.00,2.50,0.00)
+point3 = (-64.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure42]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-64.00,2.00,0.00)
+point1 = (-64.00,2.50,0.00)
+point2 = (-66.00,2.50,0.00)
+point3 = (-66.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure43]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-66.00,2.00,0.00)
+point1 = (-66.00,2.50,0.00)
+point2 = (-68.00,2.50,0.00)
+point3 = (-68.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure44]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-68.00,2.00,0.00)
+point1 = (-68.00,2.50,0.00)
+point2 = (-70.00,2.50,0.00)
+point3 = (-70.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure45]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-70.00,2.00,0.00)
+point1 = (-70.00,2.50,0.00)
+point2 = (-72.00,2.50,0.00)
+point3 = (-72.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure46]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-72.00,2.00,0.00)
+point1 = (-72.00,2.50,0.00)
+point2 = (-74.00,2.50,0.00)
+point3 = (-74.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure47]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-74.00,2.00,0.00)
+point1 = (-74.00,2.50,0.00)
+point2 = (-76.00,2.50,0.00)
+point3 = (-76.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure48]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-76.00,2.00,0.00)
+point1 = (-76.00,2.50,0.00)
+point2 = (-78.00,2.50,0.00)
+point3 = (-78.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure49]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-78.00,2.00,0.00)
+point1 = (-78.00,2.50,0.00)
+point2 = (-80.00,2.50,0.00)
+point3 = (-80.00,2.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure50]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (0.00,2.50,0.00)
+point1 = (0.00,4.50,0.00)
+point2 = (-80.00,4.50,0.00)
+point3 = (-80.00,2.50,0.00)
+line0 = (0,1,2,3)
+
+[Figure51]
+type = "LineDrawing"
+ambientReflection = (0.00,0.00,0.00)
+diffuseReflection = (0.30,0.30,0.30)
+specularReflection = (0.30,0.30,0.30)
+reflectionCoefficient = 0.00
+nrPoints = 8
+nrLines = 6
+point0 = (-20.10,5.00,0.00)
+point1 = (-20.00,5.10,0.00)
+point2 = (-20.10,5.10,2.00)
+point3 = (-20.00,5.00,2.00)
+point4 = (-20.10,5.10,0.00)
+point5 = (-20.00,5.00,0.00)
+point6 = (-20.10,5.00,2.00)
+point7 = (-20.00,5.10,2.00)
+line0 = (0,4,2,6)
+line1 = (4,1,7,2)
+line2 = (1,5,3,7)
+line3 = (5,0,6,3)
+line4 = (6,2,7,3)
+line5 = (0,5,1,4)
+
+[Figure52]
+type = "Sphere"
+ambientReflection = (1,1,0)
+diffuseReflection = (1,1,0)
+scale = 0.4
+center = (-20.05,5.00,2.00)
+n = 1
+
+[Figure53]
+type = "LineDrawing"
+ambientReflection = (0.00,0.00,0.00)
+diffuseReflection = (0.30,0.30,0.30)
+specularReflection = (0.30,0.30,0.30)
+reflectionCoefficient = 0.00
+nrPoints = 8
+nrLines = 6
+point0 = (-40.10,5.00,0.00)
+point1 = (-40.00,5.10,0.00)
+point2 = (-40.10,5.10,2.00)
+point3 = (-40.00,5.00,2.00)
+point4 = (-40.10,5.10,0.00)
+point5 = (-40.00,5.00,0.00)
+point6 = (-40.10,5.00,2.00)
+point7 = (-40.00,5.10,2.00)
+line0 = (0,4,2,6)
+line1 = (4,1,7,2)
+line2 = (1,5,3,7)
+line3 = (5,0,6,3)
+line4 = (6,2,7,3)
+line5 = (0,5,1,4)
+
+[Figure54]
+type = "Sphere"
+ambientReflection = (0,1,0)
+diffuseReflection = (0,1,0)
+scale = 0.4
+center = (-40.05,5.00,2.00)
+n = 1
+
+[Figure55]
+type = "LineDrawing"
+ambientReflection = (0.00,0.00,0.00)
+diffuseReflection = (0.30,0.30,0.30)
+specularReflection = (0.30,0.30,0.30)
+reflectionCoefficient = 0.00
+nrPoints = 8
+nrLines = 6
+point0 = (-60.10,5.00,0.00)
+point1 = (-60.00,5.10,0.00)
+point2 = (-60.10,5.10,2.00)
+point3 = (-60.00,5.00,2.00)
+point4 = (-60.10,5.10,0.00)
+point5 = (-60.00,5.00,0.00)
+point6 = (-60.10,5.00,2.00)
+point7 = (-60.00,5.10,2.00)
+line0 = (0,4,2,6)
+line1 = (4,1,7,2)
+line2 = (1,5,3,7)
+line3 = (5,0,6,3)
+line4 = (6,2,7,3)
+line5 = (0,5,1,4)
+
+[Figure56]
+type = "Sphere"
+ambientReflection = (0,1,0)
+diffuseReflection = (0,1,0)
+scale = 0.4
+center = (-60.05,5.00,2.00)
+n = 1
+
+[Figure57]
+type = "LineDrawing"
+ambientReflection = (0.00,0.00,0.00)
+diffuseReflection = (0.30,0.30,0.30)
+specularReflection = (0.30,0.30,0.30)
+reflectionCoefficient = 0.00
+nrPoints = 8
+nrLines = 6
+point0 = (-0.10,5.00,0.00)
+point1 = (-0.00,5.10,0.00)
+point2 = (-0.10,5.10,2.00)
+point3 = (-0.00,5.00,2.00)
+point4 = (-0.10,5.10,0.00)
+point5 = (-0.00,5.00,0.00)
+point6 = (-0.10,5.00,2.00)
+point7 = (-0.00,5.10,2.00)
+line0 = (0,4,2,6)
+line1 = (4,1,7,2)
+line2 = (1,5,3,7)
+line3 = (5,0,6,3)
+line4 = (6,2,7,3)
+line5 = (0,5,1,4)
+
+[Figure58]
+type = "Sphere"
+ambientReflection = (1,1,1)
+diffuseReflection = (1,1,1)
+scale = 0.4
+center = (-0.05,5.00,2.00)
+n = 1
+
+[Figure59]
+type = "LineDrawing"
+ambientReflection = (0.00,0.00,0.00)
+diffuseReflection = (0.30,0.30,0.30)
+specularReflection = (0.30,0.30,0.30)
+reflectionCoefficient = 0.00
+nrPoints = 8
+nrLines = 6
+point0 = (-8.10,5.00,0.00)
+point1 = (-8.00,5.10,0.00)
+point2 = (-8.10,5.10,2.00)
+point3 = (-8.00,5.00,2.00)
+point4 = (-8.10,5.10,0.00)
+point5 = (-8.00,5.00,0.00)
+point6 = (-8.10,5.00,2.00)
+point7 = (-8.00,5.10,2.00)
+line0 = (0,4,2,6)
+line1 = (4,1,7,2)
+line2 = (1,5,3,7)
+line3 = (5,0,6,3)
+line4 = (6,2,7,3)
+line5 = (0,5,1,4)
+
+[Figure60]
+type = "Sphere"
+ambientReflection = (1,1,1)
+diffuseReflection = (1,1,1)
+scale = 0.4
+center = (-8.05,5.00,2.00)
+n = 1
+
+[Figure61]
+type = "LineDrawing"
+ambientReflection = (0.50,0.10,0.50)
+diffuseReflection = (1.00,0.10,1.00)
+specularReflection = (0.80,0.10,0.80)
+reflectionCoefficient = 20.00
+nrPoints = 8
+nrLines = 6
+point0 = (-67.00,6.00,1.50)
+point1 = (-70.00,7.50,1.50)
+point2 = (-67.00,7.50,2.00)
+point3 = (-70.00,6.00,2.00)
+point4 = (-67.00,7.50,1.50)
+point5 = (-70.00,6.00,1.50)
+point6 = (-67.00,6.00,2.00)
+point7 = (-70.00,7.50,2.00)
+line0 = (0,4,2,6)
+line1 = (4,1,7,2)
+line2 = (1,5,3,7)
+line3 = (5,0,6,3)
+line4 = (6,2,7,3)
+line5 = (0,5,1,4)
+
+[Figure62]
+type = "LineDrawing"
+ambientReflection = (0.50,0.00,0.50)
+diffuseReflection = (0.40,0.00,0.30)
+specularReflection = (0.10,0.00,0.20)
+reflectionCoefficient = 20.00
+nrPoints = 8
+nrLines = 6
+point0 = (-68.00,6.00,2.00)
+point1 = (-69.00,7.50,2.00)
+point2 = (-68.00,7.50,2.50)
+point3 = (-69.00,6.00,2.50)
+point4 = (-68.00,7.50,2.00)
+point5 = (-69.00,6.00,2.00)
+point6 = (-68.00,6.00,2.50)
+point7 = (-69.00,7.50,2.50)
+line0 = (0,4,2,6)
+line1 = (4,1,7,2)
+line2 = (1,5,3,7)
+line3 = (5,0,6,3)
+line4 = (6,2,7,3)
+line5 = (0,5,1,4)
+
+[Figure63]
+type = "Cylinder"
+scale = 0.25
+rotateX = -90
+center = (-69.50,5.75,1.50)
+ambientReflection = (0.1, 0.1, 0.1)
+diffuseReflection = (0.1, 0.1, 0.1)
+n = 10
+height = 8
+
+[Figure64]
+type = "Cylinder"
+scale = 0.25
+rotateX = -90
+center = (-67.50,5.75,1.50)
+ambientReflection = (0.1, 0.1, 0.1)
+diffuseReflection = (0.1, 0.1, 0.1)
+n = 10
+height = 8
+
+[Figure65]
+type = "LineDrawing"
+ambientReflection = (0.10,0.10,0.10)
+diffuseReflection = (0.30,0.30,0.30)
+specularReflection = (0.10,0.10,0.10)
+reflectionCoefficient = 20.00
+nrPoints = 8
+nrLines = 6
+point0 = (-65.00,6.00,0.25)
+point1 = (-80.00,7.50,0.25)
+point2 = (-65.00,7.50,1.25)
+point3 = (-80.00,6.00,1.25)
+point4 = (-65.00,7.50,0.25)
+point5 = (-80.00,6.00,0.25)
+point6 = (-65.00,6.00,1.25)
+point7 = (-80.00,7.50,1.25)
+line0 = (0,4,2,6)
+line1 = (4,1,7,2)
+line2 = (1,5,3,7)
+line3 = (5,0,6,3)
+line4 = (6,2,7,3)
+line5 = (0,5,1,4)
+
+[Figure66]
+type = "LineDrawing"
+ambientReflection = (0.10,0.30,0.50)
+diffuseReflection = (0.10,0.80,0.80)
+specularReflection = (0.10,0.50,0.50)
+reflectionCoefficient = 20.00
+nrPoints = 8
+nrLines = 6
+point0 = (-72.00,6.00,1.25)
+point1 = (-78.00,7.50,1.25)
+point2 = (-72.00,7.50,3.25)
+point3 = (-78.00,6.00,3.25)
+point4 = (-72.00,7.50,1.25)
+point5 = (-78.00,6.00,1.25)
+point6 = (-72.00,6.00,3.25)
+point7 = (-78.00,7.50,3.25)
+line0 = (0,4,2,6)
+line1 = (4,1,7,2)
+line2 = (1,5,3,7)
+line3 = (5,0,6,3)
+line4 = (6,2,7,3)
+line5 = (0,5,1,4)
+
+[Figure67]
+type = "LineDrawing"
+ambientReflection = (0.50,0.10,0.10)
+diffuseReflection = (0.80,0.10,0.10)
+specularReflection = (0.80,0.10,0.00)
+reflectionCoefficient = 20.00
+nrPoints = 8
+nrLines = 6
+point0 = (-79.00,6.00,1.25)
+point1 = (-80.00,7.50,1.25)
+point2 = (-79.00,7.50,3.25)
+point3 = (-80.00,6.00,3.25)
+point4 = (-79.00,7.50,1.25)
+point5 = (-80.00,6.00,1.25)
+point6 = (-79.00,6.00,3.25)
+point7 = (-80.00,7.50,3.25)
+line0 = (0,4,2,6)
+line1 = (4,1,7,2)
+line2 = (1,5,3,7)
+line3 = (5,0,6,3)
+line4 = (6,2,7,3)
+line5 = (0,5,1,4)
+
+[Figure68]
+type = "Cylinder"
+scale = 0.25
+rotateX = -90
+center = (-78.50,5.75,0.25)
+ambientReflection = (0.1, 0.1, 0.1)
+diffuseReflection = (0.1, 0.1, 0.1)
+n = 10
+height = 8
+
+[Figure69]
+type = "Cylinder"
+scale = 0.25
+rotateX = -90
+center = (-75.00,5.75,0.25)
+ambientReflection = (0.1, 0.1, 0.1)
+diffuseReflection = (0.1, 0.1, 0.1)
+n = 10
+height = 8
+
+[Figure70]
+type = "Cylinder"
+scale = 0.25
+rotateX = -90
+center = (-70.00,5.75,0.25)
+ambientReflection = (0.1, 0.1, 0.1)
+diffuseReflection = (0.1, 0.1, 0.1)
+n = 10
+height = 8
+
+[Figure71]
+type = "Cylinder"
+scale = 0.25
+rotateX = -90
+center = (-66.50,5.75,0.25)
+ambientReflection = (0.1, 0.1, 0.1)
+diffuseReflection = (0.1, 0.1, 0.1)
+n = 10
+height = 8
+
+[Figure72]
+type = "LineDrawing"
+ambientReflection = (0.10,0.10,0.10)
+diffuseReflection = (0.10,0.10,0.10)
+specularReflection = (0.10,0.00,0.00)
+reflectionCoefficient = 0.00
+nrPoints = 8
+nrLines = 6
+point0 = (-39.90,6.40,0.75)
+point1 = (-40.00,7.10,0.75)
+point2 = (-39.90,7.10,1.00)
+point3 = (-40.00,6.40,1.00)
+point4 = (-39.90,7.10,0.75)
+point5 = (-40.00,6.40,0.75)
+point6 = (-39.90,6.40,1.00)
+point7 = (-40.00,7.10,1.00)
+line0 = (0,4,2,6)
+line1 = (4,1,7,2)
+line2 = (1,5,3,7)
+line3 = (5,0,6,3)
+line4 = (6,2,7,3)
+line5 = (0,5,1,4)
+
+[Figure73]
+type = "LineDrawing"
+ambientReflection = (0.50,0.50,0.50)
+diffuseReflection = (0.10,1.00,0.10)
+specularReflection = (0.10,0.70,0.10)
+reflectionCoefficient = 20.00
+nrPoints = 8
+nrLines = 6
+point0 = (-39.00,6.50,0.25)
+point1 = (-40.00,7.00,0.25)
+point2 = (-39.00,7.00,0.75)
+point3 = (-40.00,6.50,0.75)
+point4 = (-39.00,7.00,0.25)
+point5 = (-40.00,6.50,0.25)
+point6 = (-39.00,6.50,0.75)
+point7 = (-40.00,7.00,0.75)
+line0 = (0,4,2,6)
+line1 = (4,1,7,2)
+line2 = (1,5,3,7)
+line3 = (5,0,6,3)
+line4 = (6,2,7,3)
+line5 = (0,5,1,4)
+
+[Figure74]
+type = "LineDrawing"
+ambientReflection = (0.10,0.10,0.10)
+diffuseReflection = (0.10,0.10,0.10)
+specularReflection = (0.10,0.10,0.10)
+reflectionCoefficient = 0.00
+nrPoints = 8
+nrLines = 6
+point0 = (-39.10,6.55,0.75)
+point1 = (-39.50,6.95,0.75)
+point2 = (-39.10,6.95,1.00)
+point3 = (-39.50,6.55,1.00)
+point4 = (-39.10,6.95,0.75)
+point5 = (-39.50,6.55,0.75)
+point6 = (-39.10,6.55,1.00)
+point7 = (-39.50,6.95,1.00)
+line0 = (0,4,2,6)
+line1 = (4,1,7,2)
+line2 = (1,5,3,7)
+line3 = (5,0,6,3)
+line4 = (6,2,7,3)
+line5 = (0,5,1,4)
+
+[Figure75]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (0.00,6.00,0.00)
+point1 = (0.00,8.00,0.00)
+point2 = (-120.00,8.00,0.00)
+point3 = (-120.00,6.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure76]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (0.00,8.00,0.00)
+point1 = (0.00,8.50,0.00)
+point2 = (-2.00,8.50,0.00)
+point3 = (-2.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure77]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-2.00,8.00,0.00)
+point1 = (-2.00,8.50,0.00)
+point2 = (-4.00,8.50,0.00)
+point3 = (-4.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure78]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-4.00,8.00,0.00)
+point1 = (-4.00,8.50,0.00)
+point2 = (-6.00,8.50,0.00)
+point3 = (-6.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure79]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-6.00,8.00,0.00)
+point1 = (-6.00,8.50,0.00)
+point2 = (-8.00,8.50,0.00)
+point3 = (-8.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure80]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-8.00,8.00,0.00)
+point1 = (-8.00,8.50,0.00)
+point2 = (-10.00,8.50,0.00)
+point3 = (-10.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure81]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-10.00,8.00,0.00)
+point1 = (-10.00,8.50,0.00)
+point2 = (-12.00,8.50,0.00)
+point3 = (-12.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure82]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-12.00,8.00,0.00)
+point1 = (-12.00,8.50,0.00)
+point2 = (-14.00,8.50,0.00)
+point3 = (-14.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure83]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-14.00,8.00,0.00)
+point1 = (-14.00,8.50,0.00)
+point2 = (-16.00,8.50,0.00)
+point3 = (-16.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure84]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-16.00,8.00,0.00)
+point1 = (-16.00,8.50,0.00)
+point2 = (-18.00,8.50,0.00)
+point3 = (-18.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure85]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-18.00,8.00,0.00)
+point1 = (-18.00,8.50,0.00)
+point2 = (-20.00,8.50,0.00)
+point3 = (-20.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure86]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-20.00,8.00,0.00)
+point1 = (-20.00,8.50,0.00)
+point2 = (-22.00,8.50,0.00)
+point3 = (-22.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure87]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-22.00,8.00,0.00)
+point1 = (-22.00,8.50,0.00)
+point2 = (-24.00,8.50,0.00)
+point3 = (-24.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure88]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-24.00,8.00,0.00)
+point1 = (-24.00,8.50,0.00)
+point2 = (-26.00,8.50,0.00)
+point3 = (-26.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure89]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-26.00,8.00,0.00)
+point1 = (-26.00,8.50,0.00)
+point2 = (-28.00,8.50,0.00)
+point3 = (-28.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure90]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-28.00,8.00,0.00)
+point1 = (-28.00,8.50,0.00)
+point2 = (-30.00,8.50,0.00)
+point3 = (-30.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure91]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-30.00,8.00,0.00)
+point1 = (-30.00,8.50,0.00)
+point2 = (-32.00,8.50,0.00)
+point3 = (-32.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure92]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-32.00,8.00,0.00)
+point1 = (-32.00,8.50,0.00)
+point2 = (-34.00,8.50,0.00)
+point3 = (-34.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure93]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-34.00,8.00,0.00)
+point1 = (-34.00,8.50,0.00)
+point2 = (-36.00,8.50,0.00)
+point3 = (-36.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure94]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-36.00,8.00,0.00)
+point1 = (-36.00,8.50,0.00)
+point2 = (-38.00,8.50,0.00)
+point3 = (-38.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure95]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-38.00,8.00,0.00)
+point1 = (-38.00,8.50,0.00)
+point2 = (-40.00,8.50,0.00)
+point3 = (-40.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure96]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-40.00,8.00,0.00)
+point1 = (-40.00,8.50,0.00)
+point2 = (-42.00,8.50,0.00)
+point3 = (-42.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure97]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-42.00,8.00,0.00)
+point1 = (-42.00,8.50,0.00)
+point2 = (-44.00,8.50,0.00)
+point3 = (-44.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure98]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-44.00,8.00,0.00)
+point1 = (-44.00,8.50,0.00)
+point2 = (-46.00,8.50,0.00)
+point3 = (-46.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure99]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-46.00,8.00,0.00)
+point1 = (-46.00,8.50,0.00)
+point2 = (-48.00,8.50,0.00)
+point3 = (-48.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure100]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-48.00,8.00,0.00)
+point1 = (-48.00,8.50,0.00)
+point2 = (-50.00,8.50,0.00)
+point3 = (-50.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure101]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-50.00,8.00,0.00)
+point1 = (-50.00,8.50,0.00)
+point2 = (-52.00,8.50,0.00)
+point3 = (-52.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure102]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-52.00,8.00,0.00)
+point1 = (-52.00,8.50,0.00)
+point2 = (-54.00,8.50,0.00)
+point3 = (-54.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure103]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-54.00,8.00,0.00)
+point1 = (-54.00,8.50,0.00)
+point2 = (-56.00,8.50,0.00)
+point3 = (-56.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure104]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-56.00,8.00,0.00)
+point1 = (-56.00,8.50,0.00)
+point2 = (-58.00,8.50,0.00)
+point3 = (-58.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure105]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-58.00,8.00,0.00)
+point1 = (-58.00,8.50,0.00)
+point2 = (-60.00,8.50,0.00)
+point3 = (-60.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure106]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-60.00,8.00,0.00)
+point1 = (-60.00,8.50,0.00)
+point2 = (-62.00,8.50,0.00)
+point3 = (-62.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure107]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-62.00,8.00,0.00)
+point1 = (-62.00,8.50,0.00)
+point2 = (-64.00,8.50,0.00)
+point3 = (-64.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure108]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-64.00,8.00,0.00)
+point1 = (-64.00,8.50,0.00)
+point2 = (-66.00,8.50,0.00)
+point3 = (-66.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure109]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-66.00,8.00,0.00)
+point1 = (-66.00,8.50,0.00)
+point2 = (-68.00,8.50,0.00)
+point3 = (-68.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure110]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-68.00,8.00,0.00)
+point1 = (-68.00,8.50,0.00)
+point2 = (-70.00,8.50,0.00)
+point3 = (-70.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure111]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-70.00,8.00,0.00)
+point1 = (-70.00,8.50,0.00)
+point2 = (-72.00,8.50,0.00)
+point3 = (-72.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure112]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-72.00,8.00,0.00)
+point1 = (-72.00,8.50,0.00)
+point2 = (-74.00,8.50,0.00)
+point3 = (-74.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure113]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-74.00,8.00,0.00)
+point1 = (-74.00,8.50,0.00)
+point2 = (-76.00,8.50,0.00)
+point3 = (-76.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure114]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-76.00,8.00,0.00)
+point1 = (-76.00,8.50,0.00)
+point2 = (-78.00,8.50,0.00)
+point3 = (-78.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure115]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-78.00,8.00,0.00)
+point1 = (-78.00,8.50,0.00)
+point2 = (-80.00,8.50,0.00)
+point3 = (-80.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure116]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-80.00,8.00,0.00)
+point1 = (-80.00,8.50,0.00)
+point2 = (-82.00,8.50,0.00)
+point3 = (-82.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure117]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-82.00,8.00,0.00)
+point1 = (-82.00,8.50,0.00)
+point2 = (-84.00,8.50,0.00)
+point3 = (-84.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure118]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-84.00,8.00,0.00)
+point1 = (-84.00,8.50,0.00)
+point2 = (-86.00,8.50,0.00)
+point3 = (-86.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure119]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-86.00,8.00,0.00)
+point1 = (-86.00,8.50,0.00)
+point2 = (-88.00,8.50,0.00)
+point3 = (-88.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure120]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-88.00,8.00,0.00)
+point1 = (-88.00,8.50,0.00)
+point2 = (-90.00,8.50,0.00)
+point3 = (-90.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure121]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-90.00,8.00,0.00)
+point1 = (-90.00,8.50,0.00)
+point2 = (-92.00,8.50,0.00)
+point3 = (-92.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure122]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-92.00,8.00,0.00)
+point1 = (-92.00,8.50,0.00)
+point2 = (-94.00,8.50,0.00)
+point3 = (-94.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure123]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-94.00,8.00,0.00)
+point1 = (-94.00,8.50,0.00)
+point2 = (-96.00,8.50,0.00)
+point3 = (-96.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure124]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-96.00,8.00,0.00)
+point1 = (-96.00,8.50,0.00)
+point2 = (-98.00,8.50,0.00)
+point3 = (-98.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure125]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-98.00,8.00,0.00)
+point1 = (-98.00,8.50,0.00)
+point2 = (-100.00,8.50,0.00)
+point3 = (-100.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure126]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-100.00,8.00,0.00)
+point1 = (-100.00,8.50,0.00)
+point2 = (-102.00,8.50,0.00)
+point3 = (-102.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure127]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-102.00,8.00,0.00)
+point1 = (-102.00,8.50,0.00)
+point2 = (-104.00,8.50,0.00)
+point3 = (-104.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure128]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-104.00,8.00,0.00)
+point1 = (-104.00,8.50,0.00)
+point2 = (-106.00,8.50,0.00)
+point3 = (-106.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure129]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-106.00,8.00,0.00)
+point1 = (-106.00,8.50,0.00)
+point2 = (-108.00,8.50,0.00)
+point3 = (-108.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure130]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-108.00,8.00,0.00)
+point1 = (-108.00,8.50,0.00)
+point2 = (-110.00,8.50,0.00)
+point3 = (-110.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure131]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-110.00,8.00,0.00)
+point1 = (-110.00,8.50,0.00)
+point2 = (-112.00,8.50,0.00)
+point3 = (-112.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure132]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-112.00,8.00,0.00)
+point1 = (-112.00,8.50,0.00)
+point2 = (-114.00,8.50,0.00)
+point3 = (-114.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure133]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-114.00,8.00,0.00)
+point1 = (-114.00,8.50,0.00)
+point2 = (-116.00,8.50,0.00)
+point3 = (-116.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure134]
+type = "LineDrawing"
+ambientReflection = (0.9,0.9,0.9)
+diffuseReflection = (0.9,0.9,0.9)
+specularReflection = (0.9,0,9.9)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-116.00,8.00,0.00)
+point1 = (-116.00,8.50,0.00)
+point2 = (-118.00,8.50,0.00)
+point3 = (-118.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure135]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (-118.00,8.00,0.00)
+point1 = (-118.00,8.50,0.00)
+point2 = (-120.00,8.50,0.00)
+point3 = (-120.00,8.00,0.00)
+line0 = (0,1,2,3)
+
+[Figure136]
+type = "LineDrawing"
+ambientReflection = (0.2, 0.2, 0.2)
+diffuseReflection = (0.3, 0.3, 0.3)
+specularReflection = (0.2, 0.2, 0.2)
+reflectoinCoefficient = 10
+nrPoints = 4
+nrLines = 1
+point0 = (0.00,8.50,0.00)
+point1 = (0.00,10.50,0.00)
+point2 = (-120.00,10.50,0.00)
+point3 = (-120.00,8.50,0.00)
+line0 = (0,1,2,3)
+
+[Figure137]
+type = "LineDrawing"
+ambientReflection = (0.00,0.00,0.00)
+diffuseReflection = (0.30,0.30,0.30)
+specularReflection = (0.30,0.30,0.30)
+reflectionCoefficient = 0.00
+nrPoints = 8
+nrLines = 6
+point0 = (-80.10,11.00,0.00)
+point1 = (-80.00,11.10,0.00)
+point2 = (-80.10,11.10,2.00)
+point3 = (-80.00,11.00,2.00)
+point4 = (-80.10,11.10,0.00)
+point5 = (-80.00,11.00,0.00)
+point6 = (-80.10,11.00,2.00)
+point7 = (-80.00,11.10,2.00)
+line0 = (0,4,2,6)
+line1 = (4,1,7,2)
+line2 = (1,5,3,7)
+line3 = (5,0,6,3)
+line4 = (6,2,7,3)
+line5 = (0,5,1,4)
+
+[Figure138]
+type = "Sphere"
+ambientReflection = (0,1,0)
+diffuseReflection = (0,1,0)
+scale = 0.4
+center = (-80.05,11.00,2.00)
+n = 1
+
+[Figure139]
+type = "LineDrawing"
+ambientReflection = (0.00,0.00,0.00)
+diffuseReflection = (0.30,0.30,0.30)
+specularReflection = (0.30,0.30,0.30)
+reflectionCoefficient = 0.00
+nrPoints = 8
+nrLines = 6
+point0 = (-0.10,11.00,0.00)
+point1 = (-0.00,11.10,0.00)
+point2 = (-0.10,11.10,2.00)
+point3 = (-0.00,11.00,2.00)
+point4 = (-0.10,11.10,0.00)
+point5 = (-0.00,11.00,0.00)
+point6 = (-0.10,11.00,2.00)
+point7 = (-0.00,11.10,2.00)
+line0 = (0,4,2,6)
+line1 = (4,1,7,2)
+line2 = (1,5,3,7)
+line3 = (5,0,6,3)
+line4 = (6,2,7,3)
+line5 = (0,5,1,4)
+
+[Figure140]
+type = "Sphere"
+ambientReflection = (1,1,1)
+diffuseReflection = (1,1,1)
+scale = 0.4
+center = (-0.05,11.00,2.00)
+n = 1
+
+[General]
+size = 2024
+backgroundcolor = (0.05,0.06,0.05)
+type = "LightedZBuffering"
+nrLights = 1
+shadowEnabled = FALSE
+eye = (0,50,100)
+nrFigures = 141
+
+[Light0]
+infinity = TRUE
+direction = (-3,-1,-10)
+ambientLight = (0.4,0.4,0.4)
+diffuseLight = (1,1,1)
+specularLight = (1,1,1)
+

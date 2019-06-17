@@ -1,0 +1,16 @@
+[General]
+size = 2024
+backgroundcolor = (0.05,0.06,0.05)
+type = "LightedZBuffering"
+nrLights = 1
+shadowEnabled = FALSE
+eye = (0,50,100)
+nrFigures = 0
+
+[Light0]
+infinity = TRUE
+direction = (-3,-1,-10)
+ambientLight = (0.4,0.4,0.4)
+diffuseLight = (1,1,1)
+specularLight = (1,1,1)
+
