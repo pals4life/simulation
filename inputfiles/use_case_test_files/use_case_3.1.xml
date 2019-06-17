@@ -2,7 +2,7 @@
 <NETWERK>
     <VOERTUIG>
         <type>AUTO</type>
-        <nummerplaat>1THK180</nummerplaat>
+        <nummerplaat>AAAAAA</nummerplaat>
         <baan>E19</baan>
         <positie>10</positie>
         <snelheid>0</snelheid>
@@ -13,6 +13,30 @@
         <nummerplaat>651BUF</nummerplaat>
         <baan>E19</baan>
         <positie>0</positie>
+        <snelheid>0</snelheid>
+    </VOERTUIG>
+
+    <VOERTUIG>
+        <type>AUTO</type>
+        <nummerplaat>ABABAB</nummerplaat>
+        <baan>E19</baan>
+        <positie>30</positie>
+        <snelheid>0</snelheid>
+    </VOERTUIG>
+
+    <VOERTUIG>
+        <type>AUTO</type>
+        <nummerplaat>AHAHAH</nummerplaat>
+        <baan>E19</baan>
+        <positie>200</positie>
+        <snelheid>0</snelheid>
+    </VOERTUIG>
+
+    <VOERTUIG>
+        <type>AUTO</type>
+        <nummerplaat>HAHAHA</nummerplaat>
+        <baan>E19</baan>
+        <positie>300</positie>
         <snelheid>0</snelheid>
     </VOERTUIG>
 

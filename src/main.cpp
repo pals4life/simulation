@@ -21,7 +21,7 @@ int main(int argc, char** argv)
     Window* window = new Window;
     std::string filename;
 
-    const bool GUI = false;
+    const bool GUI = true;
 
     if (GUI)
     {
@@ -30,7 +30,7 @@ int main(int argc, char** argv)
     }
 
 
-    if(argc != 2) filename = window->askString("inputfiles/spec2.0.xml");
+    if(GUI) filename = window->askString("inputfiles/use_case_test_files/use_case_3.7.xml");
     else filename = argv[1];
 
     NetworkParser parser;

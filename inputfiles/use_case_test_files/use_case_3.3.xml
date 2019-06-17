@@ -4,7 +4,23 @@
         <type>AUTO</type>
         <nummerplaat>1THK180</nummerplaat>
         <baan>E19</baan>
-        <positie>10</positie>
+        <positie>200</positie>
+        <snelheid>0</snelheid>
+    </VOERTUIG>
+
+    <VOERTUIG>
+        <type>VRACHTWAGEN</type>
+        <nummerplaat>1THK1A0</nummerplaat>
+        <baan>E19</baan>
+        <positie>100</positie>
+        <snelheid>0</snelheid>
+    </VOERTUIG>
+
+    <VOERTUIG>
+        <type>MOTORFIETS</type>
+        <nummerplaat>1TNK1A0</nummerplaat>
+        <baan>E19</baan>
+        <positie>300</positie>
         <snelheid>0</snelheid>
     </VOERTUIG>
 
@@ -12,21 +28,14 @@
         <type>BUS</type>
         <nummerplaat>651BUF</nummerplaat>
         <baan>E19</baan>
-        <positie>30</positie>
+        <positie>0</positie>
         <snelheid>0</snelheid>
     </VOERTUIG>
 
     <BAAN>
         <naam>E19</naam>
-        <snelheidslimiet>140</snelheidslimiet>
-        <lengte>2000</lengte>
-        <verbinding>E313</verbinding>
-        <rijstroken>2</rijstroken>
+        <snelheidslimiet>120</snelheidslimiet>
+        <lengte>10000</lengte>
     </BAAN>
 
-    <BAAN>
-        <naam>E313</naam>
-        <snelheidslimiet>120</snelheidslimiet>
-        <lengte>5000</lengte>
-    </BAAN>
 </NETWERK>
