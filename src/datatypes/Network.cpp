@@ -55,6 +55,11 @@ void Network::startSimulation(Window* window, const std::string& simpleOutput, c
             if(not debug) window->updateSimpleOutput(NetworkExporter::addSection(this, fTicksPassed));
             if(not debug) Window::processEvents();
         }
+        else if (window->getState() == Window::kPrint)
+        {
+            // hier
+            window->setCrState(Window::kPause);
+        }
     }
 
     VehicleExporter::finish();
