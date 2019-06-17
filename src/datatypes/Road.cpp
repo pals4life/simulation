@@ -281,21 +281,22 @@ std::pair<const BusStop*, double> Road::getBusStop(const double kPosition) const
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getBusStop");
     REQUIRE(kPosition >= 0 and kPosition < getRoadLength(), "position not valid");
 
-    if(not getTrafficLights().empty())
-    {
-        const std::vector<const BusStop*>::const_iterator kIter = std::upper_bound(fBusStops.begin(), fBusStops.end(), kPosition, comparePosition<BusStop>);
-        return std::pair<const BusStop*, double>(*kIter, 0);
-    }
-
     const Road* current = this;
     double offset = 0;
-    while(current->getBusStops().empty())
+
+    while(current != NULL)
     {
+        const std::vector<const BusStop*>::const_iterator kIter = std::upper_bound(fBusStops.begin(), fBusStops.end(), kPosition, comparePosition<BusStop>);
         offset += current->fRoadLength;
-        current = current->fNextRoad;
-        if(current == NULL) return std::pair<const BusStop*, double>(NULL, 0);
+        if(kIter == fBusStops.end())
+        {
+            if(fNextRoad == NULL) break;
+            offset += current->fRoadLength;
+            current = current->fNextRoad;
+        }
+        else return std::pair<const BusStop*, double>(*kIter, offset);
     }
-    return std::pair<const BusStop*, double>(current->getBusStops()[0], offset);
+    return std::pair<const BusStop*, double>(NULL, 0);
 }
 
 std::pair<const TrafficLight*, double> Road::getTrafficLight(const double kPosition) const
@@ -303,21 +304,22 @@ std::pair<const TrafficLight*, double> Road::getTrafficLight(const double kPosit
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getTrafficLight");
     REQUIRE(kPosition >= 0 and kPosition < getRoadLength(), "position not valid");
 
-    if(not getTrafficLights().empty())
-    {
-        const std::vector<const TrafficLight*>::const_iterator kIter = std::upper_bound(fTrafficLights.begin(), fTrafficLights.end(), kPosition, comparePosition<TrafficLight>);
-        return std::pair<const TrafficLight*, double>(*kIter, 0);
-    }
-
     const Road* current = this;
     double offset = 0;
-    while(current->getTrafficLights().empty())
+
+    while(current != NULL)
     {
+        const std::vector<const TrafficLight*>::const_iterator kIter = std::upper_bound(fTrafficLights.begin(), fTrafficLights.end(), kPosition, comparePosition<TrafficLight>);
         offset += current->fRoadLength;
-        current = current->fNextRoad;
-        if(current == NULL) return std::pair<const TrafficLight*, double>(NULL, 0);
+        if(kIter == fTrafficLights.end())
+        {
+            if(fNextRoad == NULL) break;
+            offset += current->fRoadLength;
+            current = current->fNextRoad;
+        }
+        else return std::pair<const TrafficLight*, double>(*kIter, offset);
     }
-    return std::pair<const TrafficLight*, double>(current->getTrafficLights()[0], offset);
+    return std::pair<const TrafficLight*, double>(NULL, 0);
 }
 
 std::pair<const IVehicle*, double> Road::getNextVehicle(const uint32_t kLane, const uint32_t kIndex) const
