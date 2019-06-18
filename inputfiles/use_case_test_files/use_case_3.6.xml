@@ -24,14 +24,14 @@
     <VERKEERSTEKEN>
         <type>VERKEERSLICHT</type>
         <baan>E19</baan>
-        <positie>1000</positie>
+        <positie>800</positie>
     </VERKEERSTEKEN>
 
 
     <VERKEERSTEKEN>
         <type>VERKEERSLICHT</type>
         <baan>E19</baan>
-        <positie>1500</positie>
+        <positie>1900</positie>
     </VERKEERSTEKEN>
 
 </NETWERK>

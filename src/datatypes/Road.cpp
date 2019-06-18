@@ -287,7 +287,6 @@ std::pair<const BusStop*, double> Road::getBusStop(const double kPosition) const
     while(current != NULL)
     {
         const std::vector<const BusStop*>::const_iterator kIter = std::upper_bound(fBusStops.begin(), fBusStops.end(), kPosition, comparePosition<BusStop>);
-        offset += current->fRoadLength;
         if(kIter == fBusStops.end())
         {
             if(fNextRoad == NULL) break;
@@ -310,7 +309,6 @@ std::pair<const TrafficLight*, double> Road::getTrafficLight(const double kPosit
     while(current != NULL)
     {
         const std::vector<const TrafficLight*>::const_iterator kIter = std::upper_bound(fTrafficLights.begin(), fTrafficLights.end(), kPosition, comparePosition<TrafficLight>);
-        offset += current->fRoadLength;
         if(kIter == fTrafficLights.end())
         {
             if(fNextRoad == NULL) break;

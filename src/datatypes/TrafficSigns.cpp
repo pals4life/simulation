@@ -14,6 +14,7 @@
 #include "../DesignByContract.h"
 
 const uint32_t TrafficLight::fgkMaxDifference = 100;
+const double TrafficLight::fgkSmartDist = 1000;
 
 TrafficLight::TrafficLight(const double kPosition)
 {
@@ -112,6 +113,11 @@ double TrafficLight::getPosition() const
 {
     REQUIRE(properlyInitialized(), "TrafficLight was not properly initialized when calling getPosition");
     return fPosition;
+}
+
+double TrafficLight::getSmartDist()
+{
+    return fgkSmartDist;
 }
 
 //--------------------------------------------------------------------------------------------------//

@@ -64,6 +64,8 @@ public:
      */
     double getPosition() const;
 
+    static double getSmartDist();
+
 private:
     double fPosition;
 
@@ -75,6 +77,7 @@ private:
     mutable uint32_t fTimer;
 
     static const uint32_t fgkMaxDifference;
+    static const double fgkSmartDist;
 
     const TrafficLight* _initCheck;
 };

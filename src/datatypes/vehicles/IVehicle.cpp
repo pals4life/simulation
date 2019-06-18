@@ -144,19 +144,23 @@ void IVehicle::checkTrafficLights(std::pair<const TrafficLight*, double> nextTra
             return;
         }
     }
-    else if(nextTrafficLight.first != NULL and nextTrafficLight.first->getColor() != TrafficLight::kGreen)
+    else if(nextTrafficLight.first != NULL)
     {
-        std::pair<bool, double> temp = calculateStop(pairPosition<TrafficLight>(nextTrafficLight));
-        std::get<0>(fTrafficLightAccel) = temp.first;
-        std::get<1>(fTrafficLightAccel) = temp.second;
-        std::get<2>(fTrafficLightAccel) = (temp.first) ? nextTrafficLight.first : NULL;
-
-        if(std::get<0>(fTrafficLightAccel))
+        if(nextTrafficLight.first->getColor() != TrafficLight::kGreen)
+        {
+            std::pair<bool, double> temp = calculateStop(pairPosition<TrafficLight>(nextTrafficLight));
+            std::get<0>(fTrafficLightAccel) = temp.first;
+            std::get<1>(fTrafficLightAccel) = temp.second;
+            std::get<2>(fTrafficLightAccel) = (temp.first) ? nextTrafficLight.first : NULL;
+        }
+        if(pairPosition<TrafficLight>(nextTrafficLight) - getPosition() < TrafficLight::getSmartDist())
+        {
             nextTrafficLight.first->setInRange(this);
+        }
     }
 }
 
-void IVehicle::checkBusStop(std::pair<const BusStop*, double> nextBusStop) const
+void IVehicle::checkBusStop(std::pair<const BusStop*, double> nextBusStop)
 {
     REQUIRE(properlyInitialized(), "Vehicle was not initialized when calling checkBusStop");
     REQUIRE(nextBusStop.second >= 0, "nextBusStop ill-formed when calling checkBusStop");
@@ -168,6 +172,7 @@ void IVehicle::checkBusStop(std::pair<const BusStop*, double> nextBusStop) const
         if(fVelocity < fgkEpsilonThreshold)
         {
             std::get<2>(fBusStopAccel)->setStationed(this);
+            fPosition = std::get<2>(fBusStopAccel)->getPosition()+fgkEpsilonThreshold;
             fBusStopAccel = std::tuple<bool, double, const BusStop*>(false, 0, NULL);
             return;
         }
@@ -210,8 +215,6 @@ std::pair<bool, double> IVehicle::calculateStop(double nextPos) const
 
     const double kDist = nextPos - fPosition;
     const double kAccel = -fVelocity*fVelocity/(kDist + 2*fVelocity);
-
-    if(kDist < 10) return std::pair<bool, double>(false, 0);
 
     double futurePos = fPosition + fVelocity + getMaxAcceleration();
     double futureVel = fVelocity;

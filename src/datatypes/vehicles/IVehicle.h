@@ -147,7 +147,7 @@ private:
      * REQUIRE(properlyInitialized(), "Vehicle was not initialized when calling checkBusStop");
      * REQUIRE(nextBusStop.second >= 0, "nextBusStop ill-formed when calling checkBusStop");
      */
-    void checkBusStop(std::pair<const BusStop*, double> nextBusStop) const;
+    void checkBusStop(std::pair<const BusStop*, double> nextBusStop);
 
     /*
      * REQUIRE(properlyInitialized(), "Vehicle was not initialized when calling checkLaneChange");
