@@ -34,7 +34,7 @@
 
     <BAAN>
         <naam>E19</naam>
-        <snelheidslimiet>120</snelheidslimiet>
+        <snelheidslimiet>200</snelheidslimiet>
         <lengte>10000</lengte>
     </BAAN>
 

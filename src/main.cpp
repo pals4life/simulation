@@ -30,7 +30,7 @@ int main(int argc, char** argv)
     }
 
     if (argc > 1) filename = argv[1];
-    else if(GUI) filename = window->askString("inputfiles/spec2.0.xml");
+    else if(GUI) filename = window->askString("inputfiles/use_case_test_files/use_case_3.1.xml");
     else throw std::runtime_error("argument count must be > 1, if gui is false");
 
     NetworkParser parser;
