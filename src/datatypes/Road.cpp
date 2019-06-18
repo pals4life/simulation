@@ -70,24 +70,18 @@ void Road::updateVehicles()
         }
     }
 
-    for(uint32_t i = 0; i < fMergingVehicles.size(); i++)
+    for(uint32_t i = 0; i < fMergingVehicles.size();)
     {
         uint32_t& timer = std::get<0>(fMergingVehicles[i]);
         if(++timer > 5)
         {
             const uint32_t kLane = std::get<1>(fMergingVehicles[i]);
-            const uint32_t kIndex = std::get<2>(fMergingVehicles[i]);
-            fLanes[kLane][kIndex]->setMerging(false);
-            fLanes[kLane].erase(fLanes[kLane].begin() + kIndex);
+            Iter iter = std::find(begin(fLanes[kLane]), end(fLanes[kLane]), std::get<2>(fMergingVehicles[i]));
+            (*iter)->setMerging(false);
+            fLanes[kLane].erase(iter);
             fMergingVehicles.erase(fMergingVehicles.begin() + i);
-            for(uint32_t j = 0; j < fMergingVehicles.size(); j++)
-            {
-                uint32_t& kOtherLane = std::get<1>(fMergingVehicles[i]);
-                uint32_t& kOtherIndex = std::get<2>(fMergingVehicles[i]);
-                if(kOtherLane == kLane and kOtherIndex > kIndex) --kOtherIndex;
-            }
-            i--;
         }
+        else i++;
     }
 
     dequeueFinishedVehicles();
@@ -109,11 +103,10 @@ void Road::enqueue(IVehicle* const kVehicle)
     enqueue(kVehicle, 0);
 }
 
-bool Road::changeLaneIfPossible(IVehicle* vehicle, const uint32_t kLane, const uint32_t kIndex, const bool kLeft)
+bool Road::changeLaneIfPossible(IVehicle* vehicle, const uint32_t kLane, const bool kLeft)
 {
     REQUIRE(this->properlyInitialized(), "Road was not initialized when calling changeLaneIfPossible");
     REQUIRE(laneExists(kLane + (kLeft ? 1 : -1)), "Cannot go to non-existing lane");
-    REQUIRE(kIndex < fLanes[kLane].size(), "Index is out of range");
 
     std::vector<IVehicle*>& newLane = fLanes[kLane + (kLeft ? 1 : -1)];
     const double ideal = 1.5 * vehicle->getVelocity();
@@ -142,13 +135,13 @@ bool Road::changeLaneIfPossible(IVehicle* vehicle, const uint32_t kLane, const u
         if(behind == uint32_t(-1)) newLane.push_back(vehicle);
         else newLane.insert(begin(newLane)+behind, vehicle);
 
-        fMergingVehicles.push_back(std::tuple<uint32_t, uint32_t, uint32_t>(0, kLane, kIndex));
+        fMergingVehicles.push_back(std::tuple<uint32_t, uint32_t, const IVehicle*>(0, kLane, vehicle));
     }
     else
     {
-        // if the lane is empty we can easily push it in front
+        // if the lane is empty we can easily push it back
         newLane.insert(newLane.begin(), vehicle);
-        fMergingVehicles.push_back(std::tuple<uint32_t, uint32_t, uint32_t>(0, kLane, kIndex));
+        fMergingVehicles.push_back(std::tuple<uint32_t, uint32_t, const IVehicle*>(0, kLane, vehicle));
     }
     return true;
 }

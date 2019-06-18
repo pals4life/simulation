@@ -205,7 +205,7 @@ void IVehicle::checkLaneChange(const bool trafficLight, const uint32_t lane, con
     if(left and fVelocity >= std::min(kSpeedlimit, getMaxSpeed()) - fgkEpsilonThreshold) return;
 
     // 6. Er is geen voertuig op de nieuwe rijstrook in een straal van de ideale volgafstand (dus zowel voor als achter het voertuig).
-    fMerging = road->changeLaneIfPossible(this, lane, index, left);
+    fMerging = road->changeLaneIfPossible(this, lane, left);
 }
 
 std::pair<bool, double> IVehicle::calculateStop(double nextPos) const

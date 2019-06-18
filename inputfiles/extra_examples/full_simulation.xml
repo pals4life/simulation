@@ -9,14 +9,14 @@
     </BAAN>
     <BAAN>
         <naam>B</naam>
-        <snelheidslimiet>500</snelheidslimiet>
+        <snelheidslimiet>100</snelheidslimiet>
         <lengte>2500</lengte>
         <verbinding>C</verbinding>
         <rijstroken>3</rijstroken>
     </BAAN>
     <BAAN>
         <naam>C</naam>
-        <snelheidslimiet>160</snelheidslimiet>
+        <snelheidslimiet>80</snelheidslimiet>
         <lengte>3000</lengte>
         <rijstroken>2</rijstroken>
     </BAAN>

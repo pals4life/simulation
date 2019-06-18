@@ -64,9 +64,8 @@ public:
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling changeLaneIfPossible");
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling laneExists");
-     * REQUIRE(index < fLanes[lane].size(), "Index is out of range");
      */
-    bool changeLaneIfPossible(IVehicle* vehicle, uint32_t kLane, uint32_t kIndex, bool kLeft);
+    bool changeLaneIfPossible(IVehicle* vehicle, uint32_t kLane, bool kLeft);
 
     /**
      * REQUIRE(this->properlyInitialized(), "Road was not initialized when calling getNextTrafficLight");
@@ -222,7 +221,7 @@ private:
 
 	Road* fNextRoad;
 	std::vector<std::vector<IVehicle*> > fLanes;
-	std::vector<std::tuple<uint32_t, uint32_t, uint32_t>> fMergingVehicles;
+	std::vector<std::tuple<uint32_t, uint32_t, const IVehicle*>> fMergingVehicles;
 
 	std::vector<const Zone*> fZones;
 	std::vector<const BusStop*> fBusStops;

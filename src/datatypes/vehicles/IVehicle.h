@@ -117,7 +117,7 @@ public:
      * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling setStationed");
      * ENSURE(getStationed() == kStationed, "new moved not set when calling setStationed");
      */
-    void setMerging(bool kStationed) const;
+    void setMerging(bool kMerging) const;
 
     /*
      * REQUIRE(this->properlyInitialized(), "Vehicle was not initialized when calling getStatistics");
