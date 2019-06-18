@@ -36,6 +36,7 @@
         <naam>E19</naam>
         <snelheidslimiet>250</snelheidslimiet>
         <lengte>4000</lengte>
+        <rijstroken>2</rijstroken>
     </BAAN>
 
 </NETWERK>
