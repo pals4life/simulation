@@ -1,6 +1,6 @@
 //============================================================================
-// @name        : CarTester.cpp
-// @author      : Thomas Dooms
+// @name        : MotorcycleTester.cpp
+// @author      : Mano Marichal
 // @date        : 19.03.19
 // @version     : 1.0
 // @copyright   : BA1 Informatica - Thomas Dooms - University of Antwerp
@@ -51,8 +51,6 @@ TEST_F(MotorcycleTester, move3)
     const Zone* zone = new Zone(0, 30);
     Road road("E19", NULL, 5000, 1, std::vector<const Zone*>(1, zone), std::vector<const BusStop*>(), std::vector<const TrafficLight*>());
     road.enqueue(vehicle);
-    vehicle->move(0, 0, &road);
-    vehicle->move(0, 0, &road);
     vehicle->move(0, 0, &road);
 
     ASSERT_EQ(vehicle->getPosition(), 4);
